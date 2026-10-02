@@ -1,0 +1,50 @@
+{
+  "seed": 42,
+  "paths": {
+    "split_dir": "Datasets/Split Dataset",
+    "recruitview_dir": "Datasets/RecruitView",
+    "audio_dir": "Datasets/RecruitView Audio",
+    "legacy_features_dir": "outputs/audio/features/legacy",
+    "features_dir": "outputs/audio/features",
+    "embeddings_dir": "outputs/audio/embeddings",
+    "models_dir": "outputs/audio/models",
+    "reports_dir": "outputs/audio/reports",
+    "fusion_dir": "outputs/audio/fusion",
+    "cache_dir": "outputs/audio/cache",
+    "legacy_run_dir": "outputs/audio/legacy_run"
+  },
+  "targets": {
+    "confidence": "confidence_score",
+    "speaking_skills": "speaking_skills",
+    "overall_performance": "overall_performance"
+  },
+  "audio": {"sample_rate": 16000, "channels": 1, "chunk_seconds": 30.0, "chunk_overlap_seconds": 1.0},
+  "extractors": {
+    "legacy": {"enabled": true, "source": "legacy_waveform"},
+    "egemaps": {"enabled": true, "feature_set": "eGeMAPSv02", "feature_level": "Functionals"},
+    "whisper": {"enabled": true, "backend": "faster-whisper", "model_size": "small", "compute_type": "auto",
+      "language": null, "beam_size": 5, "vad_filter": false,
+      "filler_terms": ["um", "uh", "erm", "er", "hmm", "mm", "like", "you know", "i mean"],
+      "long_pause_thresholds_seconds": [0.3, 0.7, 1.5]},
+    "wavlm": {"enabled": true, "model_name": "microsoft/wavlm-base-plus", "layer": "best_cv",
+      "average_last_n": 4, "speech_only_pooling": false, "trust_remote_code": false},
+    "hubert": {"enabled": true, "model_name": "facebook/hubert-base-ls960", "layer": "best_cv",
+      "average_last_n": 4, "speech_only_pooling": false, "trust_remote_code": false}
+  },
+  "modeling": {
+    "cv_folds": 5,
+    "selection_metric": "ccc_then_rmse",
+    "ridge_alphas": [0.0001, 0.001, 0.01, 0.1, 1.0, 10.0, 100.0, 1000.0],
+    "embedding_ridge_alphas": [0.1, 1.0, 10.0, 100.0, 1000.0, 10000.0],
+    "svr_C": [0.1, 1.0, 10.0, 100.0],
+    "svr_epsilon": [0.05, 0.1, 0.2, 0.4],
+    "svr_gamma": ["scale", 0.001, 0.01, 0.1],
+    "tree_trials": 12,
+    "bootstrap_replicates": 1000,
+    "bootstrap_seed": 43,
+    "question_id_ablation": false,
+    "embedding_pca_components": null,
+    "smoke_cv_folds": 3
+  },
+  "cache": {"version": 1, "resume": true, "require_explicit_model_download": true}
+}
