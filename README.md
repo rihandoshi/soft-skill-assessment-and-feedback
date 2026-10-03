@@ -54,10 +54,41 @@ The runner caches per-clip speech/non-speech regions, pause statistics and speec
 
 Results are saved in `results/vad_pause/` with per-split region and pause feature CSVs, validation predictions, experiment metrics, participant bootstrap intervals, paired ablation intervals, configuration, and RMSE plots. Non-speech gaps are acoustic measurements; the pipeline does not label them as hesitations. Pause counts/durations use internal gaps between Silero speech regions; total non-speech duration and ratio include leading/trailing non-speech.
 
+## Handcrafted feature improvements
+
+Run the enhanced handcrafted comparison after the VAD stage has populated its cached speech regions:
+
+```powershell
+python scripts/compare_handcrafted_improvements.py
+```
+
+It compares the existing original handcrafted feature set (A), new features only (B), and original plus new features (C) for Ridge, SVR, ExtraTrees, and RandomForest. Model selection uses training-only `GroupKFold(user_id)` and the unchanged participant-disjoint validation split. It saves per-clip predictor-only CSVs, grouped-CV trial records, validation metrics/predictions, participant bootstrap intervals, paired RMSE intervals, configuration, a report and SVG plots under `results/handcrafted_improvements/`. Test features are generated for completeness but are not scored.
+
+Added features are: word-based speech rate from supplied `[MM:SS - MM:SS]` transcript segments when available; articulation-rate and rate excluding internal pauses (no syllable counts); Silero internal pause count/ratio/mean/median/longest duration and counts above 0.5s/1s; F0 mean/std/min/max/range, voiced percentage and semitone-relative pitch/final-contour slopes; speech RMS mean/std, p95-to-p05 dynamic range and energy slope; plus relative pitch, voiced percentage and RMS over the first, middle and final answer thirds. “Pause” is an acoustic time gap, not a hesitation label. Relative pitch is normalized to the median F0 within that answer; participant identity is never an input feature.
+
+No original feature was removed. The existing jitter and shimmer proxy columns remain in A and C. The original table had no HNR column, so none was fabricated. The feature widths are 27 original, 36 new-only, and 63 combined. The constant `sample_rate_hz` metadata field is excluded so A exactly matches the saved handcrafted benchmark. Timed word rates were available for 1,368/1,394 train clips, 318/319 validation clips and 289/298 test clips; missing values are imputed within each training fold.
+
+Ridge validation metrics (all values on the same fixed validation participants):
+
+| Target | Set | MAE | RMSE | R² | Pearson | Spearman |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| confidence_score | A original | 0.6397 | 0.9436 | 0.1579 | 0.4050 | 0.3629 |
+| confidence_score | B new only | 0.6340 | 0.9605 | 0.1275 | 0.3602 | 0.3542 |
+| confidence_score | C combined | 0.6255 | 0.9453 | 0.1549 | 0.3935 | 0.3511 |
+| speaking_skills | A original | 0.7036 | 1.0926 | 0.1240 | 0.3675 | 0.4286 |
+| speaking_skills | B new only | 0.6904 | 1.0883 | 0.1308 | 0.3675 | 0.4515 |
+| speaking_skills | C combined | 0.6873 | 1.0826 | 0.1400 | 0.3749 | 0.4369 |
+| overall_performance | A original | 0.6385 | 1.0185 | 0.1929 | 0.4416 | 0.5020 |
+| overall_performance | B new only | 0.6578 | 1.0430 | 0.1535 | 0.3927 | 0.4631 |
+| overall_performance | C combined | 0.6363 | 1.0235 | 0.1849 | 0.4313 | 0.4894 |
+
+These point estimates do not establish a consistent gain from adding features: the combined Ridge RMSE participant-bootstrap intervals overlap zero versus A for all targets. Across the four model families, paired combined-versus-original RMSE intervals also overlap zero for 11 of 12 target/model comparisons; SVR speaking-skills RMSE is worse for C. See `results/handcrafted_improvements/report.md` for all 36 comparisons and uncertainty intervals. Limitations include coarse transcript segment times, missing transcript timing on some clips, low-volume/noisy F0 and VAD errors, jitter/shimmer remaining uncalibrated proxies, and evaluation on only one held-out participant cohort.
+
 ## Structure
 
 - `scripts/extract_audio_features.py`: WAV conversion and all audio feature extraction.
 - `scripts/run_vad_pause.py`: cached Silero VAD regions, pause features and speech-only SSL pooling diagnostics.
+- `scripts/compare_handcrafted_improvements.py`: temporal, pitch, energy and timed-word handcrafted feature comparison.
 - `scripts/compare_audio_models.py`: grouped-CV comparisons, validation selection, one final test evaluation, and fusion export.
 - `config.yaml`: paths and pipeline settings.
 - `requirements*.txt`: pinned core and optional dependencies.

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1150" height="600">
+<rect width="100%" height="100%" fill="white"/>
+<text x="70" y="24" font-family="Arial" font-size="18">Validation RMSE: overall_performance</text>
+<line x1="70" y1="435.0" x2="1125" y2="435.0" stroke="#e2e8f0"/>
+<text x="62" y="439.0" text-anchor="end" font-family="Arial" font-size="11">0.00</text>
+<line x1="70" y1="369.2" x2="1125" y2="369.2" stroke="#e2e8f0"/>
+<text x="62" y="373.2" text-anchor="end" font-family="Arial" font-size="11">0.19</text>
+<line x1="70" y1="303.3" x2="1125" y2="303.3" stroke="#e2e8f0"/>
+<text x="62" y="307.3" text-anchor="end" font-family="Arial" font-size="11">0.38</text>
+<line x1="70" y1="237.5" x2="1125" y2="237.5" stroke="#e2e8f0"/>
+<text x="62" y="241.5" text-anchor="end" font-family="Arial" font-size="11">0.57</text>
+<line x1="70" y1="171.7" x2="1125" y2="171.7" stroke="#e2e8f0"/>
+<text x="62" y="175.7" text-anchor="end" font-family="Arial" font-size="11">0.76</text>
+<line x1="70" y1="105.8" x2="1125" y2="105.8" stroke="#e2e8f0"/>
+<text x="62" y="109.8" text-anchor="end" font-family="Arial" font-size="11">0.95</text>
+<line x1="70" y1="40.0" x2="1125" y2="40.0" stroke="#e2e8f0"/>
+<text x="62" y="44.0" text-anchor="end" font-family="Arial" font-size="11">1.14</text>
+<rect x="86.7" y="83.3" width="54.5" height="351.7" fill="#64748b"/>
+<text x="114.0" y="78.3" text-anchor="middle" font-family="Arial" font-size="10">1.018</text>
+<text transform="translate(114.0,445) rotate(55)" font-family="Arial" font-size="11">Ridge: A_original</text>
+<rect x="174.6" y="81.8" width="54.5" height="353.2" fill="#64748b"/>
+<text x="201.9" y="76.8" text-anchor="middle" font-family="Arial" font-size="10">1.023</text>
+<text transform="translate(201.9,445) rotate(55)" font-family="Arial" font-size="11">SVR: A_original</text>
+<rect x="262.5" y="80.5" width="54.5" height="354.5" fill="#64748b"/>
+<text x="289.8" y="75.5" text-anchor="middle" font-family="Arial" font-size="10">1.027</text>
+<text transform="translate(289.8,445) rotate(55)" font-family="Arial" font-size="11">ExtraTrees: A_original</text>
+<rect x="350.5" y="76.6" width="54.5" height="358.4" fill="#64748b"/>
+<text x="377.7" y="71.6" text-anchor="middle" font-family="Arial" font-size="10">1.038</text>
+<text transform="translate(377.7,445) rotate(55)" font-family="Arial" font-size="11">RandomForest: A_original</text>
+<rect x="438.4" y="74.9" width="54.5" height="360.1" fill="#2563eb"/>
+<text x="465.6" y="69.9" text-anchor="middle" font-family="Arial" font-size="10">1.043</text>
+<text transform="translate(465.6,445) rotate(55)" font-family="Arial" font-size="11">Ridge: B_improved_only</text>
+<rect x="526.3" y="69.3" width="54.5" height="365.7" fill="#2563eb"/>
+<text x="553.5" y="64.3" text-anchor="middle" font-family="Arial" font-size="10">1.059</text>
+<text transform="translate(553.5,445) rotate(55)" font-family="Arial" font-size="11">SVR: B_improved_only</text>
+<rect x="614.2" y="75.9" width="54.5" height="359.1" fill="#2563eb"/>
+<text x="641.5" y="70.9" text-anchor="middle" font-family="Arial" font-size="10">1.040</text>
+<text transform="translate(641.5,445) rotate(55)" font-family="Arial" font-size="11">ExtraTrees: B_improved_only</text>
+<rect x="702.1" y="72.5" width="54.5" height="362.5" fill="#2563eb"/>
+<text x="729.4" y="67.5" text-anchor="middle" font-family="Arial" font-size="10">1.050</text>
+<text transform="translate(729.4,445) rotate(55)" font-family="Arial" font-size="11">RandomForest: B_improved_only</text>
+<rect x="790.0" y="81.6" width="54.5" height="353.4" fill="#0f766e"/>
+<text x="817.3" y="76.6" text-anchor="middle" font-family="Arial" font-size="10">1.023</text>
+<text transform="translate(817.3,445) rotate(55)" font-family="Arial" font-size="11">Ridge: C_original_plus_new</text>
+<rect x="878.0" y="81.1" width="54.5" height="353.9" fill="#0f766e"/>
+<text x="905.2" y="76.1" text-anchor="middle" font-family="Arial" font-size="10">1.025</text>
+<text transform="translate(905.2,445) rotate(55)" font-family="Arial" font-size="11">SVR: C_original_plus_new</text>
+<rect x="965.9" y="78.1" width="54.5" height="356.9" fill="#0f766e"/>
+<text x="993.1" y="73.1" text-anchor="middle" font-family="Arial" font-size="10">1.034</text>
+<text transform="translate(993.1,445) rotate(55)" font-family="Arial" font-size="11">ExtraTrees: C_original_plus_new</text>
+<rect x="1053.8" y="76.2" width="54.5" height="358.8" fill="#0f766e"/>
+<text x="1081.0" y="71.2" text-anchor="middle" font-family="Arial" font-size="10">1.039</text>
+<text transform="translate(1081.0,445) rotate(55)" font-family="Arial" font-size="11">RandomForest: C_original_plus_new</text>
+</svg>
