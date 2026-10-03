@@ -1,0 +1,48 @@
+{
+  "task": "VAD / pause pooling diagnostic",
+  "branch": "audio-diagnostics",
+  "vad": {
+    "sample_rate": 16000,
+    "threshold": 0.5,
+    "min_speech_duration_ms": 100,
+    "min_silence_duration_ms": 100,
+    "speech_pad_ms": 30
+  },
+  "vad_library": "silero-vad",
+  "encoders": {
+    "wavlm": "microsoft/wavlm-base-plus",
+    "hubert": "facebook/hubert-base-ls960"
+  },
+  "targets": [
+    "confidence_score",
+    "speaking_skills",
+    "overall_performance"
+  ],
+  "fixed_split_method": "authoritative train/val/test participant-disjoint CSVs; evaluation only on held-out val",
+  "alpha_selection": "GroupKFold(user_id) on train only; Ridge solver=lsqr; scaler fit inside fold",
+  "alpha_grid": [
+    0.1,
+    1.0,
+    10.0,
+    100.0,
+    1000.0,
+    10000.0
+  ],
+  "pooling": [
+    "full_audio mean+std",
+    "speech-only mean+std",
+    "speech-only mean+std + requested pause statistics",
+    "speech-only mean+std + duration control"
+  ],
+  "layer_indices": {
+    "wavlm/confidence_score": 7,
+    "wavlm/speaking_skills": 7,
+    "wavlm/overall_performance": 7,
+    "hubert/confidence_score": 6,
+    "hubert/speaking_skills": 9,
+    "hubert/overall_performance": 6
+  },
+  "cache": "Per-clip VAD and speech embeddings keyed by audio stat, VAD options/segments and encoder cache fingerprint; existing full-audio SSL caches reused",
+  "test_used_for_model_fitting_or_scoring": false,
+  "gpu": "NVIDIA RTX A3000 Laptop GPU"
+}

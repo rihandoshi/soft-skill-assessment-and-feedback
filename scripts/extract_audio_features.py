@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any
 import argparse
 import csv
+import hashlib
 import json
 import logging
 import math
@@ -659,16 +660,68 @@ class TransformerEmbeddingExtractor:
         self.chunk_samples = int(float(config['audio']['chunk_seconds']) * self.sample_rate)
         self.overlap_samples = int(float(config['audio']['chunk_overlap_seconds']) * self.sample_rate)
         self.speech_only = bool(self.settings.get('speech_only_pooling', False))
+        cache_settings = {
+            'model_name': self.model_name,
+            'sample_rate': self.sample_rate,
+            'chunk_seconds': float(config['audio']['chunk_seconds']),
+            'chunk_overlap_seconds': float(config['audio']['chunk_overlap_seconds']),
+            'speech_only_pooling': self.speech_only,
+            'processor': 'huggingface-auto-feature-extractor',
+            'waveform_preprocessing': 'mono-16kHz-pcm16-normalized-to-float32',
+            'pooling_schema': 'per-layer-frame-mean-and-population-std-v2',
+            'layer_index_convention': '0=feature-encoder-output; 1..N=transformer-block-outputs',
+        }
+        self.cache_metadata = cache_settings
+        self.cache_fingerprint = hashlib.sha256(json.dumps(cache_settings, sort_keys=True).encode('utf-8')).hexdigest()
 
-    def extract(self, signal: np.ndarray, sample_rate: int, cache_path, use_cache=True):
+    def extract(self, signal: np.ndarray, sample_rate: int, cache_path, use_cache=True,
+                speech_segments: list[tuple[float, float]] | None = None,
+                cache_variant: str | None = None):
+        cache_fingerprint = self.cache_fingerprint
+        cache_metadata = dict(self.cache_metadata)
+        if cache_variant is not None:
+            cache_metadata['cache_variant'] = cache_variant
+            cache_fingerprint = hashlib.sha256(
+                json.dumps(cache_metadata, sort_keys=True).encode('utf-8')
+            ).hexdigest()
         if use_cache and cache_path.is_file():
             with np.load(cache_path, allow_pickle=False) as cached:
                 pooled = cached['pooled'].astype(np.float32)
-            return pooled
+                cache_model = str(cached['model_name'].item()) if 'model_name' in cached else None
+                cached_fingerprint = str(cached['preprocessing_fingerprint'].item()) if 'preprocessing_fingerprint' in cached else None
+                has_components = 'means' in cached and 'stds' in cached
+                means = cached['means'].astype(np.float32) if has_components else pooled[..., :pooled.shape[-1] // 2]
+                stds = cached['stds'].astype(np.float32) if has_components else pooled[..., pooled.shape[-1] // 2:]
+            compatible = (cache_model in (None, self.model_name) and pooled.ndim == 2
+                          and pooled.shape[-1] % 2 == 0 and means.shape == stds.shape
+                          and means.shape == (pooled.shape[0], pooled.shape[1] // 2)
+                          and cached_fingerprint in (None, cache_fingerprint))
+            if compatible:
+                # Upgrade legacy pooled-only caches in-place without re-running the encoder.
+                if not has_components or cached_fingerprint is None:
+                    atomic_npz(cache_path, pooled=pooled, means=means, stds=stds,
+                               model_name=np.asarray(self.model_name), pooling=np.asarray('mean+std'),
+                               layer_count=np.asarray(len(pooled)), cache_schema_version=np.asarray(2),
+                               preprocessing_fingerprint=np.asarray(cache_fingerprint),
+                               preprocessing_metadata=np.asarray(json.dumps(cache_metadata, sort_keys=True)))
+                return pooled
         if sample_rate != self.sample_rate:
             raise ValueError(f'Expected {self.sample_rate} Hz input, received {sample_rate} Hz')
         if signal.ndim != 1:
             raise ValueError('Expected mono waveform')
+        if speech_segments is not None and not speech_segments:
+            # Preserve the clip row without treating a VAD miss/no-speech recording as speech.
+            layer_count = int(getattr(self.model.config, 'num_hidden_layers', 12)) + 1
+            hidden_size = int(getattr(self.model.config, 'hidden_size'))
+            means = np.zeros((layer_count, hidden_size), dtype=np.float32)
+            stds = np.zeros_like(means)
+            pooled = np.concatenate([means, stds], axis=-1)
+            atomic_npz(cache_path, pooled=pooled, means=means, stds=stds,
+                       model_name=np.asarray(self.model_name), pooling=np.asarray('mean+std'),
+                       layer_count=np.asarray(layer_count), cache_schema_version=np.asarray(2),
+                       preprocessing_fingerprint=np.asarray(cache_fingerprint),
+                       preprocessing_metadata=np.asarray(json.dumps(cache_metadata, sort_keys=True)))
+            return pooled
         window, overlap = (self.chunk_samples, self.overlap_samples)
         step = max(1, window - overlap)
         starts = [0]
@@ -707,18 +760,36 @@ class TransformerEmbeddingExtractor:
                 lo = min(left_trim, hidden[-1].shape[0] - 1)
                 hi = max(lo + 1, hidden[-1].shape[0] - right_trim)
                 hidden_chunks.append([layer[lo:hi] for layer in hidden])
-        pooled_layers = []
+        mean_layers = []
+        std_layers = []
         for layer_index in range(len(hidden_chunks[0])):
             frames = np.concatenate([chunk[layer_index] for chunk in hidden_chunks], axis=0)
-            if self.speech_only and active_intervals:
+            if speech_segments is not None:
+                times = np.linspace(0, len(signal) / sample_rate, len(frames), endpoint=False)
+                times += (len(signal) / sample_rate) / (2 * len(frames))
+                frame_mask = np.zeros(len(times), dtype=bool)
+                for start_s, end_s in speech_segments:
+                    padding = len(signal) / sample_rate / max(1, len(frames)) / 2
+                    frame_mask |= (times >= max(0.0, float(start_s) - padding)) & (times < float(end_s) + padding)
+                if not frame_mask.any():
+                    raise ValueError('VAD returned no speech frames aligned to transformer hidden states')
+                frames = frames[frame_mask]
+            elif self.speech_only and active_intervals:
                 times = np.linspace(0, len(signal), len(frames), endpoint=False) + len(signal) / (2 * len(frames))
                 indices = np.minimum((times / max(1, len(signal)) * len(active_intervals)).astype(int), len(active_intervals) - 1)
                 frame_mask = np.asarray([active_intervals[i][2] for i in indices], dtype=bool)
                 if frame_mask.any():
                     frames = frames[frame_mask]
-            pooled_layers.append(np.concatenate([frames.mean(axis=0), frames.std(axis=0)]))
-        pooled = np.stack(pooled_layers).astype(np.float32)
-        atomic_npz(cache_path, pooled=pooled, model_name=np.asarray(self.model_name), pooling=np.asarray('mean+std'), layer_count=np.asarray(len(pooled)))
+            mean_layers.append(frames.mean(axis=0))
+            std_layers.append(frames.std(axis=0))
+        means = np.stack(mean_layers).astype(np.float32)
+        stds = np.stack(std_layers).astype(np.float32)
+        pooled = np.concatenate([means, stds], axis=-1).astype(np.float32)
+        atomic_npz(cache_path, pooled=pooled, means=means, stds=stds,
+                   model_name=np.asarray(self.model_name), pooling=np.asarray('mean+std'),
+                   layer_count=np.asarray(len(pooled)), cache_schema_version=np.asarray(2),
+                   preprocessing_fingerprint=np.asarray(cache_fingerprint),
+                   preprocessing_metadata=np.asarray(json.dumps(cache_metadata, sort_keys=True)))
         return pooled
 
     def selected_vector(self, pooled: np.ndarray, layer: int | str='best_cv', average_last_n: int=4):
@@ -782,9 +853,14 @@ def _get_features(extractor_name, extractor, split, row, config, cache_root, for
         model_key = _safe(config['extractors'][extractor_name]['model_name'])
         cache_path = cache_root / 'embeddings' / extractor_name / model_key / split / f'{clip_id}.npz'
         if cache_path.is_file() and (not force):
-            with np.load(cache_path, allow_pickle=False) as cached:
-                shape = cached['pooled'].shape
-            layers, dimensions = (int(shape[0]), int(shape[1]))
+            try:
+                pooled = extractor.extract(None, None, cache_path, use_cache=True)
+            except ValueError as exc:
+                if 'Expected ' not in str(exc) or 'received None' not in str(exc):
+                    raise
+                signal, sr, _ = _audio(audio_path)
+                pooled = extractor.extract(signal, sr, cache_path, use_cache=True)
+            layers, dimensions = (int(pooled.shape[0]), int(pooled.shape[1]))
         else:
             signal, sr, _ = _audio(audio_path)
             pooled = extractor.extract(signal, sr, cache_path, use_cache=False)
@@ -895,6 +971,8 @@ def run_extractors(extractor_names: list[str], config: dict, limit: int | None=N
                 successful = [(row, item) for row, item in vectors if '__embedding_cache_path' in item]
                 if successful:
                     arrays = []
+                    mean_arrays = []
+                    std_arrays = []
                     ids, users, questions = ([], [], [])
                     for row, item in vectors:
                         if '__embedding_cache_path' not in item:
@@ -902,11 +980,20 @@ def run_extractors(extractor_names: list[str], config: dict, limit: int | None=N
                         path = ROOT / item['__embedding_cache_path']
                         with np.load(path, allow_pickle=False) as embedded:
                             arrays.append(embedded['pooled'].astype(np.float32))
+                            if 'means' in embedded and 'stds' in embedded:
+                                mean_arrays.append(embedded['means'].astype(np.float32))
+                                std_arrays.append(embedded['stds'].astype(np.float32))
+                            else:
+                                half = embedded['pooled'].shape[-1] // 2
+                                mean_arrays.append(embedded['pooled'][..., :half].astype(np.float32))
+                                std_arrays.append(embedded['pooled'][..., half:].astype(np.float32))
                         ids.append(str(row.id))
                         users.append(str(row.user_id))
                         questions.append(str(row.question_id))
-                    atomic_npz(out_dir / f'{split}_embeddings.npz', ids=np.asarray(ids), user_ids=np.asarray(users), question_ids=np.asarray(questions), pooled=np.stack(arrays), model_name=np.asarray(config['extractors'][name]['model_name']))
-                    atomic_json(out_dir / f'{split}_embedding_schema.json', {'schema_version': 1, 'key': 'id', 'split': split, 'model_name': config['extractors'][name]['model_name'], 'pooling': 'per-transformer-layer mean concatenated with standard deviation', 'pooled_shape': list(arrays[0].shape), 'array_shape': [len(arrays), *arrays[0].shape], 'layer_index_convention': '0 is embedding output, 1..N are transformer block outputs', 'speech_only_pooling': bool(config['extractors'][name].get('speech_only_pooling', False)), 'cache_files': 'one npz per clip, namespaced by encoder/checkpoint/split/id'})
+                    cache_settings = {'model_name': config['extractors'][name]['model_name'], 'sample_rate': int(config['audio']['sample_rate']), 'chunk_seconds': float(config['audio']['chunk_seconds']), 'chunk_overlap_seconds': float(config['audio']['chunk_overlap_seconds']), 'speech_only_pooling': bool(config['extractors'][name].get('speech_only_pooling', False)), 'processor': 'huggingface-auto-feature-extractor', 'waveform_preprocessing': 'mono-16kHz-pcm16-normalized-to-float32', 'pooling_schema': 'per-layer-frame-mean-and-population-std-v2', 'layer_index_convention': '0=feature-encoder-output; 1..N=transformer-block-outputs'}
+                    fingerprint = hashlib.sha256(json.dumps(cache_settings, sort_keys=True).encode('utf-8')).hexdigest()
+                    atomic_npz(out_dir / f'{split}_embeddings.npz', ids=np.asarray(ids), user_ids=np.asarray(users), question_ids=np.asarray(questions), pooled=np.stack(arrays), means=np.stack(mean_arrays), stds=np.stack(std_arrays), model_name=np.asarray(config['extractors'][name]['model_name']), preprocessing_fingerprint=np.asarray(fingerprint))
+                    atomic_json(out_dir / f'{split}_embedding_schema.json', {'schema_version': 2, 'key': 'id', 'split': split, 'model_name': config['extractors'][name]['model_name'], 'pooling': ['mean', 'std', 'mean+std'], 'pooled_shape': list(arrays[0].shape), 'mean_std_shape': list(mean_arrays[0].shape), 'array_shape': [len(arrays), *arrays[0].shape], 'layer_index_convention': '0 is feature-encoder output, 1..N are transformer block outputs', 'speech_only_pooling': bool(config['extractors'][name].get('speech_only_pooling', False)), 'preprocessing_metadata': cache_settings, 'preprocessing_fingerprint': fingerprint, 'cache_files': 'one npz per clip, namespaced by encoder/checkpoint/split/id'})
             else:
                 out_dir = root_features / ('smoke' if limit else '') / name
                 atomic_csv(pd.DataFrame(records), out_dir / f'{split}_features.csv')

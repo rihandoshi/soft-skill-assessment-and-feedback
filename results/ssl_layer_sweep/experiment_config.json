@@ -1,0 +1,157 @@
+{
+  "task": "diagnostic SSL hidden-layer/pooling sweep",
+  "branch": "diagnostic-only; no extraction/model changes beyond cache fields and this runner",
+  "layers_requested": "all",
+  "evaluated_layer_indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "layer_index_convention": "0=feature-encoder output; 1..N=Transformer block outputs",
+  "pooling_methods": [
+    "mean",
+    "std",
+    "mean+std"
+  ],
+  "encoders": {
+    "wavlm": "microsoft/wavlm-base-plus",
+    "hubert": "facebook/hubert-base-ls960"
+  },
+  "targets": [
+    "confidence_score",
+    "speaking_skills",
+    "overall_performance"
+  ],
+  "split_method": "existing fixed participant-disjoint train/validation split; GroupKFold(user_id) for alpha selection",
+  "cv_folds": 5,
+  "ridge_solver": "lsqr",
+  "ridge_alpha_grid": [
+    0.1,
+    1.0,
+    10.0,
+    100.0,
+    1000.0,
+    10000.0
+  ],
+  "selection_metric": "minimum mean fold RMSE from GroupKFold on train; validation not used for selection",
+  "weighted_layer_method": "nonnegative simplex weights minimizing MSE of layer-specific train-only GroupKFold OOF predictions; mean+std representations",
+  "weighted_layer_validation": "weights fitted from training OOF only; validation used only for final metrics/bootstrap",
+  "bootstrap_unit": "participant/user_id; validation only",
+  "bootstrap_replicates": 1000,
+  "reuse_existing_mean_std_sweep_csvs": true,
+  "cache_preprocessing": {
+    "wavlm": {
+      "cache_schema_version": 1,
+      "encoder": "wavlm",
+      "model_name": "microsoft/wavlm-base-plus",
+      "audio": {
+        "sample_rate": 16000,
+        "channels": 1,
+        "chunk_seconds": 30.0,
+        "chunk_overlap_seconds": 1.0
+      },
+      "speech_only_pooling": false,
+      "feature_extractor": "Hugging Face AutoFeatureExtractor; normalized mono float waveform at configured sample rate",
+      "hidden_states": "all outputs; index 0 is feature-encoder output, 1..N are transformer block outputs",
+      "pooling_methods": [
+        "mean",
+        "std",
+        "mean+std"
+      ],
+      "pooled_shape": [
+        13,
+        1536
+      ],
+      "source_schema": {
+        "schema": {
+          "schema_version": 1,
+          "key": "id",
+          "split": "train",
+          "model_name": "microsoft/wavlm-base-plus",
+          "pooling": "per-transformer-layer mean concatenated with standard deviation",
+          "pooled_shape": [
+            13,
+            1536
+          ],
+          "array_shape": [
+            1394,
+            13,
+            1536
+          ],
+          "layer_index_convention": "0 is embedding output, 1..N are transformer block outputs",
+          "speech_only_pooling": false,
+          "cache_files": "one npz per clip, namespaced by encoder/checkpoint/split/id"
+        },
+        "size_bytes": 102083193,
+        "mtime_ns": 1790777877580082300
+      }
+    },
+    "hubert": {
+      "cache_schema_version": 1,
+      "encoder": "hubert",
+      "model_name": "facebook/hubert-base-ls960",
+      "audio": {
+        "sample_rate": 16000,
+        "channels": 1,
+        "chunk_seconds": 30.0,
+        "chunk_overlap_seconds": 1.0
+      },
+      "speech_only_pooling": false,
+      "feature_extractor": "Hugging Face AutoFeatureExtractor; normalized mono float waveform at configured sample rate",
+      "hidden_states": "all outputs; index 0 is feature-encoder output, 1..N are transformer block outputs",
+      "pooling_methods": [
+        "mean",
+        "std",
+        "mean+std"
+      ],
+      "pooled_shape": [
+        13,
+        1536
+      ],
+      "source_schema": {
+        "schema": {
+          "schema_version": 1,
+          "key": "id",
+          "split": "train",
+          "model_name": "facebook/hubert-base-ls960",
+          "pooling": "per-transformer-layer mean concatenated with standard deviation",
+          "pooled_shape": [
+            13,
+            1536
+          ],
+          "array_shape": [
+            1394,
+            13,
+            1536
+          ],
+          "layer_index_convention": "0 is embedding output, 1..N are transformer block outputs",
+          "speech_only_pooling": false,
+          "cache_files": "one npz per clip, namespaced by encoder/checkpoint/split/id"
+        },
+        "size_bytes": 102611840,
+        "mtime_ns": 1790778145245548400
+      }
+    }
+  },
+  "existing_embedding_caches_reused": {
+    "wavlm": {
+      "train": "D:\\Projects\\Soft Skill\\outputs\\audio\\embeddings\\wavlm\\train_embeddings.npz",
+      "val": "D:\\Projects\\Soft Skill\\outputs\\audio\\embeddings\\wavlm\\val_embeddings.npz"
+    },
+    "hubert": {
+      "train": "D:\\Projects\\Soft Skill\\outputs\\audio\\embeddings\\hubert\\train_embeddings.npz",
+      "val": "D:\\Projects\\Soft Skill\\outputs\\audio\\embeddings\\hubert\\val_embeddings.npz"
+    }
+  },
+  "test_used_for_model_fitting_or_scoring": false
+}

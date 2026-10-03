@@ -1,0 +1,2 @@
+# Lightweight VAD package; reuses the project's existing PyTorch installation.
+silero-vad

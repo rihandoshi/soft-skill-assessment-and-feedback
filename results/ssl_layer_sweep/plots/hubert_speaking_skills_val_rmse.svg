@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="850" height="480" viewBox="0 0 850 480">
+<rect width="100%" height="100%" fill="white"/>
+<text x="425.0" y="30" text-anchor="middle" font-size="18" font-weight="bold">HUBERT speaking_skills: validation RMSE by layer</text>
+<path d="M75,60V405H825" fill="none" stroke="#455a64"/>
+<path d="M75,405.0H825" stroke="#eceff1"/>
+<text x="66" y="409.0" text-anchor="end" font-size="10">1.039</text>
+<path d="M75,318.8H825" stroke="#eceff1"/>
+<text x="66" y="322.8" text-anchor="end" font-size="10">1.061</text>
+<path d="M75,232.5H825" stroke="#eceff1"/>
+<text x="66" y="236.5" text-anchor="end" font-size="10">1.083</text>
+<path d="M75,146.2H825" stroke="#eceff1"/>
+<text x="66" y="150.2" text-anchor="end" font-size="10">1.105</text>
+<path d="M75,60.0H825" stroke="#eceff1"/>
+<text x="66" y="64.0" text-anchor="end" font-size="10">1.127</text>
+<text x="75.0" y="425" text-anchor="middle" font-size="10">0</text>
+<text x="137.5" y="425" text-anchor="middle" font-size="10">1</text>
+<text x="200.0" y="425" text-anchor="middle" font-size="10">2</text>
+<text x="262.5" y="425" text-anchor="middle" font-size="10">3</text>
+<text x="325.0" y="425" text-anchor="middle" font-size="10">4</text>
+<text x="387.5" y="425" text-anchor="middle" font-size="10">5</text>
+<text x="450.0" y="425" text-anchor="middle" font-size="10">6</text>
+<text x="512.5" y="425" text-anchor="middle" font-size="10">7</text>
+<text x="575.0" y="425" text-anchor="middle" font-size="10">8</text>
+<text x="637.5" y="425" text-anchor="middle" font-size="10">9</text>
+<text x="700.0" y="425" text-anchor="middle" font-size="10">10</text>
+<text x="762.5" y="425" text-anchor="middle" font-size="10">11</text>
+<text x="825.0" y="425" text-anchor="middle" font-size="10">12</text>
+<polyline points="75.0,176.1 137.5,289.3 200.0,266.7 262.5,223.0 325.0,199.7 387.5,238.8 450.0,242.7 512.5,229.4 575.0,236.3 637.5,228.7 700.0,243.0 762.5,251.4 825.0,231.9" fill="none" stroke="#3572A5" stroke-width="2"/>
+<circle cx="75.0" cy="176.1" r="3" fill="#3572A5"/>
+<circle cx="137.5" cy="289.3" r="3" fill="#3572A5"/>
+<circle cx="200.0" cy="266.7" r="3" fill="#3572A5"/>
+<circle cx="262.5" cy="223.0" r="3" fill="#3572A5"/>
+<circle cx="325.0" cy="199.7" r="3" fill="#3572A5"/>
+<circle cx="387.5" cy="238.8" r="3" fill="#3572A5"/>
+<circle cx="450.0" cy="242.7" r="3" fill="#3572A5"/>
+<circle cx="512.5" cy="229.4" r="3" fill="#3572A5"/>
+<circle cx="575.0" cy="236.3" r="3" fill="#3572A5"/>
+<circle cx="637.5" cy="228.7" r="3" fill="#3572A5"/>
+<circle cx="700.0" cy="243.0" r="3" fill="#3572A5"/>
+<circle cx="762.5" cy="251.4" r="3" fill="#3572A5"/>
+<circle cx="825.0" cy="231.9" r="3" fill="#3572A5"/>
+<polyline points="75.0,225.8 137.5,270.0 200.0,177.6 262.5,230.1 325.0,231.9 387.5,215.0 450.0,179.5 512.5,215.7 575.0,239.4 637.5,246.4 700.0,199.8 762.5,211.1 825.0,138.3" fill="none" stroke="#CA5B49" stroke-width="2"/>
+<circle cx="75.0" cy="225.8" r="3" fill="#CA5B49"/>
+<circle cx="137.5" cy="270.0" r="3" fill="#CA5B49"/>
+<circle cx="200.0" cy="177.6" r="3" fill="#CA5B49"/>
+<circle cx="262.5" cy="230.1" r="3" fill="#CA5B49"/>
+<circle cx="325.0" cy="231.9" r="3" fill="#CA5B49"/>
+<circle cx="387.5" cy="215.0" r="3" fill="#CA5B49"/>
+<circle cx="450.0" cy="179.5" r="3" fill="#CA5B49"/>
+<circle cx="512.5" cy="215.7" r="3" fill="#CA5B49"/>
+<circle cx="575.0" cy="239.4" r="3" fill="#CA5B49"/>
+<circle cx="637.5" cy="246.4" r="3" fill="#CA5B49"/>
+<circle cx="700.0" cy="199.8" r="3" fill="#CA5B49"/>
+<circle cx="762.5" cy="211.1" r="3" fill="#CA5B49"/>
+<circle cx="825.0" cy="138.3" r="3" fill="#CA5B49"/>
+<polyline points="75.0,232.1 137.5,326.7 200.0,274.1 262.5,240.0 325.0,231.4 387.5,255.2 450.0,249.9 512.5,253.5 575.0,269.5 637.5,261.5 700.0,256.2 762.5,256.6 825.0,241.7" fill="none" stroke="#39825B" stroke-width="2"/>
+<circle cx="75.0" cy="232.1" r="3" fill="#39825B"/>
+<circle cx="137.5" cy="326.7" r="3" fill="#39825B"/>
+<circle cx="200.0" cy="274.1" r="3" fill="#39825B"/>
+<circle cx="262.5" cy="240.0" r="3" fill="#39825B"/>
+<circle cx="325.0" cy="231.4" r="3" fill="#39825B"/>
+<circle cx="387.5" cy="255.2" r="3" fill="#39825B"/>
+<circle cx="450.0" cy="249.9" r="3" fill="#39825B"/>
+<circle cx="512.5" cy="253.5" r="3" fill="#39825B"/>
+<circle cx="575.0" cy="269.5" r="3" fill="#39825B"/>
+<circle cx="637.5" cy="261.5" r="3" fill="#39825B"/>
+<circle cx="700.0" cy="256.2" r="3" fill="#39825B"/>
+<circle cx="762.5" cy="256.6" r="3" fill="#39825B"/>
+<circle cx="825.0" cy="241.7" r="3" fill="#39825B"/>
+<path d="M75,455h24" stroke="#3572A5" stroke-width="3"/>
+<text x="106" y="460" font-size="12">mean</text>
+<path d="M225,455h24" stroke="#CA5B49" stroke-width="3"/>
+<text x="256" y="460" font-size="12">std</text>
+<path d="M375,455h24" stroke="#39825B" stroke-width="3"/>
+<text x="406" y="460" font-size="12">mean+std</text>
+<text x="450.0" y="477" text-anchor="middle" font-size="12">Hidden-state output index (0=feature encoder, 1–12=Transformer blocks)</text>
+</svg>

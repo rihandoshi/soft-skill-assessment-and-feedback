@@ -1,0 +1,22 @@
+target,contrast,metric,point_delta,lower_95,upper_95,interpretation
+confidence_score,WavLM_minus_HuBERT_current_mean_std,RMSE,-0.00013946395547304036,-0.016327847859236945,0.017042268949728785,Negative favors WavLM; positive favors HuBERT; CI crossing zero is inconclusive.
+confidence_score,WavLM_minus_HuBERT_best_individual,RMSE,-0.00013946395547304036,-0.016327847859236945,0.017042268949728785,Negative favors WavLM; positive favors HuBERT; CI crossing zero is inconclusive.
+confidence_score,WavLM_minus_HuBERT_weighted_layers,RMSE,-0.0014854992738753126,-0.014242171471367504,0.011888376831010877,Negative favors WavLM; positive favors HuBERT; CI crossing zero is inconclusive.
+confidence_score,wavlm_best_individual_minus_current_mean_std,RMSE,0.0,0.0,0.0,Negative favors candidate; positive favors current mean+std; CI crossing zero is inconclusive.
+confidence_score,wavlm_weighted_layers_minus_current_mean_std,RMSE,-0.002277877855712429,-0.010843370907112779,0.005817054917145294,Negative favors candidate; positive favors current mean+std; CI crossing zero is inconclusive.
+confidence_score,hubert_best_individual_minus_current_mean_std,RMSE,0.0,0.0,0.0,Negative favors candidate; positive favors current mean+std; CI crossing zero is inconclusive.
+confidence_score,hubert_weighted_layers_minus_current_mean_std,RMSE,-0.0009318425373101569,-0.004706695354322563,0.00311061290818434,Negative favors candidate; positive favors current mean+std; CI crossing zero is inconclusive.
+speaking_skills,WavLM_minus_HuBERT_current_mean_std,RMSE,-0.0004098704649286855,-0.022860683083418508,0.024758013297744238,Negative favors WavLM; positive favors HuBERT; CI crossing zero is inconclusive.
+speaking_skills,WavLM_minus_HuBERT_best_individual,RMSE,-0.0004098704649286855,-0.022860683083418508,0.024758013297744238,Negative favors WavLM; positive favors HuBERT; CI crossing zero is inconclusive.
+speaking_skills,WavLM_minus_HuBERT_weighted_layers,RMSE,-0.00047333024656981415,-0.023194131754820557,0.02252396909536853,Negative favors WavLM; positive favors HuBERT; CI crossing zero is inconclusive.
+speaking_skills,wavlm_best_individual_minus_current_mean_std,RMSE,0.0,0.0,0.0,Negative favors candidate; positive favors current mean+std; CI crossing zero is inconclusive.
+speaking_skills,wavlm_weighted_layers_minus_current_mean_std,RMSE,-0.0013023029676029196,-0.0029341758510061573,-5.3970513048001814e-05,Negative favors candidate; positive favors current mean+std; CI crossing zero is inconclusive.
+speaking_skills,hubert_best_individual_minus_current_mean_std,RMSE,0.0,0.0,0.0,Negative favors candidate; positive favors current mean+std; CI crossing zero is inconclusive.
+speaking_skills,hubert_weighted_layers_minus_current_mean_std,RMSE,-0.001238843185961791,-0.005984520759118867,0.0027448344941649124,Negative favors candidate; positive favors current mean+std; CI crossing zero is inconclusive.
+overall_performance,WavLM_minus_HuBERT_current_mean_std,RMSE,0.001144929843092335,-0.016141651029823983,0.022408780108060015,Negative favors WavLM; positive favors HuBERT; CI crossing zero is inconclusive.
+overall_performance,WavLM_minus_HuBERT_best_individual,RMSE,-0.0054630564793061165,-0.02941374677347377,0.023251544517560698,Negative favors WavLM; positive favors HuBERT; CI crossing zero is inconclusive.
+overall_performance,WavLM_minus_HuBERT_weighted_layers,RMSE,-0.0002567951997027862,-0.013039126543556734,0.0157408351677652,Negative favors WavLM; positive favors HuBERT; CI crossing zero is inconclusive.
+overall_performance,wavlm_best_individual_minus_current_mean_std,RMSE,0.0,0.0,0.0,Negative favors candidate; positive favors current mean+std; CI crossing zero is inconclusive.
+overall_performance,wavlm_weighted_layers_minus_current_mean_std,RMSE,-0.004081106411754742,-0.008301144536385658,-0.0006654946729957202,Negative favors candidate; positive favors current mean+std; CI crossing zero is inconclusive.
+overall_performance,hubert_best_individual_minus_current_mean_std,RMSE,0.006607986322398451,-0.013297309720201034,0.03088434383499451,Negative favors candidate; positive favors current mean+std; CI crossing zero is inconclusive.
+overall_performance,hubert_weighted_layers_minus_current_mean_std,RMSE,-0.0026793813689596213,-0.010652232599377512,0.006264994119563743,Negative favors candidate; positive favors current mean+std; CI crossing zero is inconclusive.
