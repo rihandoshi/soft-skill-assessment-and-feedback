@@ -84,11 +84,24 @@ Ridge validation metrics (all values on the same fixed validation participants):
 
 These point estimates do not establish a consistent gain from adding features: the combined Ridge RMSE participant-bootstrap intervals overlap zero versus A for all targets. Across the four model families, paired combined-versus-original RMSE intervals also overlap zero for 11 of 12 target/model comparisons; SVR speaking-skills RMSE is worse for C. See `results/handcrafted_improvements/report.md` for all 36 comparisons and uncertainty intervals. Limitations include coarse transcript segment times, missing transcript timing on some clips, low-volume/noisy F0 and VAD errors, jitter/shimmer remaining uncalibrated proxies, and evaluation on only one held-out participant cohort.
 
+## Repeated grouped CV (Step A)
+
+Run the expanded evaluation on the combined train and validation participants:
+
+```powershell
+python scripts/run_repeated_grouped_cv.py
+```
+
+The default is five repeats of five participant-grouped outer folds (`user_no`), with five-fold grouped hyperparameter selection inside each outer training fold. It evaluates original handcrafted (27), handcrafted combined (63), eGeMAPS, the selected WavLM layer, and the selected HuBERT layer using Ridge, SVR, and ExtraTrees. Preprocessing is fitted within each inner/outer training fold. The test split is excluded from predictors, fold generation, selection, and scoring; its participant list is checked only for overlap. Existing cached features and embeddings are reused.
+
+Results are consolidated under `results/repeated_cv_v1/`: repeat/fold assignments, outer-fold OOF predictions, pooled metrics with participant-bootstrap 95% intervals, paired candidate-versus-original differences, configuration, progress checkpoint, and `summary.md`. The script resumes completed outer-fold tasks after interruption when rerun with the same settings. Ridge uses LSQR. Run size can be changed with `--repeats`, `--folds`, `--inner-folds`, `--bootstrap`, `--trials`, and `--n-jobs`; changing settings after a checkpoint exists requires moving the previous results folder first.
+
 ## Structure
 
 - `scripts/extract_audio_features.py`: WAV conversion and all audio feature extraction.
 - `scripts/run_vad_pause.py`: cached Silero VAD regions, pause features and speech-only SSL pooling diagnostics.
 - `scripts/compare_handcrafted_improvements.py`: temporal, pitch, energy and timed-word handcrafted feature comparison.
+- `scripts/run_repeated_grouped_cv.py`: nested repeated participant-grouped evaluation over the current audio feature branches.
 - `scripts/compare_audio_models.py`: grouped-CV comparisons, validation selection, one final test evaluation, and fusion export.
 - `config.yaml`: paths and pipeline settings.
 - `requirements*.txt`: pinned core and optional dependencies.

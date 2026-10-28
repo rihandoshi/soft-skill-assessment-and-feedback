@@ -1,0 +1,85 @@
+{
+  "config_path": "D:\\Projects\\Soft Skill\\config.yaml",
+  "targets": [
+    "confidence_score",
+    "speaking_skills",
+    "overall_performance"
+  ],
+  "feature_sets": [
+    "A_original",
+    "C_original_plus_new",
+    "eGeMAPS",
+    "WavLM",
+    "HuBERT"
+  ],
+  "models": [
+    "Ridge",
+    "SVR",
+    "ExtraTrees"
+  ],
+  "repeats": 5,
+  "outer_folds": 5,
+  "inner_folds": 5,
+  "bootstrap": 1000,
+  "trials": 12,
+  "seed": 42,
+  "participant_column": "user_no",
+  "ssl_layer_indices": {
+    "wavlm": {
+      "confidence_score": 7,
+      "speaking_skills": 7,
+      "overall_performance": 7
+    },
+    "hubert": {
+      "confidence_score": 6,
+      "speaking_skills": 9,
+      "overall_performance": 6
+    }
+  },
+  "test_used_for_scoring_or_features": false,
+  "run_signature": "d975934641b2a28361f64f3d8f360ac02dc18acc1c621435b27c3fbe2afd9d26",
+  "n_train_validation_clips": 1713,
+  "n_train_validation_participants": 280,
+  "n_test_participants_checked_only": 51,
+  "feature_dimensions": {
+    "A_original": {
+      "train": 27,
+      "val": 27
+    },
+    "C_original_plus_new": {
+      "train": 63,
+      "val": 63
+    },
+    "eGeMAPS": {
+      "train": 88,
+      "val": 88
+    },
+    "WavLM": {
+      "train": {
+        "confidence_score": 1536,
+        "speaking_skills": 1536,
+        "overall_performance": 1536
+      },
+      "val": {
+        "confidence_score": 1536,
+        "speaking_skills": 1536,
+        "overall_performance": 1536
+      }
+    },
+    "HuBERT": {
+      "train": {
+        "confidence_score": 1536,
+        "speaking_skills": 1536,
+        "overall_performance": 1536
+      },
+      "val": {
+        "confidence_score": 1536,
+        "speaking_skills": 1536,
+        "overall_performance": 1536
+      }
+    }
+  },
+  "selection": "nested GroupKFold by user_no, mean inner-fold RMSE",
+  "ridge_solver": "lsqr",
+  "cv_scheme": "repeated participant-grouped balanced GroupKFold; test split excluded"
+}
