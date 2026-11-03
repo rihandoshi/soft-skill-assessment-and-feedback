@@ -4,7 +4,7 @@ Validation set, n = 319 responses · 30 Oct 2026
 
 Fusing text and audio reliably improves ranking (Spearman ρ) over text-only for **confidence** and **overall performance**, by +0.06 to +0.07. But fusion is not reliably better than **audio-only** on those two targets, and no method reliably improves CCC. Simple averaging (mean / weighted) does as well as the learned stackers.
 
-Source: [outputs/fusion_versions/v2_nonlinear/reports/fusion_val.md](outputs/fusion_versions/v2_nonlinear/reports/fusion_val.md). The v2 run includes every v1 method plus the non-linear ones.
+Source: [outputs/fusion_versions/v2_nonlinear/reports/fusion_val.md](../outputs/fusion_versions/v2_nonlinear/reports/fusion_val.md). The v2 run includes every v1 method plus the non-linear ones.
 
 ## Setup
 

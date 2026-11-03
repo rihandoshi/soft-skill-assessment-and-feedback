@@ -1,0 +1,15 @@
+# Text branch + fusion (text_branch/, fusion/). Versions are the ones these scripts were run with.
+# Also needs ffmpeg on PATH (delivery_features.py --step wav).
+numpy>=2.2
+pandas>=2.3
+pyarrow>=25.0          # parquet outputs
+scipy>=1.16
+scikit-learn>=1.7
+soundfile>=0.13
+praat-parselmouth>=0.4.7
+torch>=2.6             # install the CUDA build from pytorch.org if you have a GPU
+transformers>=5.18
+sentencepiece>=0.2     # DeBERTa-v3 tokenizer
+protobuf>=5.29
+sentence-transformers>=6.1
+crisperwhisper[transformers]   # transcribe_verbatim.py only
