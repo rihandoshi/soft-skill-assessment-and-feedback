@@ -4,3 +4,10 @@
 __pycache__/
 *.py[cod]
 .pytest_cache/
+RecruitView/
+split_dataset/
+audio_branch/
+research_papers/
+pe_doc.pdf
+desktop.ini
+
