@@ -138,18 +138,29 @@ def _make_model(hidden_size, target_count, pooling="last"):
             super().__init__()
             self.gru = nn.GRU(768, hidden_size, num_layers=1, batch_first=True)
             self.pooling = pooling
-            self.head = nn.Linear(hidden_size, target_count)
+            head_size = hidden_size * 2 if pooling == "mean_std" else hidden_size
+            self.head = nn.Linear(head_size, target_count)
         def forward(self, padded, lengths):
             from torch.nn.utils.rnn import pack_padded_sequence
             packed = pack_padded_sequence(padded, lengths.cpu(), batch_first=True, enforce_sorted=False)
             packed_output, hidden = self.gru(packed)
             if self.pooling == "last":
                 representation = hidden[-1]
-            elif self.pooling == "mean":
+            elif self.pooling in ("mean", "max", "mean_std"):
                 from torch.nn.utils.rnn import pad_packed_sequence
                 outputs, _ = pad_packed_sequence(packed_output, batch_first=True, total_length=padded.size(1))
                 mask = torch.arange(outputs.size(1), device=outputs.device)[None, :] < lengths.to(outputs.device)[:, None]
-                representation = (outputs * mask.unsqueeze(-1)).sum(dim=1) / lengths.to(outputs.device).unsqueeze(-1)
+                if self.pooling == "max":
+                    representation = outputs.masked_fill(~mask.unsqueeze(-1), -torch.inf).max(dim=1).values
+                else:
+                    masked = outputs * mask.unsqueeze(-1)
+                    mean = masked.sum(dim=1) / lengths.to(outputs.device).unsqueeze(-1)
+                    if self.pooling == "mean":
+                        representation = mean
+                    else:
+                        squared = ((outputs - mean[:, None, :]) ** 2) * mask.unsqueeze(-1)
+                        std = torch.sqrt(squared.sum(dim=1) / lengths.to(outputs.device).unsqueeze(-1) + 1e-8)
+                        representation = torch.cat((mean, std), dim=-1)
             else:
                 raise ValueError(f"Unsupported GRU pooling mode: {self.pooling}")
             return self.head(representation)
