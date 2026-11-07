@@ -16,12 +16,12 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from scripts.compare_audio_models import atomic_json, load_config, load_split_data, metrics, project_path
-from scripts.train_wavlm_gru import TARGETS, _frame_cache, _make_model, _progress
+from scripts.legacy.compare_audio_models import atomic_json, load_config, load_split_data, metrics, project_path
+from scripts.legacy.train_wavlm_gru import TARGETS, _frame_cache, _make_model, _progress
 
 CONFIGS = (
     {"name": "layer7_gru128_existing", "hidden_size": 128, "early_stopping": False, "regularization": False, "pooling": "last"},

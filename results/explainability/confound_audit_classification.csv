@@ -1,0 +1,79 @@
+feature,class,class_conf,class_speak,class_overall,duration_proxy,rho_with_duration,icc_speaker_share,within_over_raw_overall
+duration_s,delivery,weak delivery,delivery,delivery,True,1.0,0.6602253515824381,0.29473724913927296
+transcript_word_count,delivery,delivery,delivery,delivery,True,0.9487125769643143,0.6413767975074456,0.2743363240812768
+total_duration_seconds,delivery,weak delivery,delivery,delivery,True,1.0,0.6602253515824381,0.29473724913927296
+speech_duration_seconds,delivery,weak delivery,delivery,delivery,True,0.970056663298294,0.66890267450563,0.2849461695178708
+silence_duration_seconds,delivery,weak delivery,delivery,weak delivery,True,0.9391408354093463,0.660375250524203,0.31784524422271004
+speech_silence_ratio,delivery,weak delivery,weak delivery,delivery,False,0.31022951816284067,0.6889850823602182,0.2688333312128137
+speech_fraction,delivery,weak delivery,weak delivery,delivery,False,0.31022951816284067,0.6889850823602182,0.3023980541508039
+pause_count,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.8863222740082024,0.5873588075321977,0.3450256485563631
+pause_rate_per_minute,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.1563144722046888,0.4361979835672389,-0.15311796717676568
+pause_mean_duration_seconds,weak delivery,speaker/mic,weak delivery,speaker/mic,False,0.11997368176768258,0.3723457810513573,-0.15865589736184177
+pause_median_duration_seconds,weak delivery,none,weak delivery,speaker/mic,False,0.042581026484085925,0.28532055060599076,
+pause_max_duration_seconds,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.4074707274694101,0.4288738926069356,
+vad_rms_threshold,no relation,none,none,none,False,0.09762196700379248,0.6309386354969789,
+f0_hz_mean,weak delivery,weak delivery,speaker/mic,weak delivery,False,0.05222500397873856,0.9026370893842752,0.31314510047755145
+f0_hz_std,no relation,none,none,none,False,-0.07166628581376437,0.8438704350722884,
+f0_hz_median,speaker/mic effect,speaker/mic,none,speaker/mic,False,0.03830988484435674,0.8674820193113896,0.3643461237711401
+f0_hz_min,speaker/mic effect,speaker/mic,none,none,False,-0.32429216192775,0.4059179292073712,0.34173824764023475
+f0_hz_max,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.26350609307771655,0.23481947441535211,0.21892650541098857
+f0_hz_range,speaker/mic effect,none,speaker/mic,speaker/mic,False,0.3635559450742323,0.37593311988517986,0.4045804137574915
+f0_hz_variation,no relation,none,none,none,False,-0.06918776589921467,0.8943010890733419,0.6384849126557157
+rms_energy_mean,weak delivery,weak delivery,speaker/mic,weak delivery,False,0.2460384343894864,0.6717435212586647,0.1480623252928447
+rms_energy_std,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.18941667403250265,0.6509289149506076,0.08618551007081525
+rms_energy_median,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.24141783651244514,0.6679015768906136,0.21681838811182103
+rms_energy_min,no relation,none,none,none,False,-0.13717400959386558,0.4504926919275183,-0.044242028930871806
+rms_energy_max,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.36112513452818046,0.5892996189062831,0.15147302096367352
+rms_energy_range,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.35972504796388693,0.5902642133384162,0.153236631165475
+rms_energy_variation,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.05032637731866274,0.5073121410409729,-0.07360595034554987
+jitter_local_proxy_percent,no relation,none,none,none,False,-0.08708683851476215,0.8469592238578966,0.005924514812362547
+shimmer_local_proxy_db,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.1621889445669798,0.685409763082137,0.09072287502519896
+new_speech_duration_seconds,delivery,weak delivery,delivery,delivery,True,0.9800723333894038,0.6576276497993,0.2908289595482576
+new_non_speech_duration_seconds,weak delivery,speaker/mic,speaker/mic,weak delivery,False,0.671800730574434,0.6183858787817191,0.39319619616588636
+new_f0_mean_hz,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.0476135378361729,0.9313154114775894,0.268346619209865
+new_f0_std_hz,no relation,none,none,none,False,-0.07558301523520651,0.8678487944391606,
+new_f0_min_hz,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,-0.4413106180187659,0.4237947036075712,0.12313628700028674
+new_f0_max_hz,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.33698939072118866,0.4097544703680235,0.23497960608745844
+new_f0_range_hz,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.4823493241398346,0.40940861950091806,0.1494674692150135
+new_voiced_percentage_of_speech,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.04080776834554305,0.7688272443038882,0.4246021411010939
+new_pitch_slope_semitones_per_second,no relation,none,none,none,False,0.15064318311889519,0.22817528475395238,
+new_final_contour_slope_semitones_per_second,no relation,none,none,none,False,0.06837409127682981,0.15914638893137378,
+new_relative_pitch_mean_semitones,no relation,none,none,none,False,0.022688913052781486,0.7412846188298079,
+new_relative_pitch_std_semitones,no relation,none,none,none,False,-0.07829503275999362,0.9053508046481129,
+new_mean_rms,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.19597015003912222,0.6817371277602094,0.18429531688981565
+new_rms_std,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.2078540410716649,0.67585572521729,0.08321781202066214
+new_rms_dynamic_range_db_p95_p05,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.04713128900791521,0.8849451564014635,-0.034491130589979914
+new_energy_slope_db_per_second,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.4650166346526142,0.4396477641656431,0.36812019246970024
+new_third_1_relative_pitch_mean_st,weak delivery,none,weak delivery,none,False,-0.0012644931981814999,0.6782923055093496,
+new_third_1_voiced_percentage,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,-0.14564215940328243,0.6758005644213817,
+new_third_1_mean_rms,weak delivery,weak delivery,speaker/mic,speaker/mic,False,0.001563607820118056,0.6534615380399287,0.07632288940073653
+new_third_2_relative_pitch_mean_st,no relation,none,none,none,False,-0.0007018393176028844,0.678489331169177,
+new_third_2_voiced_percentage,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,-0.03701884042048803,0.6913829589021335,0.2344991576864014
+new_third_2_mean_rms,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.18517443311387985,0.5065730224735367,0.18580197452773398
+new_third_3_relative_pitch_mean_st,no relation,none,none,none,False,0.047346766154194336,0.6517098456212582,
+new_third_3_voiced_percentage,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.13593720366016743,0.6600762844791176,0.2465036233980956
+new_third_3_mean_rms,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.4000557978893387,0.5590363198394754,0.18708513164018895
+new_transcript_speech_rate_wpm,weak delivery,weak delivery,speaker/mic,weak delivery,False,0.1008614127701444,0.4811132122329672,0.34533789376300605
+new_articulation_rate_wpm,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,-0.15220033500537636,0.44097356175001806,-0.07385740143843358
+new_speech_rate_excluding_pauses_wpm,weak delivery,weak delivery,speaker/mic,weak delivery,False,0.19706174457694672,0.4310954212994908,0.46165556548633674
+new_pause_count,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.8279170767024038,0.565140329470674,0.3286369352407762
+new_pause_ratio,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.26987882860322654,0.48697089207828137,
+new_mean_pause_duration_seconds,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.2365062150811422,0.3509059262050625,
+new_median_pause_duration_seconds,no relation,none,none,none,False,0.15444101266853982,0.3026154192711134,
+new_longest_pause_seconds,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.4804045624317054,0.4223905505592633,0.9005450394553498
+new_pauses_over_0_5_seconds,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.530583508714953,0.46271030008312714,0.6503517586140021
+new_pauses_over_1_second,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.2665589773541235,0.34555310171938,-0.44978938753712155
+new_non_speech_ratio_including_edges,delivery,delivery,weak delivery,delivery,False,-0.3455628520729611,0.5787060194084697,0.3370311168704374
+vad_speech_duration_seconds,delivery,weak delivery,delivery,delivery,True,0.9800723333894038,0.6576276497993,0.2908289595482576
+vad_non_speech_duration_seconds,weak delivery,speaker/mic,speaker/mic,weak delivery,False,0.671800730574434,0.6183858787817191,0.39319619616588636
+vad_pause_ratio,delivery,delivery,weak delivery,delivery,False,-0.3455628520729611,0.5787060194084697,0.3370311168704374
+vad_internal_pause_duration_seconds,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.7318547119972976,0.5668950687389263,0.43327394562665766
+vad_internal_pause_ratio,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.26987882860322654,0.48697089207828137,
+vad_number_of_pauses,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.8279170767024038,0.565140329470674,0.3286369352407762
+vad_mean_pause_duration_seconds,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.2365062150811422,0.3509059262050625,
+vad_median_pause_duration_seconds,no relation,none,none,none,False,0.15444101266853982,0.3026154192711134,
+vad_maximum_pause_duration_seconds,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.4804045624317054,0.4223905505592633,0.9005450394553498
+vad_pauses_over_0_5_seconds,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.530583508714953,0.46271030008312714,0.6503517586140021
+vad_pauses_over_1_second,speaker/mic effect,speaker/mic,speaker/mic,speaker/mic,False,0.2665589773541235,0.34555310171938,-0.44978938753712155
+vad_mean_rms,weak delivery,weak delivery,speaker/mic,weak delivery,False,0.3136532790219434,0.7013630904569194,0.23521535682697167
+vad_median_rms,delivery,delivery,speaker/mic,delivery,False,0.31376963101480415,0.6886061508662488,0.2794830571793504

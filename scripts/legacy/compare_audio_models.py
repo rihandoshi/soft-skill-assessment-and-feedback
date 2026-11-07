@@ -67,7 +67,7 @@ def atomic_csv(df, path: Path) -> None:
 'Read the central YAML configuration (JSON-subset YAML works without PyYAML).'
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 
 
 DEFAULT_CONFIG = ROOT / 'config.yaml'
@@ -183,7 +183,7 @@ def progress(iterable, **kwargs):
         return iterable
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 
 
 DATASET_DIR = ROOT / 'Datasets' / 'RecruitView'
@@ -372,7 +372,7 @@ except ImportError as exc:
     raise SystemExit(f'Missing dependency: {exc.name}. Install numpy and pandas in this environment.')
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 
 
 MANIFEST_DIR = ROOT / 'Datasets' / 'RecruitView Audio'

@@ -13,14 +13,14 @@ python -m pip install -r requirements-audio.txt
 # Install PyTorch separately for your machine's CPU/CUDA setup.
 
 # Extract features; model downloads require explicit permission.
-python scripts/extract_audio_features.py --allow-model-download
+python scripts/legacy/extract_audio_features.py --allow-model-download
 
 # Train/compare models and export fusion features.
-python scripts/compare_audio_models.py --n-jobs 4 --trials 12
+python scripts/legacy/compare_audio_models.py --n-jobs 4 --trials 12
 
 # Smoke run on a few clips in each split; never reports test metrics.
-python scripts/extract_audio_features.py --extractors legacy --limit 5
-python scripts/compare_audio_models.py --limit 5 --trials 1
+python scripts/legacy/extract_audio_features.py --extractors legacy --limit 5
+python scripts/legacy/compare_audio_models.py --limit 5 --trials 1
 ```
 
 Optional branches need `opensmile` for eGeMAPS, `faster-whisper` for ASR timing, and PyTorch plus Transformers for WavLM/HuBERT. Model weights are cached; pass `--allow-model-download` only when a checkpoint must be fetched. See `config.yaml` to change paths, checkpoint names, feature options, or model grids.
@@ -32,7 +32,7 @@ Model comparison reads the existing embedding cache and does not rerun WavLM/HuB
 Run the WavLM/HuBERT hidden-layer and pooling comparison from the project root:
 
 ```powershell
-python scripts/run_ssl_layer_sweep.py
+python scripts/legacy/run_ssl_layer_sweep.py
 ```
 
 By default it evaluates every cached hidden-state output (index 0 is the feature-encoder output; 1–12 are Transformer blocks), with mean, population-standard-deviation, and concatenated mean+std pooling. To run a configured subset, pass indices such as `--layers 0,4,8,12`. It uses the fixed participant-disjoint validation split, selects Ridge alpha by five-fold `GroupKFold(user_id)` on training data, and computes participant-cluster bootstrap intervals for summary comparisons. The weighted layer blend is learned from training-only grouped out-of-fold predictions. It does not score the test split.
@@ -47,7 +47,7 @@ Install the lightweight Silero VAD dependency into the existing environment (it 
 
 ```powershell
 python -m pip install -r requirements-vad.txt
-python scripts/run_vad_pause.py
+python scripts/legacy/run_vad_pause.py
 ```
 
 The runner caches per-clip speech/non-speech regions, pause statistics and speech-only WavLM/HuBERT hidden-state mean/std embeddings under `outputs/audio/cache/vad_pause/`. It also reuses the existing full-audio embedding caches. It compares full-audio pooling, speech-only pooling, speech-only plus pause statistics, and a speech-only plus duration control. Layer indices come from the prior train-CV-only SSL sweep; Ridge alpha is tuned with `GroupKFold(user_id)` on the fixed training split, then evaluated once on the existing participant-disjoint validation split. Participant-cluster bootstrap intervals and paired method deltas are included. Test participants are not scored. Missing SSL checkpoint downloads remain opt-in with `--allow-model-download`.
@@ -59,7 +59,7 @@ Results are saved in `results/vad_pause/` with per-split region and pause featur
 Run the enhanced handcrafted comparison after the VAD stage has populated its cached speech regions:
 
 ```powershell
-python scripts/compare_handcrafted_improvements.py
+python scripts/legacy/compare_handcrafted_improvements.py
 ```
 
 It compares the existing original handcrafted feature set (A), new features only (B), and original plus new features (C) for Ridge, SVR, ExtraTrees, and RandomForest. Model selection uses training-only `GroupKFold(user_id)` and the unchanged participant-disjoint validation split. It saves per-clip predictor-only CSVs, grouped-CV trial records, validation metrics/predictions, participant bootstrap intervals, paired RMSE intervals, configuration, a report and SVG plots under `results/handcrafted_improvements/`. Test features are generated for completeness but are not scored.
@@ -89,7 +89,7 @@ These point estimates do not establish a consistent gain from adding features: t
 Run the expanded evaluation on the combined train and validation participants:
 
 ```powershell
-python scripts/run_repeated_grouped_cv.py
+python scripts/legacy/run_repeated_grouped_cv.py
 ```
 
 The default is five repeats of five participant-grouped outer folds (`user_no`), with five-fold grouped hyperparameter selection inside each outer training fold. It evaluates original handcrafted (27), handcrafted combined (63), eGeMAPS, the selected WavLM layer, and the selected HuBERT layer using Ridge, SVR, and ExtraTrees. Preprocessing is fitted within each inner/outer training fold. The test split is excluded from predictors, fold generation, selection, and scoring; its participant list is checked only for overlap. Existing cached features and embeddings are reused.
@@ -98,11 +98,11 @@ Results are consolidated under `results/repeated_cv_v1/`: repeat/fold assignment
 
 ## Structure
 
-- `scripts/extract_audio_features.py`: WAV conversion and all audio feature extraction.
-- `scripts/run_vad_pause.py`: cached Silero VAD regions, pause features and speech-only SSL pooling diagnostics.
-- `scripts/compare_handcrafted_improvements.py`: temporal, pitch, energy and timed-word handcrafted feature comparison.
-- `scripts/run_repeated_grouped_cv.py`: nested repeated participant-grouped evaluation over the current audio feature branches.
-- `scripts/compare_audio_models.py`: grouped-CV comparisons, validation selection, one final test evaluation, and fusion export.
+- `scripts/legacy/extract_audio_features.py`: WAV conversion and all audio feature extraction.
+- `scripts/legacy/run_vad_pause.py`: cached Silero VAD regions, pause features and speech-only SSL pooling diagnostics.
+- `scripts/legacy/compare_handcrafted_improvements.py`: temporal, pitch, energy and timed-word handcrafted feature comparison.
+- `scripts/legacy/run_repeated_grouped_cv.py`: nested repeated participant-grouped evaluation over the current audio feature branches.
+- `scripts/legacy/compare_audio_models.py`: grouped-CV comparisons, validation selection, one final test evaluation, and fusion export.
 - `config.yaml`: paths and pipeline settings.
 - `requirements*.txt`: pinned core and optional dependencies.
 - `Datasets/`: original data, fixed split files, and WAV manifests. The split is never regenerated.

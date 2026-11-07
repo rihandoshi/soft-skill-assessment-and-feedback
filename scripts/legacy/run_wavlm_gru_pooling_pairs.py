@@ -9,18 +9,18 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from scripts.compare_audio_models import (  # noqa: E402
+from scripts.legacy.compare_audio_models import (  # noqa: E402
     atomic_json, build_pipeline, grouped_oof, load_config, load_split_data, metrics, project_path,
 )
-from scripts.run_wavlm_gru_ablation import (  # noqa: E402
+from scripts.legacy.run_wavlm_gru_ablation import (  # noqa: E402
     _early_stop_epochs, _fit_epochs, _predict, _progress, WEIGHT_DECAY,
     BATCH_SIZE, EPOCHS, LEARNING_RATE, PATIENCE, MIN_DELTA, INNER_VALIDATION_FRACTION,
 )
-from scripts.train_wavlm_gru import TARGETS, _frame_cache  # noqa: E402
+from scripts.legacy.train_wavlm_gru import TARGETS, _frame_cache  # noqa: E402
 
 VARIANTS = (
     {"name": "layer7_gru64_maxpool_earlystop_reg", "hidden_size": 64, "early_stopping": True, "regularization": True, "pooling": "max"},

@@ -16,11 +16,11 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from scripts.compare_audio_models import (  # noqa: E402
+from scripts.legacy.compare_audio_models import (  # noqa: E402
     bootstrap_by_participant,
     build_pipeline,
     load_config,
@@ -104,7 +104,7 @@ def _load_cached_features(config, data, encoder, cache_root):
                 else:
                     derived_path.unlink()
         if not derived_path.is_file():
-            from scripts.extract_audio_features import atomic_npz
+            from scripts.legacy.extract_audio_features import atomic_npz
             atomic_npz(derived_path, ids=expected_ids, means=means, stds=stds,
                        model_name=np.asarray(model_name), encoder=np.asarray(encoder),
                        fingerprint=np.asarray(cache_fingerprint), metadata=np.asarray(json.dumps(cache_metadata, sort_keys=True)))

@@ -16,13 +16,13 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from scripts.compare_audio_models import atomic_json, load_config, load_split_data, metrics, project_path
-from scripts.run_wavlm_gru_ablation import BATCH_SIZE, EPOCHS, LEARNING_RATE, MIN_DELTA, PATIENCE
-from scripts.train_wavlm_gru import TARGETS, _frame_cache, _progress
+from scripts.legacy.compare_audio_models import atomic_json, load_config, load_split_data, metrics, project_path
+from scripts.legacy.run_wavlm_gru_ablation import BATCH_SIZE, EPOCHS, LEARNING_RATE, MIN_DELTA, PATIENCE
+from scripts.legacy.train_wavlm_gru import TARGETS, _frame_cache, _progress
 
 ATTENTION_DIM = 32
 DROPOUT = 0.2

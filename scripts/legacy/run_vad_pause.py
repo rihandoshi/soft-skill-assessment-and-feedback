@@ -10,15 +10,15 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from scripts.compare_audio_models import (  # noqa: E402
+from scripts.legacy.compare_audio_models import (  # noqa: E402
     atomic_csv, atomic_json, atomic_npz, bootstrap_by_participant, build_pipeline,
     load_config, load_split_data, metrics, project_path,
 )
-from scripts.extract_audio_features import TransformerEmbeddingExtractor, read_wav  # noqa: E402
+from scripts.legacy.extract_audio_features import TransformerEmbeddingExtractor, read_wav  # noqa: E402
 
 TARGETS = ("confidence_score", "speaking_skills", "overall_performance")
 ENCODERS = ("wavlm", "hubert")
