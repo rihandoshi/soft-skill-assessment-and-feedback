@@ -3,7 +3,7 @@
   -> cross-validation, reported against the majority-class baseline.
 
 Differences from the paper (deliberate, to avoid optimistic numbers):
-  * ReliefF is fitted INSIDE each CV fold (the paper selected on all data).
+  * ReliefF is fitted INSIDE each CV fold (the paper does not say whether it did this).
   * CV is grouped by person (StratifiedGroupKFold), so one participant never
     appears in both train and test (RecruitView has several videos per user;
     MIT has pre/post interviews per participant).
@@ -79,7 +79,7 @@ def _digits(s: pd.Series) -> pd.Series:
     return pd.to_numeric(s.astype(str).str.extract(r"(\d+)")[0], errors="coerce")
 
 
-def load_recruitview() -> pd.DataFrame:
+def load_recruitview(quality_filter: bool = True) -> pd.DataFrame:
     feats = pd.read_csv(RECRUITVIEW_FEATURES)
     meta = pd.read_json(RECRUITVIEW_META, lines=True)
     # Only the visual features may be used as model inputs. The merged frame also
@@ -111,14 +111,19 @@ def load_recruitview() -> pd.DataFrame:
         print("     metadata:", meta["file_name"].head(3).tolist(), "| ids:", meta["id"].head(3).tolist())
         raise SystemExit("Fix the file-name match before training.")
 
-    # quality filter
+    # quality flag. quality_filter=True drops the flagged videos (old behaviour); False keeps them,
+    # so every video can still receive a prediction (needed for fusion with the other modalities).
     n0 = len(df)
+    ok = pd.Series(True, index=df.index)
     if "n_samples" in df:
-        df = df[df["n_samples"] >= MIN_SAMPLES]
+        ok &= df["n_samples"] >= MIN_SAMPLES
     if "face_rate" in df:
-        df = df[df["face_rate"] >= MIN_FACE_RATE]
-    print(f"  quality filter (n_samples>={MIN_SAMPLES}, face_rate>={MIN_FACE_RATE}): "
-          f"kept {len(df)}/{n0}")
+        ok &= df["face_rate"] >= MIN_FACE_RATE
+    df = df.assign(quality_ok=ok)
+    if quality_filter:
+        df = df[df["quality_ok"]]
+    print(f"  quality flag (n_samples>={MIN_SAMPLES}, face_rate>={MIN_FACE_RATE}): "
+          f"{int(ok.sum())}/{n0} ok" + ("; others dropped" if quality_filter else "; others kept but flagged"))
 
     df = df.reset_index(drop=True).copy().assign(group=lambda d: d["user_no"])
     df.attrs["feature_cols"] = feat_cols
