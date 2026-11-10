@@ -154,15 +154,15 @@ Kruskal-Wallis p (raw scores): conf 0.968, speak 0.917, overall 0.728. Within-pa
 
 ### confidence_score
 
-![EBM shapes confidence_score](confound_audit_plots/ebm_shapes_confidence_score.png)
+![EBM shapes confidence_score](plots/ebm_shapes_confidence_score.png)
 
 ### speaking_skills
 
-![EBM shapes speaking_skills](confound_audit_plots/ebm_shapes_speaking_skills.png)
+![EBM shapes speaking_skills](plots/ebm_shapes_speaking_skills.png)
 
 ### overall_performance
 
-![EBM shapes overall_performance](confound_audit_plots/ebm_shapes_overall_performance.png)
+![EBM shapes overall_performance](plots/ebm_shapes_overall_performance.png)
 
 ## 7. Feature classification
 
@@ -251,4 +251,4 @@ Per-target classes are listed as conf / speak / overall (D = delivery, S = speak
 | `vad_median_pause_duration_seconds` | no relation | –/–/– | +0.15 | 0.30 | +0.00 [-0.07, +0.07] | +0.08 [+0.02, +0.14] | -0.04 [-0.10, +0.03] | -0.02 [-0.08, +0.04] |  |
 | `vad_rms_threshold` | no relation | –/–/– | +0.10 | 0.63 | -0.03 [-0.11, +0.04] | +0.01 [-0.06, +0.08] | -0.02 [-0.08, +0.03] | -0.04 [-0.09, +0.01] |  |
 
-Full numbers for all targets and measures: `confound_audit_correlations.csv`; one row per feature: `confound_audit_classification.csv`.
+Full numbers for all targets and measures: `tables/correlations.csv`; one row per feature: `tables/classification.csv`.

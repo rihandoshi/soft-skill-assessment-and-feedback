@@ -1,0 +1,287 @@
+{
+ "speech_rate_wpm": {
+  "decision": "weak",
+  "reason": "expected direction within participants but |rho| < 0.10 (conf)",
+  "group": "pace"
+ },
+ "artic_rate_sps": {
+  "decision": "weak",
+  "reason": "expected direction within participants but |rho| < 0.10 (conf)",
+  "group": "pace"
+ },
+ "sent_rate_mean_wpm": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "pace"
+ },
+ "sent_rate_max_wpm": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "pace"
+ },
+ "sent_rate_cv": {
+  "decision": "drop",
+  "reason": "no relation with any target",
+  "group": "pace"
+ },
+ "rushed_opening_ratio": {
+  "decision": "revise",
+  "reason": "significant in the OPPOSITE direction within participants (conf)",
+  "group": "pace"
+ },
+ "rate_drift_ratio": {
+  "decision": "drop",
+  "reason": "no direction assumed; no relation",
+  "group": "pace"
+ },
+ "response_latency_s": {
+  "decision": "drop",
+  "reason": "no relation with any target",
+  "group": "pausing"
+ },
+ "pause_ratio": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "pausing"
+ },
+ "mid_pause_rate_per_min": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "pausing"
+ },
+ "long_mid_pause_rate_per_min": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "pausing"
+ },
+ "mid_pause_max_s": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "pausing"
+ },
+ "mid_pause_time_ratio": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "pausing"
+ },
+ "between_pause_time_ratio": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "pausing"
+ },
+ "pitch_std_st": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "expressiveness"
+ },
+ "pitch_range_st": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "expressiveness"
+ },
+ "intensity_std_db": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "expressiveness"
+ },
+ "monotony_frac": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "expressiveness"
+ },
+ "end_drop_median_db": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "projection"
+ },
+ "terminal_slope_median_st_s": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "assertiveness"
+ },
+ "f0_median_st": {
+  "decision": "drop",
+  "reason": "no relation with any target",
+  "group": "composure"
+ },
+ "jitter_local": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "composure"
+ },
+ "shimmer_local": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "composure"
+ },
+ "audio_duration_s": {
+  "decision": "keep",
+  "reason": "expected direction within participants, |rho| >= 0.10 (speak, overall)",
+  "group": "conciseness"
+ },
+ "speech_span_s": {
+  "decision": "keep",
+  "reason": "expected direction within participants, |rho| >= 0.10 (speak, overall)",
+  "group": "conciseness"
+ },
+ "speech_time_s": {
+  "decision": "keep",
+  "reason": "expected direction within participants, |rho| >= 0.10 (speak, overall)",
+  "group": "conciseness"
+ },
+ "word_count": {
+  "decision": "keep",
+  "reason": "expected direction within participants, |rho| >= 0.10 (conf, speak, overall)",
+  "group": "conciseness"
+ },
+ "n_sentences": {
+  "decision": "keep",
+  "reason": "expected direction within participants, |rho| >= 0.10 (speak)",
+  "group": "conciseness"
+ },
+ "intensity_mean_db": {
+  "decision": "revise",
+  "reason": "no direction assumed; speaker/mic effect",
+  "group": "diagnostic"
+ },
+ "f0_median_hz": {
+  "decision": "revise",
+  "reason": "no direction assumed; speaker/mic effect",
+  "group": "diagnostic"
+ },
+ "asr_prob_mean": {
+  "decision": "revise",
+  "reason": "significant in the OPPOSITE direction within participants (conf, speak)",
+  "group": "projection"
+ },
+ "filled_pause_rate_per_min": {
+  "decision": "drop",
+  "reason": "no relation with any target",
+  "group": "pausing"
+ },
+ "ser_dominance_mean": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "composure"
+ },
+ "ser_arousal_mean": {
+  "decision": "weak",
+  "reason": "expected direction within participants but |rho| < 0.10 (conf)",
+  "group": "composure"
+ },
+ "ser_valence_mean": {
+  "decision": "revise",
+  "reason": "no direction assumed; within effect - on conf, speak, overall",
+  "group": "diagnostic"
+ },
+ "ser_dominance_drop_sd": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "composure"
+ },
+ "ser_tension_run_s": {
+  "decision": "weak",
+  "reason": "expected direction within participants but |rho| < 0.10 (conf, speak)",
+  "group": "composure"
+ },
+ "category_pace": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "pace"
+ },
+ "category_conciseness": {
+  "decision": "weak",
+  "reason": "expected direction within participants but |rho| < 0.10 (conf, speak)",
+  "group": "conciseness"
+ },
+ "pace_index": {
+  "decision": "weak",
+  "reason": "expected direction within participants but |rho| < 0.10 (conf)",
+  "group": "pace"
+ },
+ "pausing_fluency_index": {
+  "decision": "revise",
+  "reason": "no direction assumed; speaker/mic effect",
+  "group": "pausing"
+ },
+ "expressiveness_index": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "expressiveness"
+ },
+ "projection_index": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "projection"
+ },
+ "composure_index": {
+  "decision": "weak",
+  "reason": "expected direction within participants but |rho| < 0.10 (conf)",
+  "group": "composure"
+ },
+ "assertiveness_index": {
+  "decision": "drop",
+  "reason": "no relation with any target",
+  "group": "assertiveness"
+ },
+ "conciseness_index": {
+  "decision": "keep",
+  "reason": "expected direction within participants, |rho| >= 0.10 (conf, speak, overall)",
+  "group": "conciseness"
+ },
+ "flag_composure_drop": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "flag"
+ },
+ "flag_hesitation": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "flag"
+ },
+ "flag_long_answer": {
+  "decision": "weak",
+  "reason": "expected direction within participants but |rho| < 0.10 (conf, speak)",
+  "group": "flag"
+ },
+ "flag_monotone": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "flag"
+ },
+ "flag_rushed_opening": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "flag"
+ },
+ "flag_slow_start": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "flag"
+ },
+ "flag_tension_rise": {
+  "decision": "weak",
+  "reason": "expected direction within participants but |rho| < 0.10 (conf, speak, overall)",
+  "group": "flag"
+ },
+ "flag_too_fast": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "flag"
+ },
+ "flag_too_slow": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "flag"
+ },
+ "flag_trails_off": {
+  "decision": "weak",
+  "reason": "expected direction within participants but |rho| < 0.10 (conf, speak, overall)",
+  "group": "flag"
+ },
+ "flag_uptalk": {
+  "decision": "revise",
+  "reason": "relation only between participants (measures the person)",
+  "group": "flag"
+ }
+}

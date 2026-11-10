@@ -364,7 +364,7 @@ def main():
     config = load_config(args.config)
     VAD_OPTIONS.update({key: config.get("vad_pause", {}).get(key, value) for key, value in VAD_OPTIONS.items()})
     data = load_split_data(config, args.limit)
-    result_dir = ROOT / "results" / "vad_pause"
+    result_dir = ROOT / "results" / "audio_score_models" / "vad_pause"
     if args.finalize_only:
         train_features = pd.read_csv(result_dir / "features" / "train_pause_features.csv", dtype={"id": str})
         train_targets = data["train"][["id", *TARGETS]].copy()

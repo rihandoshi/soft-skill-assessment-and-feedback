@@ -33,7 +33,7 @@ from compare_audio_models import (  # noqa: E402
 )
 
 
-OUT_DIR = ROOT / "results" / "repeated_cv_v1"
+OUT_DIR = ROOT / "results" / "audio_score_models" / "repeated_cv_v1"
 TARGETS = ("confidence_score", "speaking_skills", "overall_performance")
 DEFAULT_FEATURES = ("A_original", "C_original_plus_new", "eGeMAPS", "WavLM", "HuBERT")
 DEFAULT_MODELS = ("Ridge", "SVR", "ExtraTrees")
@@ -137,7 +137,7 @@ def load_feature_matrices(config: dict, split_data: dict, targets: tuple[str, ..
     if metadata.id.astype(str).duplicated().any():
         raise ValueError("A clip occurs in both the fixed train and validation split")
     legacy_dir = project_path(config["paths"]["legacy_features_dir"])
-    original_names_path = ROOT / "results" / "handcrafted_improvements" / "feature_dimensions.csv"
+    original_names_path = ROOT / "results" / "audio_score_models" / "handcrafted_improvements" / "feature_dimensions.csv"
     dims = pd.read_csv(original_names_path)
     names_row = dims.loc[dims.feature_set.eq("A_original")]
     if names_row.empty:
@@ -155,7 +155,7 @@ def load_feature_matrices(config: dict, split_data: dict, targets: tuple[str, ..
         if absent:
             raise ValueError(f"Original handcrafted table is missing baseline columns: {sorted(absent)}")
         original[split] = original[split][original_columns]
-        new_path = ROOT / "results" / "handcrafted_improvements" / "features" / f"{split}_new_features.csv"
+        new_path = ROOT / "results" / "audio_score_models" / "handcrafted_improvements" / "features" / f"{split}_new_features.csv"
         new = aligned_feature_table(new_path, meta, config, f"new handcrafted/{split}")
         if original[split].index.equals(new.index) is False or len(original[split]) != len(new):
             raise AssertionError("Handcrafted feature rows are not aligned")
@@ -176,7 +176,7 @@ def load_feature_matrices(config: dict, split_data: dict, targets: tuple[str, ..
         if pooled is None:
             raise FileNotFoundError(f"Cached {encoder} train/validation embeddings are missing")
         matrices["WavLM" if encoder == "wavlm" else "HuBERT"] = {}
-        selected_path = ROOT / "results" / "ssl_layer_sweep" / "selected_layers.json"
+        selected_path = ROOT / "results" / "audio_score_models" / "ssl_layer_sweep" / "selected_layers.json"
         selected = json.loads(selected_path.read_text(encoding="utf-8"))
         for target in targets:
             key = f"{encoder}/{target}/current_mean_std"
@@ -418,7 +418,7 @@ def main(argv=None) -> int:
         raise AssertionError("Duplicate clip IDs in combined train/validation data")
 
     feature_names, model_names = DEFAULT_FEATURES, DEFAULT_MODELS
-    selected_path = ROOT / "results" / "ssl_layer_sweep" / "selected_layers.json"
+    selected_path = ROOT / "results" / "audio_score_models" / "ssl_layer_sweep" / "selected_layers.json"
     selected = json.loads(selected_path.read_text(encoding="utf-8"))
     ssl_layers = {encoder: {target: int(selected[f"{encoder}/{target}/current_mean_std"]["layer_index"])
                            for target in TARGETS} for encoder in ("wavlm", "hubert")}

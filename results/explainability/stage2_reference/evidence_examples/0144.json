@@ -1,0 +1,331 @@
+{
+  "segment_id": "0144",
+  "participant": "238",
+  "question": "Introduce yourself",
+  "question_type": "intro",
+  "duration_bucket": "long",
+  "predicted_scores": null,
+  "quality_gate": {
+    "passed": true,
+    "checks": {
+      "has_speech": true,
+      "transcript_timing_ok": true,
+      "dropouts_below_1pct": true
+    },
+    "version": "v0 (Stage 6 adds a proper quality model)"
+  },
+  "category_profile": {
+    "pace": {
+      "title": "Pace & Rate Control",
+      "class": "fast",
+      "level": "high",
+      "index": 90.05,
+      "vs_your_usual": "higher",
+      "status": "active",
+      "use_for_feedback": true,
+      "attention_class": "fast",
+      "signals": [
+        {
+          "descriptor": "speech_rate_wpm",
+          "frame": "population",
+          "toward": "fast",
+          "pct_toward_high_pole": 98.0
+        },
+        {
+          "descriptor": "artic_rate_sps",
+          "frame": "population",
+          "toward": "fast",
+          "pct_toward_high_pole": 82.1
+        }
+      ],
+      "note": "Rates from verbatim ASR (Stage 4); slow answers are usually hesitant (pauses, filled pauses) rather than slowly articulated. Feedback on the slow side waits for MIT / annotation (no rater support yet)."
+    },
+    "pausing_fluency": {
+      "title": "Pausing & Fluency",
+      "class": "few mid-sentence pauses",
+      "level": "low",
+      "index": 12.0,
+      "vs_your_usual": "similar",
+      "status": "experimental",
+      "use_for_feedback": false,
+      "attention_class": null,
+      "signals": [
+        {
+          "descriptor": "mid_pause_rate_per_min",
+          "frame": "population",
+          "toward": "many mid-sentence pauses",
+          "pct_toward_high_pole": 2.0
+        },
+        {
+          "descriptor": "long_mid_pause_rate_per_min",
+          "frame": "population",
+          "toward": "many mid-sentence pauses",
+          "pct_toward_high_pole": 32.0
+        },
+        {
+          "descriptor": "mid_pause_max_s",
+          "frame": "population",
+          "toward": "many mid-sentence pauses",
+          "pct_toward_high_pole": 2.0
+        }
+      ],
+      "note": "Descriptive only: RecruitView raters reward more pausing between people and show no within-person penalty (Stage 3). Pauses classified by word boundaries (Stage 4); fillers are the text branch's. Validate against MIT 'Paused'."
+    },
+    "expressiveness": {
+      "title": "Vocal Expressiveness",
+      "class": "typical variation",
+      "level": "typical",
+      "index": 40.975,
+      "vs_your_usual": "similar",
+      "status": "experimental",
+      "use_for_feedback": false,
+      "attention_class": "monotone",
+      "signals": [
+        {
+          "descriptor": "pitch_std_st",
+          "frame": "population",
+          "toward": "highly varied",
+          "pct_toward_high_pole": 45.6
+        },
+        {
+          "descriptor": "pitch_range_st",
+          "frame": "population",
+          "toward": "highly varied",
+          "pct_toward_high_pole": 46.1
+        },
+        {
+          "descriptor": "intensity_std_db",
+          "frame": "population",
+          "toward": "highly varied",
+          "pct_toward_high_pole": 24.3
+        },
+        {
+          "descriptor": "monotony_frac",
+          "frame": "population",
+          "toward": "monotone",
+          "pct_toward_high_pole": 47.9
+        }
+      ],
+      "note": "Pitch in semitones relative to the speaker; no RecruitView support yet (Stage 3). Validate against MIT 'EngagingTone'/'Excited' (Stage 7)."
+    },
+    "projection": {
+      "title": "Projection & Clarity",
+      "class": "steady sentence endings",
+      "level": "low",
+      "index": 6.3,
+      "vs_your_usual": "similar",
+      "status": "experimental",
+      "use_for_feedback": false,
+      "attention_class": "trails off",
+      "signals": [
+        {
+          "descriptor": "end_drop_median_db",
+          "frame": "population",
+          "toward": "steady sentence endings",
+          "pct_toward_high_pole": 6.3
+        }
+      ],
+      "note": "Trailing off at real sentence ends (Stage 4; weak within-person support on all three scores). ASR word confidence was tested as intelligibility and rejected (opposite direction). Quality gate: Stage 6."
+    },
+    "composure": {
+      "title": "Vocal Confidence & Composure",
+      "class": "more activated / tense than usual",
+      "level": "high",
+      "index": 88.6,
+      "vs_your_usual": "similar",
+      "status": "experimental",
+      "use_for_feedback": false,
+      "attention_class": "more activated / tense than usual",
+      "signals": [
+        {
+          "descriptor": "ser_arousal_mean",
+          "frame": "self_delta",
+          "toward": "more activated / tense than usual",
+          "pct_toward_high_pole": 88.6
+        }
+      ],
+      "note": "Stage 5: vocal activation from a pretrained speech-emotion model (arousal; its dominance output is the same dimension here, rho 0.98), relative to the speaker's own other answers only (raw values are 87% speaker identity). Oriented by the RecruitView evidence: raters score CALMER speakers as more confident (between people rho -0.50; within a person weak, same direction). Describes how the voice sounded, never an inner state. Needs MIT 'Calm'/'NotStressed' (Stage 7) and a second SER model before feedback."
+    },
+    "assertiveness": {
+      "title": "Assertive Delivery",
+      "class": "typical endings",
+      "level": "typical",
+      "index": 72.1,
+      "vs_your_usual": "similar",
+      "status": "experimental",
+      "use_for_feedback": false,
+      "attention_class": "rising endings (uptalk)",
+      "signals": [
+        {
+          "descriptor": "terminal_slope_median_st_s",
+          "frame": "population",
+          "toward": "rising endings (uptalk)",
+          "pct_toward_high_pole": 72.1
+        }
+      ],
+      "note": "Only sentence-final pitch movement for now; hedging phrases come from the text branch."
+    },
+    "conciseness": {
+      "title": "Conciseness",
+      "class": "long",
+      "level": "high",
+      "index": 96.15,
+      "vs_your_usual": "higher",
+      "status": "active",
+      "use_for_feedback": true,
+      "attention_class": "long",
+      "signals": [
+        {
+          "descriptor": "speech_span_s",
+          "frame": "population",
+          "toward": "long",
+          "pct_toward_high_pole": 93.1
+        },
+        {
+          "descriptor": "word_count",
+          "frame": "population",
+          "toward": "long",
+          "pct_toward_high_pole": 99.2
+        }
+      ],
+      "note": "Relative to answers to the same question type. The only category whose relation with the ratings holds within the same person (Stages 0 and 3). 'Brief' is not flagged: very short answers are judged on content (text branch)."
+    }
+  },
+  "flags": [
+    {
+      "type": "long_answer",
+      "category": "conciseness",
+      "status": "active",
+      "rater_support": "weak but consistent: the same person's flagged answers get lower confidence and speaking-skills scores (within rho ~ -0.06); answer length is the only category whose within-participant relation survives in RecruitView (Stage 0 and 3)",
+      "start_s": 1.8,
+      "end_s": 56.7,
+      "sentence": null,
+      "measurement": {
+        "descriptor": "segment.speech_span_s",
+        "value": 54.9,
+        "unit": "s"
+      },
+      "comparison": {
+        "pop_pct": 93.1,
+        "reference": "train answers ('intro' questions), n=254",
+        "speaker_median": 43.2,
+        "self_delta": 0.271,
+        "self_delta_kind": "relative",
+        "question_type_median_s": 20.1,
+        "ratio_to_question_type_median": 2.73
+      },
+      "word_count": 167
+    }
+  ],
+  "n_active_flags_total": 1,
+  "categories": {
+    "pace": {
+      "score": 63.863,
+      "signals": {
+        "speech_rate_wpm": {
+          "measurement": {
+            "descriptor": "segment.speech_rate_wpm",
+            "value": 182.514,
+            "unit": "words/min"
+          },
+          "comparison": {
+            "pop_pct": 98.0,
+            "reference": "train answers (long answers, 'intro' questions), n=68",
+            "speaker_median": 170.833,
+            "self_delta": 0.068,
+            "self_delta_kind": "relative"
+          },
+          "signal_score": 7.874
+        },
+        "artic_rate_sps": {
+          "measurement": {
+            "descriptor": "segment.artic_rate_sps",
+            "value": 4.927,
+            "unit": "syllables/s"
+          },
+          "comparison": {
+            "pop_pct": 82.1,
+            "reference": "train answers (long answers, 'intro' questions), n=68",
+            "speaker_median": 4.163,
+            "self_delta": 0.184,
+            "self_delta_kind": "relative"
+          },
+          "signal_score": 71.673
+        },
+        "sent_rate_cv": {
+          "measurement": {
+            "descriptor": "segment.sent_rate_cv",
+            "value": 0.157,
+            "unit": "ratio"
+          },
+          "comparison": {
+            "pop_pct": 45.9,
+            "reference": "train answers (long answers, 'intro' questions), n=68",
+            "speaker_median": 0.161,
+            "self_delta": -0.004,
+            "self_delta_kind": "absolute"
+          },
+          "signal_score": 100.0
+        },
+        "rushed_opening_ratio": {
+          "measurement": {
+            "descriptor": "segment.rushed_opening_ratio",
+            "value": 1.312,
+            "unit": "ratio"
+          },
+          "comparison": {
+            "pop_pct": 81.0,
+            "reference": "train answers (long answers, 'intro' questions), n=55",
+            "speaker_median": 1.03,
+            "self_delta": 0.283,
+            "self_delta_kind": "absolute"
+          },
+          "signal_score": 75.906
+        }
+      },
+      "flag_types": []
+    },
+    "conciseness": {
+      "score": 15.344,
+      "signals": {
+        "speech_span_s": {
+          "measurement": {
+            "descriptor": "segment.speech_span_s",
+            "value": 54.9,
+            "unit": "s"
+          },
+          "comparison": {
+            "pop_pct": 93.1,
+            "reference": "train answers ('intro' questions), n=254",
+            "speaker_median": 43.2,
+            "self_delta": 0.271,
+            "self_delta_kind": "relative"
+          },
+          "signal_score": 27.469
+        },
+        "word_count": {
+          "measurement": {
+            "descriptor": "segment.word_count",
+            "value": 167.0,
+            "unit": "count"
+          },
+          "comparison": {
+            "pop_pct": 99.2,
+            "reference": "train answers ('intro' questions), n=260",
+            "speaker_median": 118.0,
+            "self_delta": 0.415,
+            "self_delta_kind": "relative"
+          },
+          "signal_score": 3.219
+        }
+      },
+      "flag_types": [
+        "long_answer"
+      ]
+    }
+  },
+  "strengths": [],
+  "strengths_note": "no delivery strength with rater support in this answer; take strengths from the content / visual branches",
+  "_layers": "measurement = what was measured; comparison = vs reference/speaker; no feedback wording here (Stage 9)",
+  "_reference_version": "stage2-v0"
+}

@@ -33,11 +33,12 @@ Finally it fits an Explainable Boosting Machine (interpret) on
 the shape-function plots.
 
 Outputs (results/explainability/):
-  confound_audit.md                    human-readable report
-  confound_audit_correlations.csv      long table: feature x target x measure (+ CI)
-  confound_audit_classification.csv    one row per feature
-  confound_audit_ebm_importances.csv
-  confound_audit_plots/*.png           EBM shape functions
+  (results/explainability/stage0_confound_audit/)
+  report.md                       human-readable report (notes.md = hand-written interpretation)
+  tables/correlations.csv         long table: feature x target x measure (+ CI)
+  tables/classification.csv       one row per feature
+  tables/ebm_importances.csv
+  plots/*.png                     EBM shape functions
 
 Run:  python scripts/explainability/stage0_confound_audit.py [--bootstrap 1000]
 """
@@ -45,6 +46,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 import re
 import time
 import warnings
@@ -59,11 +61,14 @@ SPLIT_DIR = ROOT / "Datasets" / "Split Dataset"
 AUDIO_META_DIR = ROOT / "Datasets" / "RecruitView Audio"
 QUESTION_TYPES = ROOT / "Datasets" / "question_types.csv"
 LEGACY_DIR = ROOT / "outputs" / "audio" / "features" / "legacy"
-NEW_DIR = ROOT / "results" / "handcrafted_improvements" / "features"
-VAD_DIR = ROOT / "results" / "vad_pause" / "features"
-FEATURE_DIMS = ROOT / "results" / "handcrafted_improvements" / "feature_dimensions.csv"
-OUT_DIR = ROOT / "results" / "explainability"
-PLOT_DIR = OUT_DIR / "confound_audit_plots"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import paths as P  # noqa: E402  (results layout)
+NEW_DIR = P.HANDCRAFTED_FEATURES
+VAD_DIR = P.VAD_FEATURES
+FEATURE_DIMS = P.HANDCRAFTED_DIMS
+OUT_DIR = P.S0
+TABLE_DIR = P.S0_TABLES
+PLOT_DIR = P.S0_PLOTS
 
 TARGETS = ["confidence_score", "speaking_skills", "overall_performance"]
 TARGET_SHORT = {"confidence_score": "conf", "speaking_skills": "speak", "overall_performance": "overall"}
@@ -547,10 +552,10 @@ def write_report(df, corr, cls, qt_table, vq, ebm_imp, ebm_meta, args) -> Path:
             + " | ".join(_cell(corr, r.feature, "overall_performance", m) for m in ("raw", "partial", "within", "within_partial"))
             + f" | {ratio} |")
     add("")
-    add("Full numbers for all targets and measures: `confound_audit_correlations.csv`; one row per feature: "
-        "`confound_audit_classification.csv`.\n")
+    add("Full numbers for all targets and measures: `tables/correlations.csv`; one row per feature: "
+        "`tables/classification.csv`.\n")
 
-    path = OUT_DIR / "confound_audit.md"
+    path = OUT_DIR / "report.md"
     path.write_text("\n".join(lines), encoding="utf-8")
     return path
 
@@ -562,7 +567,7 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
 
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    TABLE_DIR.mkdir(parents=True, exist_ok=True)
     print("Loading train/val tables...")
     train, features = load_split("train")
     val, _ = load_split("val")
@@ -574,8 +579,8 @@ def main() -> None:
     print("Correlation audit...")
     corr = correlation_audit(train, features, args.bootstrap, args.seed)
     cls = classify(corr, train, features, args.min_effect)
-    corr.to_csv(OUT_DIR / "confound_audit_correlations.csv", index=False)
-    cls.to_csv(OUT_DIR / "confound_audit_classification.csv", index=False)
+    corr.to_csv(TABLE_DIR / "correlations.csv", index=False)
+    cls.to_csv(TABLE_DIR / "classification.csv", index=False)
 
     print("Question type / video quality effects...")
     qt_table = question_type_effects(train)
@@ -583,7 +588,7 @@ def main() -> None:
 
     print("Fitting EBMs...")
     ebm_imp, ebm_meta = fit_ebms(train, val, args.seed)
-    ebm_imp.to_csv(OUT_DIR / "confound_audit_ebm_importances.csv", index=False)
+    ebm_imp.to_csv(TABLE_DIR / "ebm_importances.csv", index=False)
 
     report = write_report(train, corr, cls, qt_table, vq, ebm_imp, ebm_meta, args)
     print(f"Done. Report: {report}")

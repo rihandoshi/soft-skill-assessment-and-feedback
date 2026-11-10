@@ -279,7 +279,7 @@ def _line_plot(rows, encoder, target, metric, path):
 
 
 def run(config, layers="all", bootstrap_replicates=None, reuse_current=True):
-    result_dir = ROOT / "results" / "ssl_layer_sweep"
+    result_dir = ROOT / "results" / "audio_score_models" / "ssl_layer_sweep"
     result_dir.mkdir(parents=True, exist_ok=True)
     cache_root = project_path(config["paths"].get("cache_dir", "outputs/audio/cache")) / "ssl_layer_sweep"
     data = load_split_data(config)

@@ -1,0 +1,101 @@
+{
+  "_source": "Stage 5 SER (audeering)",
+  "descriptors": {
+    "segment.ser_dominance_mean": {
+      "level": "segment",
+      "name": "ser_dominance_mean",
+      "category": "composure",
+      "status": "experimental",
+      "unit": "0-1",
+      "definition": "Mean predicted dominance (listeners' 'sounds assured / in control'). Compared with the speaker's own other answers (Stage 2 self-delta) for the composure class; the raw value partly describes the voice. [Stage 5: audeering dimensional SER (MSP-Podcast), 4-s windows, 2-s hop, windows with >= 50% speech.]"
+    },
+    "segment.ser_arousal_mean": {
+      "level": "segment",
+      "name": "ser_arousal_mean",
+      "category": "composure",
+      "status": "experimental",
+      "unit": "0-1",
+      "definition": "Mean predicted arousal (activation / energy; high + raised pitch = tension). [Stage 5: audeering dimensional SER (MSP-Podcast), 4-s windows, 2-s hop, windows with >= 50% speech.]"
+    },
+    "segment.ser_valence_mean": {
+      "level": "segment",
+      "name": "ser_valence_mean",
+      "category": "diagnostic",
+      "status": "diagnostic",
+      "unit": "0-1",
+      "definition": "Mean predicted valence (positivity). No audio category; diagnostic. [Stage 5: audeering dimensional SER (MSP-Podcast), 4-s windows, 2-s hop, windows with >= 50% speech.]"
+    },
+    "segment.ser_n_windows": {
+      "level": "segment",
+      "name": "ser_n_windows",
+      "category": "diagnostic",
+      "status": "diagnostic",
+      "unit": "count",
+      "definition": "Windows with >= 50% speech. [Stage 5: audeering dimensional SER (MSP-Podcast), 4-s windows, 2-s hop, windows with >= 50% speech.]"
+    },
+    "segment.ser_dominance_drop_sd": {
+      "level": "segment",
+      "name": "ser_dominance_drop_sd",
+      "category": "composure",
+      "status": "experimental",
+      "unit": "speaker SD",
+      "definition": "Largest fall of the smoothed (3-window) speaker-relative dominance curve within the answer. [Stage 5: audeering dimensional SER (MSP-Podcast), 4-s windows, 2-s hop, windows with >= 50% speech.]"
+    },
+    "segment.ser_tension_run_s": {
+      "level": "segment",
+      "name": "ser_tension_run_s",
+      "category": "composure",
+      "status": "experimental",
+      "unit": "s",
+      "definition": "Longest run of consecutive windows with arousal z > 1.0 AND window pitch z > 1.0 (both vs the speaker's other recordings). [Stage 5: audeering dimensional SER (MSP-Podcast), 4-s windows, 2-s hop, windows with >= 50% speech.]"
+    },
+    "segment.ser_drop_start_s": {
+      "level": "segment",
+      "name": "ser_drop_start_s",
+      "category": "diagnostic",
+      "status": "diagnostic",
+      "unit": "s",
+      "definition": "Timestamp for the evidence JSON. [Stage 5: audeering dimensional SER (MSP-Podcast), 4-s windows, 2-s hop, windows with >= 50% speech.]"
+    },
+    "segment.ser_drop_end_s": {
+      "level": "segment",
+      "name": "ser_drop_end_s",
+      "category": "diagnostic",
+      "status": "diagnostic",
+      "unit": "s",
+      "definition": "Timestamp for the evidence JSON. [Stage 5: audeering dimensional SER (MSP-Podcast), 4-s windows, 2-s hop, windows with >= 50% speech.]"
+    },
+    "segment.ser_tension_start_s": {
+      "level": "segment",
+      "name": "ser_tension_start_s",
+      "category": "diagnostic",
+      "status": "diagnostic",
+      "unit": "s",
+      "definition": "Timestamp for the evidence JSON. [Stage 5: audeering dimensional SER (MSP-Podcast), 4-s windows, 2-s hop, windows with >= 50% speech.]"
+    },
+    "segment.ser_tension_end_s": {
+      "level": "segment",
+      "name": "ser_tension_end_s",
+      "category": "diagnostic",
+      "status": "diagnostic",
+      "unit": "s",
+      "definition": "Timestamp for the evidence JSON. [Stage 5: audeering dimensional SER (MSP-Podcast), 4-s windows, 2-s hop, windows with >= 50% speech.]"
+    },
+    "segment.ser_dominance_low_start_s": {
+      "level": "segment",
+      "name": "ser_dominance_low_start_s",
+      "category": "diagnostic",
+      "status": "diagnostic",
+      "unit": "s",
+      "definition": "Timestamp for the evidence JSON. [Stage 5: audeering dimensional SER (MSP-Podcast), 4-s windows, 2-s hop, windows with >= 50% speech.]"
+    },
+    "segment.ser_dominance_low_end_s": {
+      "level": "segment",
+      "name": "ser_dominance_low_end_s",
+      "category": "diagnostic",
+      "status": "diagnostic",
+      "unit": "s",
+      "definition": "Timestamp for the evidence JSON. [Stage 5: audeering dimensional SER (MSP-Podcast), 4-s windows, 2-s hop, windows with >= 50% speech.]"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+target,explaining_variables,n_vars,r2_cv,r2_in_sample
+confidence_score,duration only,1,0.27598337339709234,0.2886527168227099
+confidence_score,duration + loudness (confounds),2,0.31570481700695385,0.3292883096311988
+confidence_score,delivery signals (no duration),23,0.46561461102734825,0.5165446677696677
+confidence_score,delivery signals + duration,28,0.6524325206940464,0.6951406888431308
+confidence_score,delivery signals + duration + loudness,29,0.6647681810031487,0.7066294962387145
+speaking_skills,duration only,1,0.3386001299346979,0.3492138016069305
+speaking_skills,duration + loudness (confounds),2,0.3698527553958467,0.3819189740222103
+speaking_skills,delivery signals (no duration),23,0.44669933003181905,0.4977747974678206
+speaking_skills,delivery signals + duration,28,0.6519596381376731,0.6963072795557526
+speaking_skills,delivery signals + duration + loudness,29,0.6602802130964538,0.7049250401958125
+overall_performance,duration only,1,0.38408017528918914,0.39261857455038585
+overall_performance,duration + loudness (confounds),2,0.415579143089689,0.42407082525440687
+overall_performance,delivery signals (no duration),23,0.41619297707821623,0.47388129304174387
+overall_performance,delivery signals + duration,28,0.6589349208795159,0.7024722187998118
+overall_performance,delivery signals + duration + loudness,29,0.6698196827279759,0.7112578044722311

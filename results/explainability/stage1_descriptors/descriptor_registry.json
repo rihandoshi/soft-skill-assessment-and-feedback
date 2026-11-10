@@ -1,0 +1,510 @@
+{
+  "_layers": {
+    "measurement": "Stage 1 (this registry)",
+    "comparison": "Stage 2: percentiles vs comparable train answers + speaker leave-one-out baseline",
+    "feedback": "Stage 9: LLM wording from evidence JSON"
+  },
+  "_status": {
+    "active": "may drive flags/feedback after Stage 2-3",
+    "experimental": "measured + normed + validated, not used for feedback yet",
+    "diagnostic": "QC/covariate only, never feedback"
+  },
+  "descriptors": {
+    "sentence.speech_rate_wpm": {
+      "level": "sentence",
+      "name": "speech_rate_wpm",
+      "category": "pace",
+      "status": "active",
+      "unit": "words/min",
+      "definition": "Words / sentence duration (VAD-trimmed, includes internal pauses). Only for sentences >= 4 s and >= 5 words."
+    },
+    "sentence.artic_rate_sps": {
+      "level": "sentence",
+      "name": "artic_rate_sps",
+      "category": "pace",
+      "status": "active",
+      "unit": "syllables/s",
+      "definition": "Articulation rate: syllables / VAD speech time within the sentence (pauses excluded). Syllables from an orthographic heuristic on the cleaned transcript."
+    },
+    "sentence.artic_rate_wpm": {
+      "level": "sentence",
+      "name": "artic_rate_wpm",
+      "category": "pace",
+      "status": "active",
+      "unit": "words/min",
+      "definition": "Words / VAD speech time within the sentence."
+    },
+    "sentence.pitch_std_st": {
+      "level": "sentence",
+      "name": "pitch_std_st",
+      "category": "expressiveness",
+      "status": "experimental",
+      "unit": "semitones",
+      "definition": "Std of voiced F0 (st re. speaker median) in the sentence."
+    },
+    "sentence.pitch_range_st": {
+      "level": "sentence",
+      "name": "pitch_range_st",
+      "category": "expressiveness",
+      "status": "experimental",
+      "unit": "semitones",
+      "definition": "p95 - p5 of voiced F0 (st) in the sentence."
+    },
+    "sentence.f0_median_st": {
+      "level": "sentence",
+      "name": "f0_median_st",
+      "category": "composure",
+      "status": "experimental",
+      "unit": "semitones",
+      "definition": "Median voiced F0 of the sentence relative to the speaker's overall median (raised pitch = stress proxy)."
+    },
+    "sentence.intensity_std_db": {
+      "level": "sentence",
+      "name": "intensity_std_db",
+      "category": "expressiveness",
+      "status": "experimental",
+      "unit": "dB",
+      "definition": "Std of Praat intensity over VAD-speech frames in the sentence. Gain-invariant (energy variability, not level)."
+    },
+    "sentence.intensity_mean_db": {
+      "level": "sentence",
+      "name": "intensity_mean_db",
+      "category": "diagnostic",
+      "status": "diagnostic",
+      "unit": "dB",
+      "definition": "Mean intensity over speech frames. ABSOLUTE LEVEL: depends on microphone/gain; never feedback (Stage 0)."
+    },
+    "sentence.voiced_frac": {
+      "level": "sentence",
+      "name": "voiced_frac",
+      "category": "diagnostic",
+      "status": "diagnostic",
+      "unit": "fraction",
+      "definition": "Voiced pitch frames / speech frames in the sentence."
+    },
+    "segment.speech_rate_wpm": {
+      "level": "segment",
+      "name": "speech_rate_wpm",
+      "category": "pace",
+      "status": "active",
+      "unit": "words/min",
+      "definition": "Words / answer duration (VAD-trimmed, includes internal pauses). Duration = first to last speech."
+    },
+    "segment.artic_rate_sps": {
+      "level": "segment",
+      "name": "artic_rate_sps",
+      "category": "pace",
+      "status": "active",
+      "unit": "syllables/s",
+      "definition": "Articulation rate: syllables / VAD speech time within the answer (pauses excluded). Syllables from an orthographic heuristic on the cleaned transcript."
+    },
+    "segment.artic_rate_wpm": {
+      "level": "segment",
+      "name": "artic_rate_wpm",
+      "category": "pace",
+      "status": "active",
+      "unit": "words/min",
+      "definition": "Words / VAD speech time within the answer."
+    },
+    "segment.pitch_std_st": {
+      "level": "segment",
+      "name": "pitch_std_st",
+      "category": "expressiveness",
+      "status": "experimental",
+      "unit": "semitones",
+      "definition": "Std of voiced F0 (st re. speaker median) in the answer."
+    },
+    "segment.pitch_range_st": {
+      "level": "segment",
+      "name": "pitch_range_st",
+      "category": "expressiveness",
+      "status": "experimental",
+      "unit": "semitones",
+      "definition": "p95 - p5 of voiced F0 (st) in the answer."
+    },
+    "segment.f0_median_st": {
+      "level": "segment",
+      "name": "f0_median_st",
+      "category": "composure",
+      "status": "experimental",
+      "unit": "semitones",
+      "definition": "Median voiced F0 of the answer relative to the speaker's overall median (raised pitch = stress proxy)."
+    },
+    "segment.intensity_std_db": {
+      "level": "segment",
+      "name": "intensity_std_db",
+      "category": "expressiveness",
+      "status": "experimental",
+      "unit": "dB",
+      "definition": "Std of Praat intensity over VAD-speech frames in the answer. Gain-invariant (energy variability, not level)."
+    },
+    "segment.intensity_mean_db": {
+      "level": "segment",
+      "name": "intensity_mean_db",
+      "category": "diagnostic",
+      "status": "diagnostic",
+      "unit": "dB",
+      "definition": "Mean intensity over speech frames. ABSOLUTE LEVEL: depends on microphone/gain; never feedback (Stage 0)."
+    },
+    "segment.voiced_frac": {
+      "level": "segment",
+      "name": "voiced_frac",
+      "category": "diagnostic",
+      "status": "diagnostic",
+      "unit": "fraction",
+      "definition": "Voiced pitch frames / speech frames in the answer."
+    },
+    "sentence.duration_s": {
+      "level": "sentence",
+      "name": "duration_s",
+      "category": "conciseness",
+      "status": "active",
+      "unit": "s",
+      "definition": "VAD-trimmed sentence duration (first to last speech in the window)."
+    },
+    "sentence.speech_time_s": {
+      "level": "sentence",
+      "name": "speech_time_s",
+      "category": "conciseness",
+      "status": "active",
+      "unit": "s",
+      "definition": "VAD speech time inside the sentence window."
+    },
+    "sentence.n_words": {
+      "level": "sentence",
+      "name": "n_words",
+      "category": "conciseness",
+      "status": "active",
+      "unit": "count",
+      "definition": "Words in the sentence (cleaned transcript; fillers removed by RecruitView)."
+    },
+    "sentence.n_mid_pauses": {
+      "level": "sentence",
+      "name": "n_mid_pauses",
+      "category": "pausing",
+      "status": "active",
+      "unit": "count",
+      "definition": "Mid-sentence VAD pauses >= 0.25 s in this sentence."
+    },
+    "sentence.max_mid_pause_s": {
+      "level": "sentence",
+      "name": "max_mid_pause_s",
+      "category": "pausing",
+      "status": "active",
+      "unit": "s",
+      "definition": "Longest mid-sentence pause in this sentence (0 if none)."
+    },
+    "sentence.mid_pause_time_s": {
+      "level": "sentence",
+      "name": "mid_pause_time_s",
+      "category": "pausing",
+      "status": "active",
+      "unit": "s",
+      "definition": "Total mid-sentence pause time (pauses >= 0.25 s)."
+    },
+    "sentence.end_drop_db": {
+      "level": "sentence",
+      "name": "end_drop_db",
+      "category": "projection",
+      "status": "experimental",
+      "unit": "dB",
+      "definition": "Syllable-peak level (p80 intensity) in the last 0.7 s of the sentence's speech minus the sentence's p80 (negative = trailing off). Gain-invariant; dropout frames excluded; NaN when the tail is within 10 dB of the clip background (VAD padding, not speech)."
+    },
+    "sentence.terminal_slope_st_s": {
+      "level": "sentence",
+      "name": "terminal_slope_st_s",
+      "category": "assertiveness",
+      "status": "experimental",
+      "unit": "st/s",
+      "definition": "Linear F0 slope over the 0.3 s before the end of the sentence's last voiced run (>= 5 consecutive voiced frames; positive = rising / uptalk)."
+    },
+    "segment.audio_duration_s": {
+      "level": "segment",
+      "name": "audio_duration_s",
+      "category": "conciseness",
+      "status": "active",
+      "unit": "s",
+      "definition": "Length of the audio file."
+    },
+    "segment.speech_span_s": {
+      "level": "segment",
+      "name": "speech_span_s",
+      "category": "conciseness",
+      "status": "active",
+      "unit": "s",
+      "definition": "First to last VAD speech (answer length without leading/trailing silence)."
+    },
+    "segment.speech_time_s": {
+      "level": "segment",
+      "name": "speech_time_s",
+      "category": "conciseness",
+      "status": "active",
+      "unit": "s",
+      "definition": "Total VAD speech time."
+    },
+    "segment.word_count": {
+      "level": "segment",
+      "name": "word_count",
+      "category": "conciseness",
+      "status": "active",
+      "unit": "count",
+      "definition": "Words in the cleaned transcript."
+    },
+    "segment.syllable_count": {
+      "level": "segment",
+      "name": "syllable_count",
+      "category": "conciseness",
+      "status": "diagnostic",
+      "unit": "count",
+      "definition": "Heuristic syllables (used for articulation rate)."
+    },
+    "segment.n_sentences": {
+      "level": "segment",
+      "name": "n_sentences",
+      "category": "conciseness",
+      "status": "active",
+      "unit": "count",
+      "definition": "Timestamped transcript sentences."
+    },
+    "segment.sent_rate_mean_wpm": {
+      "level": "segment",
+      "name": "sent_rate_mean_wpm",
+      "category": "pace",
+      "status": "active",
+      "unit": "words/min",
+      "definition": "Mean per-sentence speech rate over sentences >= 4 s."
+    },
+    "segment.sent_rate_max_wpm": {
+      "level": "segment",
+      "name": "sent_rate_max_wpm",
+      "category": "pace",
+      "status": "active",
+      "unit": "words/min",
+      "definition": "Fastest sentence (>= 4 s)."
+    },
+    "segment.sent_rate_std_wpm": {
+      "level": "segment",
+      "name": "sent_rate_std_wpm",
+      "category": "pace",
+      "status": "active",
+      "unit": "words/min",
+      "definition": "Rate variability: std of per-sentence rates (needs >= 2 sentences >= 4 s)."
+    },
+    "segment.sent_rate_cv": {
+      "level": "segment",
+      "name": "sent_rate_cv",
+      "category": "pace",
+      "status": "active",
+      "unit": "ratio",
+      "definition": "Rate variability normalised by the mean (std / mean)."
+    },
+    "segment.n_rate_sentences": {
+      "level": "segment",
+      "name": "n_rate_sentences",
+      "category": "pace",
+      "status": "diagnostic",
+      "unit": "count",
+      "definition": "Sentences >= 4 s (eligible for per-sentence rate)."
+    },
+    "segment.rushed_opening_ratio": {
+      "level": "segment",
+      "name": "rushed_opening_ratio",
+      "category": "pace",
+      "status": "active",
+      "unit": "ratio",
+      "definition": "Speech rate of the first 2 sentences / rate of the rest (needs >= 3 sentences, each part >= 4 s). > 1 = faster opening."
+    },
+    "segment.rate_drift_ratio": {
+      "level": "segment",
+      "name": "rate_drift_ratio",
+      "category": "pace",
+      "status": "active",
+      "unit": "ratio",
+      "definition": "Speech rate in the last third of the answer / first third (by time; needs a speech span >= 12 s). < 1 = slowing down."
+    },
+    "segment.response_latency_s": {
+      "level": "segment",
+      "name": "response_latency_s",
+      "category": "pausing",
+      "status": "active",
+      "unit": "s",
+      "definition": "Silence before the first VAD speech."
+    },
+    "segment.pause_ratio": {
+      "level": "segment",
+      "name": "pause_ratio",
+      "category": "pausing",
+      "status": "active",
+      "unit": "fraction",
+      "definition": "Internal non-speech time / speech span (all VAD gaps)."
+    },
+    "segment.mid_pause_rate_per_min": {
+      "level": "segment",
+      "name": "mid_pause_rate_per_min",
+      "category": "pausing",
+      "status": "active",
+      "unit": "per min",
+      "definition": "Mid-sentence pauses >= 0.25 s per minute of speech span."
+    },
+    "segment.long_mid_pause_rate_per_min": {
+      "level": "segment",
+      "name": "long_mid_pause_rate_per_min",
+      "category": "pausing",
+      "status": "active",
+      "unit": "per min",
+      "definition": "Mid-sentence pauses >= 1.0 s per minute."
+    },
+    "segment.mid_pause_max_s": {
+      "level": "segment",
+      "name": "mid_pause_max_s",
+      "category": "pausing",
+      "status": "active",
+      "unit": "s",
+      "definition": "Longest mid-sentence pause in the answer (0 if none)."
+    },
+    "segment.mid_pause_time_ratio": {
+      "level": "segment",
+      "name": "mid_pause_time_ratio",
+      "category": "pausing",
+      "status": "active",
+      "unit": "fraction",
+      "definition": "Mid-sentence pause time / speech span."
+    },
+    "segment.between_pause_time_ratio": {
+      "level": "segment",
+      "name": "between_pause_time_ratio",
+      "category": "pausing",
+      "status": "active",
+      "unit": "fraction",
+      "definition": "Between-sentence pause time / speech span."
+    },
+    "segment.internal_pause_count": {
+      "level": "segment",
+      "name": "internal_pause_count",
+      "category": "pausing",
+      "status": "diagnostic",
+      "unit": "count",
+      "definition": "Raw count of internal pauses >= 0.25 s. Tracks answer length (Stage 0); use the rates instead."
+    },
+    "segment.monotony_frac": {
+      "level": "segment",
+      "name": "monotony_frac",
+      "category": "expressiveness",
+      "status": "experimental",
+      "unit": "fraction",
+      "definition": "Fraction of 5-s windows (hop 2.5 s, >= 1 s voiced) with pitch std < 1.5 st."
+    },
+    "segment.n_monotony_windows": {
+      "level": "segment",
+      "name": "n_monotony_windows",
+      "category": "expressiveness",
+      "status": "diagnostic",
+      "unit": "count",
+      "definition": "Windows that entered monotony_frac."
+    },
+    "segment.end_drop_median_db": {
+      "level": "segment",
+      "name": "end_drop_median_db",
+      "category": "projection",
+      "status": "experimental",
+      "unit": "dB",
+      "definition": "Median sentence end_drop_db over the answer."
+    },
+    "segment.terminal_slope_median_st_s": {
+      "level": "segment",
+      "name": "terminal_slope_median_st_s",
+      "category": "assertiveness",
+      "status": "experimental",
+      "unit": "st/s",
+      "definition": "Median sentence terminal F0 slope."
+    },
+    "segment.jitter_local": {
+      "level": "segment",
+      "name": "jitter_local",
+      "category": "composure",
+      "status": "experimental",
+      "unit": "fraction",
+      "definition": "Praat jitter (local) over the clip."
+    },
+    "segment.shimmer_local": {
+      "level": "segment",
+      "name": "shimmer_local",
+      "category": "composure",
+      "status": "experimental",
+      "unit": "fraction",
+      "definition": "Praat shimmer (local) over the clip."
+    },
+    "segment.f0_median_hz": {
+      "level": "segment",
+      "name": "f0_median_hz",
+      "category": "diagnostic",
+      "status": "diagnostic",
+      "unit": "Hz",
+      "definition": "Median F0 in Hz. ABSOLUTE: identifies the voice; never feedback."
+    },
+    "segment.octave_jump_frac": {
+      "level": "segment",
+      "name": "octave_jump_frac",
+      "category": "diagnostic",
+      "status": "diagnostic",
+      "unit": "fraction",
+      "definition": "Adjacent voiced frames differing by > 9 st (pitch-tracking error rate)."
+    },
+    "segment.dropout_frac": {
+      "level": "segment",
+      "name": "dropout_frac",
+      "category": "diagnostic",
+      "status": "diagnostic",
+      "unit": "fraction",
+      "definition": "Fraction of VAD-speech intensity frames that are digital silence (recording dropouts). Input to the Stage 6 quality gate."
+    },
+    "segment.isolated_blips_removed": {
+      "level": "segment",
+      "name": "isolated_blips_removed",
+      "category": "diagnostic",
+      "status": "diagnostic",
+      "unit": "count",
+      "definition": "VAD speech islands < 0.3 s isolated by >= 1.0 s of silence, removed before measuring."
+    },
+    "segment.transcript_timing_suspect": {
+      "level": "segment",
+      "name": "transcript_timing_suspect",
+      "category": "diagnostic",
+      "status": "diagnostic",
+      "unit": "bool",
+      "definition": "Some transcript line implies > 8 syllables/s (text does not match its timestamps); affected rates are withheld."
+    },
+    "segment.is_duplicate": {
+      "level": "segment",
+      "name": "is_duplicate",
+      "category": "diagnostic",
+      "status": "diagnostic",
+      "unit": "bool",
+      "definition": "Byte-identical audio to a lower id (RecruitView duplicate recording). Exclude when fitting reference distributions."
+    },
+    "sentence.timing_suspect": {
+      "level": "sentence",
+      "name": "timing_suspect",
+      "category": "diagnostic",
+      "status": "diagnostic",
+      "unit": "bool",
+      "definition": "Line implies > 8 syllables/s; its rates are withheld."
+    },
+    "segment.pitch_floor_hz": {
+      "level": "segment",
+      "name": "pitch_floor_hz",
+      "category": "diagnostic",
+      "status": "diagnostic",
+      "unit": "Hz",
+      "definition": "Speaker-specific Praat pitch floor used."
+    },
+    "segment.pitch_ceiling_hz": {
+      "level": "segment",
+      "name": "pitch_ceiling_hz",
+      "category": "diagnostic",
+      "status": "diagnostic",
+      "unit": "Hz",
+      "definition": "Speaker-specific Praat pitch ceiling used."
+    }
+  }
+}

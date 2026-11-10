@@ -380,7 +380,7 @@ def main():
     args = parser.parse_args()
     config = load_config(args.config)
     data = load_split_data(config, args.limit)
-    result_dir = ROOT / "results" / "handcrafted_improvements"
+    result_dir = ROOT / "results" / "audio_score_models" / "handcrafted_improvements"
     if args.finalize_only:
         results = pd.read_csv(result_dir / "experiment_results.csv")
         deltas = pd.read_csv(result_dir / "paired_participant_deltas.csv")

@@ -1,0 +1,43 @@
+descriptor,status,nan_pct_train_unique,reason
+rushed_opening_ratio,active,38.90935887988209,"needs >= 3 sentences, first two and the rest each >= 4 s"
+sent_rate_std_wpm,active,25.93957258658806,needs >= 2 sentences that are >= 4 s and >= 5 words
+sent_rate_cv,active,25.93957258658806,needs >= 2 sentences that are >= 4 s and >= 5 words
+rate_drift_ratio,active,18.570375829034635,needs a speech span >= 12 s
+monotony_frac,experimental,5.232129697862932,needs a speech span >= 5 s with >= 1 s voiced per window
+sent_rate_max_wpm,active,5.158437730287399,needs >= 1 sentence >= 4 s and >= 5 words
+sent_rate_mean_wpm,active,5.158437730287399,needs >= 1 sentence >= 4 s and >= 5 words
+artic_rate_wpm,active,4.568901989683124,no transcript / no VAD speech / too little voicing
+speech_rate_wpm,active,4.568901989683124,no transcript / no VAD speech / too little voicing
+artic_rate_sps,active,4.568901989683124,no transcript / no VAD speech / too little voicing
+terminal_slope_median_st_s,experimental,4.053058216654384,needs >= 10 strong voiced frames at a sentence end
+end_drop_median_db,experimental,2.726602800294768,no transcript / no VAD speech / too little voicing
+pitch_std_st,experimental,1.989683124539425,no transcript / no VAD speech / too little voicing
+f0_median_hz,diagnostic,1.989683124539425,no transcript / no VAD speech / too little voicing
+f0_median_st,experimental,1.989683124539425,no transcript / no VAD speech / too little voicing
+pitch_range_st,experimental,1.989683124539425,no transcript / no VAD speech / too little voicing
+intensity_mean_db,diagnostic,1.7686072218128224,no transcript / no VAD speech / too little voicing
+intensity_std_db,experimental,1.7686072218128224,no transcript / no VAD speech / too little voicing
+long_mid_pause_rate_per_min,active,1.400147383935151,no transcript / no VAD speech / too little voicing
+mid_pause_max_s,active,1.400147383935151,no transcript / no VAD speech / too little voicing
+between_pause_time_ratio,active,1.400147383935151,no transcript / no VAD speech / too little voicing
+mid_pause_time_ratio,active,1.400147383935151,no transcript / no VAD speech / too little voicing
+mid_pause_rate_per_min,active,1.400147383935151,no transcript / no VAD speech / too little voicing
+voiced_frac,diagnostic,1.2527634487840826,no transcript / no VAD speech / too little voicing
+pause_ratio,active,1.2527634487840826,no transcript / no VAD speech / too little voicing
+speech_span_s,active,1.2527634487840826,no transcript / no VAD speech / too little voicing
+dropout_frac,diagnostic,1.2527634487840826,no transcript / no VAD speech / too little voicing
+response_latency_s,active,1.2527634487840826,no transcript / no VAD speech / too little voicing
+octave_jump_frac,diagnostic,1.1790714812085483,no transcript / no VAD speech / too little voicing
+jitter_local,experimental,0.36845983787767134,no transcript / no VAD speech / too little voicing
+shimmer_local,experimental,0.36845983787767134,no transcript / no VAD speech / too little voicing
+audio_duration_s,active,0.0,no transcript / no VAD speech / too little voicing
+syllable_count,diagnostic,0.0,no transcript / no VAD speech / too little voicing
+n_sentences,active,0.0,no transcript / no VAD speech / too little voicing
+n_rate_sentences,diagnostic,0.0,no transcript / no VAD speech / too little voicing
+word_count,active,0.0,no transcript / no VAD speech / too little voicing
+speech_time_s,active,0.0,no transcript / no VAD speech / too little voicing
+internal_pause_count,diagnostic,0.0,no transcript / no VAD speech / too little voicing
+n_monotony_windows,diagnostic,0.0,no transcript / no VAD speech / too little voicing
+isolated_blips_removed,diagnostic,0.0,no transcript / no VAD speech / too little voicing
+pitch_floor_hz,diagnostic,0.0,no transcript / no VAD speech / too little voicing
+pitch_ceiling_hz,diagnostic,0.0,no transcript / no VAD speech / too little voicing
