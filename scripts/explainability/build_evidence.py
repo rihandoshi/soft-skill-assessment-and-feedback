@@ -100,6 +100,48 @@ def quality_gate_v0(seg: dict) -> dict:
     return {"passed": all(checks.values()), "checks": checks, "version": "v0 (Stage 6 adds a proper quality model)"}
 
 
+_GATE_CACHE: dict = {}
+
+
+def _gate_inputs():
+    """Stage 6 gate rule + per-clip quality measurements (None when Stage 6 has not been run)."""
+    if "cfg" not in _GATE_CACHE:
+        ok = P.QUALITY_GATE.exists() and P.QUALITY_SCORES.exists()
+        _GATE_CACHE["cfg"] = json.loads(P.QUALITY_GATE.read_text()) if ok else None
+        _GATE_CACHE["q"] = pd.read_csv(P.QUALITY_SCORES, dtype={"id": str}).set_index("id") if ok else None
+    return _GATE_CACHE["cfg"], _GATE_CACHE["q"]
+
+
+def quality_gate(seg: dict) -> dict:
+    """v1 (Stage 6). basic: v0 checks; failing them withholds all delivery feedback. acoustic: SQUIM PESQ / STOI +
+    VAD SNR composite (train percentiles) >= train p10 and clipping <= train p99; failing it withholds the energy /
+    pitch / SER-based categories and flags (timing-based ones stay)."""
+    v0 = quality_gate_v0(seg)
+    cfg, q = _gate_inputs()
+    if cfg is None:
+        return {**v0, "acoustic_ok": True, "withheld_categories": [], "withheld_flags": []}
+    row = q.loc[seg["id"]] if seg.get("id") in q.index else None
+    measures, pcts = {}, []
+    if row is not None:
+        for c in cfg["composite_measures"]:
+            v = row.get(c)
+            measures[c] = v
+            if v is not None and np.isfinite(v):
+                pcts.append(float(np.interp(v, cfg["composite_train_quantiles"][c], np.linspace(0, 100, 101))))
+        measures["clip_frac"] = row.get("clip_frac")
+    comp = float(np.mean(pcts)) if pcts else np.nan
+    clip = measures.get("clip_frac")
+    checks = {**v0["checks"],
+              "quality_composite_ok": bool(np.isfinite(comp) and comp >= cfg["composite_min"]),
+              "clipping_ok": not (clip is not None and np.isfinite(clip) and clip > cfg["clip_frac_max"])}
+    acoustic_ok = checks["quality_composite_ok"] and checks["clipping_ok"]
+    return {"passed": v0["passed"], "acoustic_ok": acoustic_ok, "checks": checks,
+            "quality_composite": comp, "composite_min": cfg["composite_min"], "measures": measures,
+            "withheld_categories": [] if acoustic_ok else cfg["acoustic_categories"],
+            "withheld_flags": [] if acoustic_ok else cfg["acoustic_flags"] + list(cfg.get("provisional_flags", {})),
+            "version": cfg["version"]}
+
+
 def _clean(obj):
     """JSON-safe: NaN -> None, numpy scalars -> Python."""
     if isinstance(obj, dict):
@@ -118,9 +160,11 @@ def _clean(obj):
 def build_evidence(clip_id: str, tables: DeliveryTables, ref: dr.ReferenceSet, question: str | None = None) -> dict:
     ctx = tables.context(clip_id)
     seg = ctx.seg
-    flags = dr.all_flags(ctx, ref)
+    gate = quality_gate(seg)
+    flags = dr.all_flags(ctx, ref) if gate["passed"] else []
+    gate["n_flags_withheld"] = sum(f["type"] in gate["withheld_flags"] for f in flags)
+    flags = [f for f in flags if f["type"] not in gate["withheld_flags"]]
     active = sorted([f for f in flags if f["status"] == "active"], key=lambda f: -f["magnitude"])
-    gate = quality_gate_v0(seg)
     sig, cat = dr.scores(ctx, ref)
     categories = {}
     for name, columns in ref.data["categories"].items():
@@ -138,6 +182,9 @@ def build_evidence(clip_id: str, tables: DeliveryTables, ref: dr.ReferenceSet, q
     prof_row = tables.profile().loc[clip_id]
     for cat, spec in ref.data.get("category_profile", {}).items():
         _, parts = dr.category_index(ctx, ref, spec)
+        if not gate["passed"] or cat in gate["withheld_categories"]:
+            profile[cat] = {"title": spec["title"], "withheld_by_quality_gate": True, "use_for_feedback": False}
+            continue
         profile[cat] = {
             "title": spec["title"],
             "class": prof_row.get(f"{cat}_class"),

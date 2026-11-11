@@ -7,12 +7,26 @@
   "predicted_scores": null,
   "quality_gate": {
     "passed": true,
+    "acoustic_ok": true,
     "checks": {
       "has_speech": true,
       "transcript_timing_ok": true,
-      "dropouts_below_1pct": true
+      "dropouts_below_1pct": true,
+      "quality_composite_ok": true,
+      "clipping_ok": true
     },
-    "version": "v0 (Stage 6 adds a proper quality model)"
+    "quality_composite": 33.273,
+    "composite_min": 16.26,
+    "measures": {
+      "squim_pesq": 1.659,
+      "squim_stoi": 0.948,
+      "snr_vad_db": 16.833,
+      "clip_frac": 0.0
+    },
+    "withheld_categories": [],
+    "withheld_flags": [],
+    "version": "v1 (Stage 6)",
+    "n_flags_withheld": 0
   },
   "category_profile": {
     "pace": {

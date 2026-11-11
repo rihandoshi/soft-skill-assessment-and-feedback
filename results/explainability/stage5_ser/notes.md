@@ -40,11 +40,24 @@ Hand-written interpretation; `report.md` is generated and overwritten by `extrac
 - `composure_drop`: no rater relation; threshold compared within the same answer-length bucket (1 SD alone fired on 70%).
 - Nothing from Stage 5 reaches the LLM yet (all experimental).
 
+## Second model: agreement check (`model_agreement.md`)
+
+`3loi/SER-Odyssey-Baseline-WavLM-Multi-Attributes` (WavLM-large). Its repo needs `trust_remote_code=True`; instead
+the architecture was re-implemented in `ser_models.py` from the repo's `pipeline_utils.py` (read, not run) and only
+`model.safetensors` is loaded (strict). Same windows, ~25 min.
+
+- **Answer means agree well** (Spearman 0.90-0.92 arousal / dominance); **within-speaker agreement is moderate**
+  (0.73-0.75), and that is the part feedback uses. Valence agrees less (0.71-0.74).
+- Arousal-dominance is 0.98 in this model too: "one activation dimension" is not an artefact of audeering.
+- `tension_rise` kappa 0.63 (73% of audeering's flags also fire with odyssey); composure extremes kappa 0.49-0.58,
+  opposite-class disagreements < 1%.
+- **Rater findings replicate:** between people both models give rho -0.46 to -0.50 with confidence; within a
+  person both are weakly negative (odyssey slightly stronger for arousal / dominance, weaker for `tension_rise`).
+- Implication for Stage 8/9: a moment both models agree on is stronger evidence than one model alone; requiring
+  agreement for SER-based feedback would cut flags by roughly a quarter. Not wired in yet.
+
 ## Still open
 
-- **Second SER model** (`3loi/SER-Odyssey-Baseline-WavLM-Multi-Attributes`) for the agreement check: needs
-  `trust_remote_code=True` (runs third-party Python), so it was not run without approval. Alternative: re-implement its
-  head locally and load only the weights.
 - MIT validation (Stage 7): `run_ser_windows.py` runs on any clip list.
 - Phrasing (Stage 9): describe the voice ("your voice got faster and higher from 0:20"), never the inner state
   ("you were nervous").

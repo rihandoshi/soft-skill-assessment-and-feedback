@@ -1,0 +1,19 @@
+level,measure,kind,value
+window,arousal,raw,0.8803994731360983
+window,arousal,z,0.6457614145247581
+window,dominance,raw,0.8493080330310273
+window,dominance,z,0.6219985691469115
+window,valence,raw,0.6199108296483523
+window,valence,z,0.5742219486869011
+answer,ser_arousal_mean,raw,0.9206344756042627
+answer,ser_arousal_mean,within,0.7532328640609792
+answer,ser_dominance_mean,raw,0.8966997123847928
+answer,ser_dominance_mean,within,0.7275755958461004
+answer,ser_valence_mean,raw,0.7392961662017348
+answer,ser_valence_mean,within,0.7119164601901786
+answer,ser_tension_run_s,raw,0.6549214915510698
+answer,ser_dominance_drop_sd,raw,0.6166310129838815
+flag,tension_rise,kappa,0.6293289308924036
+flag,tension_rise,share_confirmed,0.7346938775510204
+class,more activated than usual,kappa,0.5826141507994373
+class,calmer than usual,kappa,0.4895587382518025

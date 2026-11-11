@@ -12,7 +12,8 @@ results/
     stage2_reference/                report.md, percentile_tables.json, tables/, evidence_examples/
     stage3_recruitview_validation/   report.md, notes.md, decisions.csv/.json, bands.json, tables/, plots/
     stage4_asr/                      report.md, words.csv, descriptor_registry.json, tables/, listening_check/, qc_plots/
-    stage5_ser/                      report.md, notes.md, descriptor_registry.json, tables/
+    stage5_ser/                      report.md, notes.md, model_agreement.md, descriptor_registry.json, tables/
+    stage6_quality/                  report.md, quality_scores.csv, quality_gate.json, tables/
 """
 from pathlib import Path
 
@@ -86,6 +87,28 @@ CACHE_SER = ROOT / "outputs" / "audio" / "cache" / "stage5_ser"
 
 def s5_windows(model: str = "audeering") -> Path:
     return S5_TABLES / f"windows_{model}.csv"
+
+
+# Stage 6 (recording-quality gate)
+S6 = EXPL / "stage6_quality"
+S6_TABLES = S6 / "tables"
+QUALITY_SCORES = S6 / "quality_scores.csv"
+QUALITY_GATE = S6 / "quality_gate.json"
+S6_REPORT = S6 / "report.md"
+CACHE_QUALITY = ROOT / "outputs" / "audio" / "cache" / "stage6_quality"
+
+# Stage 7 (MIT Interview Dataset: 138 interviews, 69 students, pre / post coaching)
+MIT = ROOT / "Datasets" / "MIT" / "MIT_INTERVIEW_DATASET"
+MIT_AUDIO = MIT / "Audio"
+MIT_TRANSCRIPTS = MIT / "Labels" / "interview_transcripts_by_turkers.csv"
+MIT_SCORES = MIT / "Labels" / "turker_scores_full_interview.csv"
+MIT_PROSODY = MIT / "Prosody" / "prosodic_features.csv"
+S7 = EXPL / "stage7_mit_validation"
+S7_TABLES = S7 / "tables"
+S7_REPORT = S7 / "report.md"
+S7_RELIABILITY = S7_TABLES / "label_reliability.csv"
+CACHE_MIT = ROOT / "outputs" / "audio" / "cache" / "stage7_mit"
+MIT_CLIPS = CACHE_MIT / "answers"          # 16-kHz mono answer clips cut from the interviews
 
 
 # Which descriptor tables Stages 2, 3 and the evidence JSON read:

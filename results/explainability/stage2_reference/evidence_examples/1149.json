@@ -7,12 +7,38 @@
   "predicted_scores": null,
   "quality_gate": {
     "passed": true,
+    "acoustic_ok": false,
     "checks": {
       "has_speech": true,
       "transcript_timing_ok": true,
-      "dropouts_below_1pct": true
+      "dropouts_below_1pct": true,
+      "quality_composite_ok": false,
+      "clipping_ok": true
     },
-    "version": "v0 (Stage 6 adds a proper quality model)"
+    "quality_composite": 5.736,
+    "composite_min": 16.26,
+    "measures": {
+      "squim_pesq": 1.184,
+      "squim_stoi": 0.807,
+      "snr_vad_db": 12.725,
+      "clip_frac": 0.0
+    },
+    "withheld_categories": [
+      "expressiveness",
+      "projection",
+      "composure",
+      "assertiveness"
+    ],
+    "withheld_flags": [
+      "monotone",
+      "trails_off",
+      "uptalk",
+      "low_dominance",
+      "tension_rise",
+      "composure_drop"
+    ],
+    "version": "v1 (Stage 6)",
+    "n_flags_withheld": 0
   },
   "category_profile": {
     "pace": {
@@ -73,97 +99,23 @@
     },
     "expressiveness": {
       "title": "Vocal Expressiveness",
-      "class": "typical variation",
-      "level": "typical",
-      "index": 55.2,
-      "vs_your_usual": "similar",
-      "status": "experimental",
-      "use_for_feedback": false,
-      "attention_class": "monotone",
-      "signals": [
-        {
-          "descriptor": "pitch_std_st",
-          "frame": "population",
-          "toward": "highly varied",
-          "pct_toward_high_pole": 64.6
-        },
-        {
-          "descriptor": "pitch_range_st",
-          "frame": "population",
-          "toward": "highly varied",
-          "pct_toward_high_pole": 61.7
-        },
-        {
-          "descriptor": "intensity_std_db",
-          "frame": "population",
-          "toward": "highly varied",
-          "pct_toward_high_pole": 6.5
-        },
-        {
-          "descriptor": "monotony_frac",
-          "frame": "population",
-          "toward": "monotone",
-          "pct_toward_high_pole": 88.0
-        }
-      ],
-      "note": "Pitch in semitones relative to the speaker; no RecruitView support yet (Stage 3). Validate against MIT 'EngagingTone'/'Excited' (Stage 7)."
+      "withheld_by_quality_gate": true,
+      "use_for_feedback": false
     },
     "projection": {
       "title": "Projection & Clarity",
-      "class": "typical endings",
-      "level": "typical",
-      "index": 17.0,
-      "vs_your_usual": "lower",
-      "status": "experimental",
-      "use_for_feedback": false,
-      "attention_class": "trails off",
-      "signals": [
-        {
-          "descriptor": "end_drop_median_db",
-          "frame": "population",
-          "toward": "steady sentence endings",
-          "pct_toward_high_pole": 17.0
-        }
-      ],
-      "note": "Trailing off at real sentence ends (Stage 4; weak within-person support on all three scores). ASR word confidence was tested as intelligibility and rejected (opposite direction). Quality gate: Stage 6."
+      "withheld_by_quality_gate": true,
+      "use_for_feedback": false
     },
     "composure": {
       "title": "Vocal Confidence & Composure",
-      "class": "usual composure",
-      "level": "typical",
-      "index": 17.5,
-      "vs_your_usual": "similar",
-      "status": "experimental",
-      "use_for_feedback": false,
-      "attention_class": "more activated / tense than usual",
-      "signals": [
-        {
-          "descriptor": "ser_arousal_mean",
-          "frame": "self_delta",
-          "toward": "more activated / tense than usual",
-          "pct_toward_high_pole": 17.5
-        }
-      ],
-      "note": "Stage 5: vocal activation from a pretrained speech-emotion model (arousal; its dominance output is the same dimension here, rho 0.98), relative to the speaker's own other answers only (raw values are 87% speaker identity). Oriented by the RecruitView evidence: raters score CALMER speakers as more confident (between people rho -0.50; within a person weak, same direction). Describes how the voice sounded, never an inner state. Needs MIT 'Calm'/'NotStressed' (Stage 7) and a second SER model before feedback."
+      "withheld_by_quality_gate": true,
+      "use_for_feedback": false
     },
     "assertiveness": {
       "title": "Assertive Delivery",
-      "class": "rising endings (uptalk)",
-      "level": "high",
-      "index": 90.3,
-      "vs_your_usual": "higher",
-      "status": "experimental",
-      "use_for_feedback": false,
-      "attention_class": "rising endings (uptalk)",
-      "signals": [
-        {
-          "descriptor": "terminal_slope_median_st_s",
-          "frame": "population",
-          "toward": "rising endings (uptalk)",
-          "pct_toward_high_pole": 90.3
-        }
-      ],
-      "note": "Only sentence-final pitch movement for now; hedging phrases come from the text branch."
+      "withheld_by_quality_gate": true,
+      "use_for_feedback": false
     },
     "conciseness": {
       "title": "Conciseness",

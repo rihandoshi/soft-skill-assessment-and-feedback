@@ -39,7 +39,7 @@ Median dominance by video quality (proxy for recording setup): High: 0.409, Low:
 
 Flags, percentiles and the composure class come from Stage 2 (`stage2_reference/report.md`); validation against the rater scores from Stage 3 (`stage3_recruitview_validation/decisions.csv`, rows `ser_*`, `composure_index`, `flag_low_dominance`, `flag_tension_rise`, `flag_composure_drop`).
 
-## 5. Not done
+## 5. Second model and what is not done
 
-- **Second SER model (agreement check).** `3loi/SER-Odyssey-Baseline-WavLM-Multi-Attributes` loads only with `trust_remote_code=True` (runs Python from a third-party repository); not run without explicit approval. Until then there is no model-agreement check, which is one of the stage's promotion criteria.
+- **Second SER model (agreement check):** `3loi/SER-Odyssey-Baseline-WavLM-Multi-Attributes`, re-implemented locally (weights only, no repository code run). Results in `model_agreement.md` (`ser_model_agreement.py`).
 - **MIT validation** (`Calm`, `NotStressed`, `Overall`): Stage 7. `run_ser_windows.py` works on any clip list.

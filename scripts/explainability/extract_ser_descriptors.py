@@ -231,10 +231,9 @@ def write_report(model: str, windows: pd.DataFrame, ser: pd.DataFrame, seg: pd.D
     add("\nFlags, percentiles and the composure class come from Stage 2 (`stage2_reference/report.md`); validation against "
         "the rater scores from Stage 3 (`stage3_recruitview_validation/decisions.csv`, rows `ser_*`, `composure_index`, "
         "`flag_low_dominance`, `flag_tension_rise`, `flag_composure_drop`).\n")
-    add("## 5. Not done\n")
-    add("- **Second SER model (agreement check).** `3loi/SER-Odyssey-Baseline-WavLM-Multi-Attributes` loads only with "
-        "`trust_remote_code=True` (runs Python from a third-party repository); not run without explicit approval. "
-        "Until then there is no model-agreement check, which is one of the stage's promotion criteria.")
+    add("## 5. Second model and what is not done\n")
+    add("- **Second SER model (agreement check):** `3loi/SER-Odyssey-Baseline-WavLM-Multi-Attributes`, re-implemented "
+        "locally (weights only, no repository code run). Results in `model_agreement.md` (`ser_model_agreement.py`).")
     add("- **MIT validation** (`Calm`, `NotStressed`, `Overall`): Stage 7. `run_ser_windows.py` works on any clip list.\n")
     P.S5_REPORT.write_text("\n".join(L), encoding="utf-8")
 
