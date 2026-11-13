@@ -110,6 +110,26 @@ S7_RELIABILITY = S7_TABLES / "label_reliability.csv"
 CACHE_MIT = ROOT / "outputs" / "audio" / "cache" / "stage7_mit"
 MIT_CLIPS = CACHE_MIT / "answers"          # 16-kHz mono answer clips cut from the interviews
 
+# Stage 8: per-answer detectors (hesitation, confidence) -> levels vs other people's answers
+S8 = EXPL / "stage8_detectors"
+S8_TABLES = S8 / "tables"
+S8_REPORT = S8 / "report.md"
+CONFIDENCE_PRED = S8_TABLES / "confidence_predictions.csv"      # RecruitView + MIT, one row per answer
+DISFLUENCY_WINDOWS = S8_TABLES / "disfluency_windows.csv"       # per 3-s window class probabilities
+DISFLUENCY_ANSWERS = S8_TABLES / "disfluency_answers.csv"       # per answer shares
+CRISPER_WORDS = S8_TABLES / "crisper_words.csv"                 # CrisperWhisper verbatim words (RecruitView + MIT)
+CRISPER_ANSWERS = S8_TABLES / "crisper_answers.csv"             # per answer filler / repetition counts
+ANSWER_LEVELS = S8_TABLES / "answer_levels.csv"
+LEVEL_CUTS = S8 / "level_cuts.json"
+CACHE_S8 = ROOT / "outputs" / "audio" / "cache" / "stage8_detectors"
+HF_CRISPER = ROOT / "outputs" / "audio" / "cache" / "hf_crisperwhisper"      # weights only (safetensors + json)
+HF_DISFLUENCY = ROOT / "outputs" / "audio" / "cache" / "hf_vocametrix_stutter"
+
+# Stage 9: evidence JSON v2 (per-answer levels, no numbers in the wording) -> LLM feedback
+S9 = EXPL / "stage9_feedback"
+EVIDENCE_V2 = S9 / "evidence_v2.jsonl"
+EVIDENCE_V2_EXAMPLES = S9 / "evidence_v2_examples"
+
 
 # Which descriptor tables Stages 2, 3 and the evidence JSON read:
 #   "asr"        Stage 4 tables: real sentences + word counts from verbatim ASR (default once Stage 4 exists)

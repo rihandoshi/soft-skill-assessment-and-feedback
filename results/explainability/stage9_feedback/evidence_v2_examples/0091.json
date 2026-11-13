@@ -1,0 +1,42 @@
+{
+ "answer_id": "0091",
+ "dataset": "recruitview",
+ "question": "Introduce yourself",
+ "observations": [
+  {
+   "dimension": "hesitation",
+   "kind": "strength",
+   "say": "spoke smoothly, with very little hesitation"
+  },
+  {
+   "dimension": "expressiveness",
+   "kind": "strength",
+   "say": "sounded lively and engaging"
+  }
+ ],
+ "not_assessed": [
+  {
+   "dimension": "confidence",
+   "why": "not validated against human ratings"
+  }
+ ],
+ "rules": "compared with other candidates' answers only; mention only the observations listed",
+ "_debug": {
+  "hesitation": {
+   "level": "low",
+   "index": 4.1
+  },
+  "confidence": {
+   "level": "normal",
+   "index": 40.6
+  },
+  "expressiveness": {
+   "level": "high",
+   "index": 96.9
+  },
+  "length": {
+   "level": "normal",
+   "index": 32.8
+  }
+ }
+}

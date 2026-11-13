@@ -1,0 +1,52 @@
+{
+ "answer_id": "0140",
+ "dataset": "recruitview",
+ "question": "Introduce yourself",
+ "observations": [
+  {
+   "dimension": "hesitation",
+   "kind": "issue",
+   "say": "hesitated a lot",
+   "tip": "pause silently instead of saying 'um', and plan the first sentence before starting",
+   "reasons": [
+    "repeated or restarted words",
+    "many filled pauses"
+   ],
+   "example": {
+    "excerpt": "are also working on uh creating an A.I. model, not creating it from scratch, but using cloud cloud",
+    "around": "0:24-0:52"
+   }
+  },
+  {
+   "dimension": "length",
+   "kind": "issue",
+   "say": "the answer ran long",
+   "tip": "use a short structure (situation, action, result) and stop after the result"
+  }
+ ],
+ "not_assessed": [
+  {
+   "dimension": "confidence",
+   "why": "not validated against human ratings"
+  }
+ ],
+ "rules": "compared with other candidates' answers only; mention only the observations listed",
+ "_debug": {
+  "hesitation": {
+   "level": "high",
+   "index": 90.6
+  },
+  "confidence": {
+   "level": "normal",
+   "index": 36.6
+  },
+  "expressiveness": {
+   "level": "normal",
+   "index": 54.4
+  },
+  "length": {
+   "level": "high",
+   "index": 89.8
+  }
+ }
+}

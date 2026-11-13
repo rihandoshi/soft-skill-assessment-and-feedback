@@ -1,0 +1,54 @@
+{
+ "answer_id": "MIT_P8_Q3",
+ "dataset": "mit",
+ "question": "So please tell me about a time when you were working in a team and faced a challenge. How did you solve the problem?",
+ "observations": [
+  {
+   "dimension": "hesitation",
+   "kind": "issue",
+   "say": "hesitated a lot",
+   "tip": "pause silently instead of saying 'um', and plan the first sentence before starting",
+   "reasons": [
+    "many filler sounds (um / uh)",
+    "repeated or restarted words",
+    "many filled pauses",
+    "long pauses in the middle of sentences"
+   ],
+   "example": {
+    "excerpt": "solve this problem was uh I s once I set up one I s one thing I did",
+    "around": "0:26-0:51"
+   }
+  },
+  {
+   "dimension": "length",
+   "kind": "issue",
+   "say": "the answer ran long",
+   "tip": "use a short structure (situation, action, result) and stop after the result"
+  }
+ ],
+ "not_assessed": [
+  {
+   "dimension": "confidence",
+   "why": "not validated against human ratings"
+  }
+ ],
+ "rules": "compared with other candidates' answers only; mention only the observations listed",
+ "_debug": {
+  "hesitation": {
+   "level": "high",
+   "index": 99.2
+  },
+  "confidence": {
+   "level": "normal",
+   "index": 58.5
+  },
+  "expressiveness": {
+   "level": "normal",
+   "index": 50.2
+  },
+  "length": {
+   "level": "high",
+   "index": 100.0
+  }
+ }
+}

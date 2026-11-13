@@ -1,0 +1,52 @@
+{
+ "answer_id": "MIT_P1_Q1",
+ "dataset": "mit",
+ "question": "Ok well  so please tell me about yourself.",
+ "observations": [
+  {
+   "dimension": "hesitation",
+   "kind": "issue",
+   "say": "hesitated a lot",
+   "tip": "pause silently instead of saying 'um', and plan the first sentence before starting",
+   "reasons": [
+    "repeated or restarted words",
+    "many filled pauses"
+   ],
+   "example": {
+    "excerpt": "So h I guess have you looked at my resume or should I? Alright, so",
+    "around": "0:00-0:26"
+   }
+  },
+  {
+   "dimension": "length",
+   "kind": "issue",
+   "say": "the answer ran long",
+   "tip": "use a short structure (situation, action, result) and stop after the result"
+  }
+ ],
+ "not_assessed": [
+  {
+   "dimension": "confidence",
+   "why": "not validated against human ratings"
+  }
+ ],
+ "rules": "compared with other candidates' answers only; mention only the observations listed",
+ "_debug": {
+  "hesitation": {
+   "level": "high",
+   "index": 90.1
+  },
+  "confidence": {
+   "level": "normal",
+   "index": 22.6
+  },
+  "expressiveness": {
+   "level": "normal",
+   "index": 55.0
+  },
+  "length": {
+   "level": "high",
+   "index": 87.4
+  }
+ }
+}

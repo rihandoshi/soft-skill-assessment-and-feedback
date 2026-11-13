@@ -1,0 +1,52 @@
+{
+ "answer_id": "0070",
+ "dataset": "recruitview",
+ "question": "Introduce yourself",
+ "observations": [
+  {
+   "dimension": "hesitation",
+   "kind": "issue",
+   "say": "hesitated a lot",
+   "tip": "pause silently instead of saying 'um', and plan the first sentence before starting",
+   "reasons": [
+    "many filler sounds (um / uh)",
+    "stumbles (repetitions / blocked words)"
+   ],
+   "example": {
+    "excerpt": "For my school uh and uh all of it gave me the initial experience for uh team",
+    "around": "0:27-0:52"
+   }
+  },
+  {
+   "dimension": "length",
+   "kind": "issue",
+   "say": "the answer ran long",
+   "tip": "use a short structure (situation, action, result) and stop after the result"
+  }
+ ],
+ "not_assessed": [
+  {
+   "dimension": "confidence",
+   "why": "not validated against human ratings"
+  }
+ ],
+ "rules": "compared with other candidates' answers only; mention only the observations listed",
+ "_debug": {
+  "hesitation": {
+   "level": "high",
+   "index": 83.7
+  },
+  "confidence": {
+   "level": "normal",
+   "index": 20.9
+  },
+  "expressiveness": {
+   "level": "normal",
+   "index": 20.6
+  },
+  "length": {
+   "level": "high",
+   "index": 98.9
+  }
+ }
+}
