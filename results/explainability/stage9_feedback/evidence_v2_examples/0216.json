@@ -1,0 +1,48 @@
+{
+ "answer_id": "0216",
+ "question": "Tell me about yourself",
+ "setting": "recorded_answer",
+ "modality": "audio",
+ "observations": [
+  {
+   "dimension": "hesitation",
+   "level": "high",
+   "kind": "issue",
+   "say": "hesitated a lot",
+   "reasons": [
+    "many filled pauses",
+    "stumbles (repeated or blocked words)"
+   ],
+   "where": {
+    "start": "0:10",
+    "end": "0:16"
+   },
+   "tip": "plan the first sentence before starting, and when you need a moment, pause silently"
+  },
+  {
+   "dimension": "expressiveness",
+   "level": "low",
+   "kind": "issue",
+   "say": "sounded quite flat",
+   "reasons": [],
+   "where": {
+    "start": "0:04",
+    "end": "0:12"
+   },
+   "tip": "stress the key words and let the voice rise and fall more"
+  }
+ ],
+ "not_assessed": [
+  {
+   "dimension": "confidence",
+   "why": "not validated against human ratings"
+  }
+ ],
+ "rules": "compared with other candidates' answers only; mention only the observations listed",
+ "internal": {
+  "hesitation": 93.4,
+  "expressiveness": 11.2,
+  "confidence": 87.5,
+  "speech_span_s": 17.3
+ }
+}

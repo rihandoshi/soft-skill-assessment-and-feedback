@@ -1,17 +1,30 @@
 {
  "answer_id": "0138",
- "dataset": "recruitview",
  "question": "Introduce yourself",
+ "setting": "recorded_answer",
+ "modality": "audio",
  "observations": [
   {
    "dimension": "hesitation",
+   "level": "low",
    "kind": "strength",
-   "say": "spoke smoothly, with very little hesitation"
+   "say": "spoke smoothly, with very little hesitation",
+   "reasons": [],
+   "where": {
+    "start": "0:06",
+    "end": "0:12"
+   }
   },
   {
    "dimension": "expressiveness",
+   "level": "high",
    "kind": "strength",
-   "say": "sounded lively and engaging"
+   "say": "sounded lively and engaged",
+   "reasons": [],
+   "where": {
+    "start": "0:02",
+    "end": "0:10"
+   }
   }
  ],
  "not_assessed": [
@@ -21,22 +34,10 @@
   }
  ],
  "rules": "compared with other candidates' answers only; mention only the observations listed",
- "_debug": {
-  "hesitation": {
-   "level": "low",
-   "index": 9.6
-  },
-  "confidence": {
-   "level": "normal",
-   "index": 76.1
-  },
-  "expressiveness": {
-   "level": "high",
-   "index": 82.0
-  },
-  "length": {
-   "level": "low",
-   "index": 11.0
-  }
+ "internal": {
+  "hesitation": 8.2,
+  "expressiveness": 94.3,
+  "confidence": 76.1,
+  "speech_span_s": 8.4
  }
 }

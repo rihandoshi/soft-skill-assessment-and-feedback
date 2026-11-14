@@ -1,0 +1,43 @@
+{
+ "answer_id": "0236",
+ "question": "Tell me about yourself",
+ "setting": "recorded_answer",
+ "modality": "audio",
+ "observations": [
+  {
+   "dimension": "hesitation",
+   "level": "low",
+   "kind": "strength",
+   "say": "spoke smoothly, with very little hesitation",
+   "reasons": [],
+   "where": {
+    "start": "0:00",
+    "end": "0:04"
+   }
+  },
+  {
+   "dimension": "expressiveness",
+   "level": "high",
+   "kind": "strength",
+   "say": "sounded lively and engaged",
+   "reasons": [],
+   "where": {
+    "start": "0:00",
+    "end": "0:04"
+   }
+  }
+ ],
+ "not_assessed": [
+  {
+   "dimension": "confidence",
+   "why": "not validated against human ratings"
+  }
+ ],
+ "rules": "compared with other candidates' answers only; mention only the observations listed",
+ "internal": {
+  "hesitation": 12.6,
+  "expressiveness": 98.6,
+  "confidence": 56.4,
+  "speech_span_s": 4.3
+ }
+}

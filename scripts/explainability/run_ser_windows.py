@@ -11,6 +11,9 @@ Clips shorter than one window are scored as a single shorter window. Works on an
 run it on the MIT segments with the same settings.
 
 Run:  python scripts/explainability/run_ser_windows.py [--model audeering] [--batch 16] [--limit 20]
+      python scripts/explainability/run_ser_windows.py --model odyssey --dataset mit --batch 8
+        (Phase 1: the Odyssey cross-check on MIT -> stage7_mit_validation/tables/mit_windows_odyssey.csv)
+      --max-gpu-frac caps PyTorch's share of GPU memory (default 0.8).
 """
 from __future__ import annotations
 
@@ -93,22 +96,54 @@ def run(model_name: str, clips: pd.DataFrame, batch: int) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def cap_gpu_memory(frac: float) -> None:
+    """Make PyTorch fail with an out-of-memory error inside this process instead of filling the whole card
+    (a 6-GB laptop GPU also drives the display)."""
+    import torch
+    if torch.cuda.is_available():
+        torch.cuda.set_per_process_memory_fraction(frac, 0)
+        total = torch.cuda.get_device_properties(0).total_memory / 2 ** 30
+        print(f"GPU {torch.cuda.get_device_name(0)}: {total:.1f} GB, capped at {frac:.0%}", flush=True)
+
+
+def report_gpu_peak() -> None:
+    import torch
+    if torch.cuda.is_available():
+        print(f"peak GPU memory {torch.cuda.max_memory_allocated() / 2 ** 30:.2f} GB", flush=True)
+
+
+def mit_clips() -> pd.DataFrame:
+    """MIT answer clips (Stage 7) with their cached Silero VAD regions plugged into the VAD loader."""
+    import json
+    clips = pd.read_csv(P.S7_TABLES / "mit_answers.csv", dtype={"id": str})[["id", "audio_path"]]
+    X.load_vad = lambda ids: ({i: np.asarray(json.loads((P.CACHE_MIT / "vad" / f"{i}.json").read_text()),
+                                             float).reshape(-1, 2) for i in ids}, {})
+    return clips
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--model", default="audeering")
+    parser.add_argument("--dataset", choices=["recruitview", "mit"], default="recruitview")
     parser.add_argument("--batch", type=int, default=16)
+    parser.add_argument("--max-gpu-frac", type=float, default=0.8)
     parser.add_argument("--limit", type=int)
     args = parser.parse_args()
-    clips = X.load_clips(None)[["id", "audio_path"]]
+    cap_gpu_memory(args.max_gpu_frac)
+    clips = mit_clips() if args.dataset == "mit" else X.load_clips(None)[["id", "audio_path"]]
     if args.limit:
         clips = clips.sample(args.limit, random_state=0)
     table = run(args.model, clips, args.batch)
+    report_gpu_peak()
     if args.limit:
         print(table.describe())
         return
-    P.S5_TABLES.mkdir(parents=True, exist_ok=True)
-    table.to_csv(P.s5_windows(args.model), index=False)
-    print(f"wrote {P.s5_windows(args.model)}: {len(table)} windows, {table['id'].nunique()} clips")
+    out = P.S7_TABLES / f"mit_windows_{args.model}.csv" if args.dataset == "mit" else P.s5_windows(args.model)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    if args.dataset == "mit" and args.model == "audeering" and out.exists():
+        raise SystemExit(f"{out} exists (Stage 7, with extra columns); not overwriting")
+    table.to_csv(out, index=False)
+    print(f"wrote {out}: {len(table)} windows, {table['id'].nunique()} clips")
 
 
 if __name__ == "__main__":

@@ -18,6 +18,8 @@ All paths are defined once in `scripts/explainability/paths.py`.
 | 5 | [`stage5_ser/`](stage5_ser/) | Vocal confidence & composure from a pretrained speech-emotion model (arousal / dominance per 4-s window, speaker-relative) | `notes.md` | `report.md`, `tables/segment_ser.csv` (answer-level, merged into the descriptor tables), `tables/windows_audeering.csv` |
 | 6 | [`stage6_quality/`](stage6_quality/) | Recording-quality gate (SQUIM + SNR): is loudness a recording artefact; which answers get no pitch / energy / emotion-based feedback | `notes.md` | `report.md`, `quality_scores.csv`, `quality_gate.json` |
 | 7 | [`stage7_mit_validation/`](stage7_mit_validation/) | MIT validation: do the categories match what independent raters hear? Label reliability, pre-registered tests, discriminant check, pre / post coaching | `notes.md` | `report.md`, `tables/validation.csv`, `tables/discriminant.csv`, `tables/filler_check.csv` |
+| 8 | [`stage8_detectors/`](stage8_detectors/) | Per-answer detectors and levels (`low` / `normal` / `high`) for the audio skills: fluency (two disfluency classifiers + mid-sentence pauses) and expressiveness (pitch-adjusted vocal activation); MIT validation | `notes.md` | `report.md`, `level_cuts.json` (everything needed to score a new answer), `tables/answer_levels.csv`, `tables/validation_mit.csv`, `tables/flat_by_voice_pitch.csv`, `listening_check.csv` |
+| 9 | [`stage9_feedback/`](stage9_feedback/) | Evidence JSON per answer for the LLM and fusion: observations in words with a time span, `not_assessed`, `internal` indices | (this file) | `evidence_v2.jsonl`, `evidence_v2_examples/` |
 
 ## Results so far
 
@@ -29,7 +31,12 @@ All paths are defined once in `scripts/explainability/paths.py`.
 6. A pretrained speech-emotion model mostly measures the speaker (87%), cannot separate dominance from arousal (ρ 0.98), and raters score *calmer* speakers as more confident (ρ −0.50 between people). The composure class now describes activation relative to the speaker's usual (Stage 5). A second, independently trained model (WavLM) agrees (within-speaker ρ 0.73–0.75) and reproduces these findings.
 7. Loudness is mostly a recording artefact: its relation to the scores disappears once recording quality is controlled. Answers in the worst 10% of audio quality keep pace / pausing / conciseness feedback but lose the pitch, energy and emotion-based categories (Stage 6).
 8. On MIT (independent raters), Expressiveness validates clearly (pitch variability vs Engaging tone +0.32) and Conciseness holds; Pausing is strong but halo; Composure is not supported (MIT raters reward activation, RecruitView raters calm); `too_fast` is contradicted; Whisper misses ~93% of fillers (Stage 7).
-9. Next: decide the promotions (Stage 7 notes), then human annotation (Stage 8).
+9. Per-answer detectors (Stage 8, closed in Phase 1):
+   - Fluency is audio only. It combines two pretrained disfluency classifiers with mid-sentence pauses: −0.63 with MIT `NoFillers`, −0.58 after controlling for length and quality.
+   - Expressiveness is the emotion model's vocal activation, adjusted for voice pitch: +0.63 with `EngagingTone` after the controls. A second emotion model confirms it.
+   - The confidence model is contradicted on MIT and not used.
+   - Answer length is left to the text branch.
+10. Evidence JSON v2 (Stage 9) carries only validated, audio-only observations, each with a time span. Next: one reference per recording setting (Phase 2), then running on a new recording.
 
 ## Re-running
 
@@ -37,3 +44,4 @@ All paths are defined once in `scripts/explainability/paths.py`.
 `stage3_validate_recruitview.py` (~12 min) → `fit_reference_distributions.py` again (it reads Stage 3's decisions).
 `stage0_confound_audit.py` is independent (~1 min).
 MIT (Stage 7, after the RecruitView chain): `mit_label_reliability.py` → `mit_segment_answers.py --step asr` (~65 min GPU) → `--step segment` → `mit_run_pipeline.py` (~15 min) → `validate_categories_mit.py` (~10 min).
+Stages 8–9 (after both chains): `run_crisper_asr.py` (GPU, text branch hand-over) → `run_disfluency_classifier.py` (GPU) → `run_speech_flow.py` (~27 min on a 6-GB laptop GPU, cached) → `run_confidence_detector.py` → `fit_answer_levels.py` → `validate_detectors_mit.py` (~5 min) → `build_answer_evidence.py` → `make_listening_list.py`. Optional cross-check: `run_ser_windows.py --model odyssey --dataset mit` (~11 min GPU).
