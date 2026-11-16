@@ -376,6 +376,41 @@ No dataset has per-answer labels for fluency or expressiveness. So the measures 
 
 **RecruitView cannot validate per-answer delivery.** Its scores don't support either skill, because rating noise hides the differences between one person's answers (Stage 3). Both validated skills rest on MIT.
 
+### 5.1 Is it circular to build the comparison table from MIT and then test on MIT?
+
+**Mostly no.**
+
+1. **The table never sees the ratings.** It is built only from the audio measurements, sorted into cut points. The MIT ratings are never used to build it. Results are inflated when something is fitted to the test labels; here nothing is.
+2. **The test doesn't depend on the table.** It is a rank correlation: do interviews the measure ranks as more hesitant also get worse "no fillers" ratings? Turning scores into percentiles with any table keeps the order, so any table gives about the same result.
+3. **Checked directly** (Phase 2, `stage10_reference_settings/tables/validation_by_reference.csv`). MIT was scored against both tables. The RecruitView table contains no MIT data, so its column is effectively a test on unseen data:
+
+| Test (after controls) | RecruitView table (no MIT data) | MIT table |
+|---|---|---|
+| Fluency vs `NoFillers` | −0.58 | −0.58 |
+| Expressiveness vs `EngagingTone` | +0.63 | +0.65 |
+| Expressiveness vs `Excited` | +0.66 | +0.67 |
+
+4. **Nothing else was fitted to MIT's ratings.** The detection models were trained by others on other data. The fluency weights were fixed before the MIT test. The 20 / 80 cut-offs are a convention and were not tuned on MIT.
+
+**Where the results are optimistic:**
+
+1. **Some choices were made after seeing MIT results.**
+   - Expressiveness switched from pitch movement to the emotion model's liveliness because liveliness matched MIT ratings better (+0.68 vs +0.30).
+   - The second fluency model joined the index only after passing its MIT test.
+   - Picking the best of a few options on the same data you report on makes the reported numbers somewhat too good. Few options were tried and they were mostly far apart, so the inflation is probably small, but it is there.
+2. **The live-interview pitch correction was fitted on MIT audio.** That fit uses no ratings, and the test also controls for pitch, so the effect is small. Still, it isn't fully independent of the test.
+3. **Some MIT numbers are not evidence.**
+   - "About 20% of MIT answers are `high`" holds by construction.
+   - The Phase 5 check that interview levels separate the ratings is a consistency check, not proof.
+4. **Not every test was pre-registered.** Phases 3 and 5 (confidence, clarity, latency, trends) were written down before they ran. The two main skills were tested more informally in Stages 7–8, before pre-registration became the rule.
+
+**So:** both skills track independent human ratings, and that does not come from the table. The exact correlations are probably a little high.
+
+**What would settle it,** using data that played no part in any decision:
+1. The team's own interview recordings, rated by people: the cleanest test.
+2. Two or three people labelling a few hundred answers as hesitant / normal / fluent and flat / normal / lively. This would also show for the first time how often a single answer's level is right, and could be used to train a classifier on top of the existing measurements.
+3. The 60-answer listening check (`stage8_detectors/listening_check.csv`): the cheapest first step. It does not measure accuracy, but it catches obvious failures.
+
 ---
 
 ## 6. From a number to a level: references and settings
@@ -884,6 +919,7 @@ The full chain is in `results/explainability/README.md` ("Re-running"). The part
 | Speaker segmentation for new recordings (Phase 4, test 2) | A pyannote Hugging Face token, or speaker turns from the shared upstream | Deferred |
 | Phase 7: `generate_feedback.py` (evidence → text), faithfulness check (every claim must be in the evidence), team review of ~20 feedbacks | LLM access; the dataset terms checked before sending transcripts to an external API | After fusion |
 | Listening check of 60 flagged answers (`stage8_detectors/listening_check.csv`) | About an hour of listening | Any time |
+| An independent test of both skills (section 5.1): the team's own rated recordings, or a few hundred answers labelled by two or three people | Recordings or listening time | Before claiming accuracy numbers outside the project |
 | A quality gate and references for live interviews from the team's own recordings | Own recordings | Later |
 | The shared three-branch schema | The text and video branches | With the team |
 | Repo tidy-up (section 13.4) | — | Optional |
