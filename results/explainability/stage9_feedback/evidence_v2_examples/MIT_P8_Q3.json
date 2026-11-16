@@ -9,10 +9,7 @@
    "level": "high",
    "kind": "issue",
    "say": "hesitated a lot",
-   "reasons": [
-    "many filled pauses",
-    "long pauses in the middle of sentences"
-   ],
+   "reasons": [],
    "where": {
     "start": "0:19",
     "end": "0:25"
@@ -28,9 +25,9 @@
  ],
  "rules": "compared with other candidates' answers only; mention only the observations listed",
  "internal": {
-  "hesitation": 95.6,
-  "expressiveness": 38.3,
-  "confidence": 58.5,
+  "hesitation": 80.9,
+  "expressiveness": 35.7,
+  "confidence": 75.9,
   "speech_span_s": 82.4
  }
 }

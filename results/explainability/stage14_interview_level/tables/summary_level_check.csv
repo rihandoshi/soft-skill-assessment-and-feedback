@@ -1,0 +1,3 @@
+dimension,label,mean_low,mean_normal,mean_high,n_low,n_normal,n_high
+hesitation,NoFillers,5.05952380952381,4.1436314363143625,3.2594246031746024,28,82,28
+expressiveness,EngagingTone,3.8174603174603177,4.898662551440329,5.59243295019157,28,81,29

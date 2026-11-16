@@ -1,0 +1,310 @@
+{
+ "interview_id": "MIT_P1",
+ "setting": "live_interview",
+ "modality": "audio",
+ "answers": [
+  {
+   "question_id": "Q1",
+   "clip": {
+    "start": "0:07",
+    "end": "0:59"
+   },
+   "evidence": {
+    "answer_id": "MIT_P1_Q1",
+    "question": "Doing well. So, please tell me about yourself.",
+    "setting": "live_interview",
+    "modality": "audio",
+    "observations": [
+     {
+      "dimension": "expressiveness",
+      "level": "high",
+      "kind": "strength",
+      "say": "sounded lively and engaged",
+      "reasons": [],
+      "where": {
+       "start": "0:04",
+       "end": "0:12"
+      }
+     }
+    ],
+    "not_assessed": [
+     {
+      "dimension": "confidence",
+      "why": "not validated against human ratings"
+     }
+    ],
+    "rules": "compared with other candidates' answers only; mention only the observations listed",
+    "internal": {
+     "hesitation": 40.7,
+     "expressiveness": 89.8,
+     "confidence": null,
+     "speech_span_s": 50.8,
+     "quality_composite": 10.0,
+     "acoustic_ok": false,
+     "gate_applied": false,
+     "clip_start_in_recording_s": 7.94
+    }
+   }
+  },
+  {
+   "question_id": "Q2",
+   "clip": {
+    "start": "1:04",
+    "end": "1:41"
+   },
+   "evidence": {
+    "answer_id": "MIT_P1_Q2",
+    "question": "So please tell me about a time you demonstrated leadership.",
+    "setting": "live_interview",
+    "modality": "audio",
+    "observations": [
+     {
+      "dimension": "expressiveness",
+      "level": "high",
+      "kind": "strength",
+      "say": "sounded lively and engaged",
+      "reasons": [],
+      "where": {
+       "start": "0:20",
+       "end": "0:28"
+      }
+     }
+    ],
+    "not_assessed": [
+     {
+      "dimension": "confidence",
+      "why": "not validated against human ratings"
+     }
+    ],
+    "rules": "compared with other candidates' answers only; mention only the observations listed",
+    "internal": {
+     "hesitation": 48.1,
+     "expressiveness": 89.6,
+     "confidence": null,
+     "speech_span_s": 35.8,
+     "quality_composite": 27.3,
+     "acoustic_ok": true,
+     "gate_applied": false,
+     "clip_start_in_recording_s": 64.86
+    }
+   }
+  },
+  {
+   "question_id": "Q3",
+   "clip": {
+    "start": "1:51",
+    "end": "2:30"
+   },
+   "evidence": {
+    "answer_id": "MIT_P1_Q3",
+    "question": "So you had a time when you were working on a team and faced with a challenge. How did you solve that problem?",
+    "setting": "live_interview",
+    "modality": "audio",
+    "observations": [
+     {
+      "dimension": "hesitation",
+      "level": "high",
+      "kind": "issue",
+      "say": "hesitated a lot",
+      "reasons": [],
+      "where": {
+       "start": "0:19",
+       "end": "0:25"
+      },
+      "tip": "plan the first sentence before starting, and when you need a moment, pause silently"
+     }
+    ],
+    "not_assessed": [
+     {
+      "dimension": "confidence",
+      "why": "not validated against human ratings"
+     }
+    ],
+    "rules": "compared with other candidates' answers only; mention only the observations listed",
+    "internal": {
+     "hesitation": 87.2,
+     "expressiveness": 77.5,
+     "confidence": null,
+     "speech_span_s": 38.9,
+     "quality_composite": 12.1,
+     "acoustic_ok": false,
+     "gate_applied": false,
+     "clip_start_in_recording_s": 111.56
+    }
+   }
+  },
+  {
+   "question_id": "Q4",
+   "clip": {
+    "start": "2:37",
+    "end": "2:59"
+   },
+   "evidence": {
+    "answer_id": "MIT_P1_Q4",
+    "question": "Tell me about one of your weaknesses and how you plan to overcome it.",
+    "setting": "live_interview",
+    "modality": "audio",
+    "observations": [
+     {
+      "dimension": "hesitation",
+      "level": "high",
+      "kind": "issue",
+      "say": "hesitated a lot",
+      "reasons": [
+       "long pauses in the middle of sentences"
+      ],
+      "where": {
+       "start": "0:04",
+       "end": "0:10"
+      },
+      "tip": "plan the first sentence before starting, and when you need a moment, pause silently"
+     },
+     {
+      "dimension": "expressiveness",
+      "level": "high",
+      "kind": "strength",
+      "say": "sounded lively and engaged",
+      "reasons": [],
+      "where": {
+       "start": "0:08",
+       "end": "0:16"
+      }
+     }
+    ],
+    "not_assessed": [
+     {
+      "dimension": "confidence",
+      "why": "not validated against human ratings"
+     }
+    ],
+    "rules": "compared with other candidates' answers only; mention only the observations listed",
+    "internal": {
+     "hesitation": 83.7,
+     "expressiveness": 83.6,
+     "confidence": null,
+     "speech_span_s": 20.8,
+     "quality_composite": 34.5,
+     "acoustic_ok": true,
+     "gate_applied": false,
+     "clip_start_in_recording_s": 157.04
+    }
+   }
+  },
+  {
+   "question_id": "Q5",
+   "clip": {
+    "start": "3:04",
+    "end": "3:14"
+   },
+   "evidence": {
+    "answer_id": "MIT_P1_Q5",
+    "question": "Now why do you think we should hire you?",
+    "setting": "live_interview",
+    "modality": "audio",
+    "observations": [
+     {
+      "dimension": "expressiveness",
+      "level": "high",
+      "kind": "strength",
+      "say": "sounded lively and engaged",
+      "reasons": [],
+      "where": {
+       "start": "0:00",
+       "end": "0:08"
+      }
+     }
+    ],
+    "not_assessed": [
+     {
+      "dimension": "confidence",
+      "why": "not validated against human ratings"
+     }
+    ],
+    "rules": "compared with other candidates' answers only; mention only the observations listed",
+    "internal": {
+     "hesitation": 29.8,
+     "expressiveness": 95.3,
+     "confidence": null,
+     "speech_span_s": 9.0,
+     "quality_composite": 2.2,
+     "acoustic_ok": false,
+     "gate_applied": false,
+     "clip_start_in_recording_s": 184.18
+    }
+   }
+  }
+ ],
+ "interview_summary": {
+  "setting": "live_interview",
+  "n_answers": 5,
+  "dimensions": {
+   "hesitation": {
+    "feedback_at": "answer",
+    "answer_levels": {
+     "low": 0,
+     "normal": 3,
+     "high": 2,
+     "missing": 0
+    },
+    "level": "normal",
+    "say": null,
+    "point_at": {
+     "most_hesitant": "Q3",
+     "least_hesitant": "Q5"
+    },
+    "trend_use": "not_used",
+    "trend": null,
+    "slow_to_start": {
+     "level": "normal",
+     "say": null
+    }
+   },
+   "expressiveness": {
+    "feedback_at": "interview",
+    "answer_levels": {
+     "low": 0,
+     "normal": 1,
+     "high": 4,
+     "missing": 0
+    },
+    "level": "high",
+    "say": "the delivery was lively throughout the interview",
+    "point_at": {
+     "flattest": "Q3",
+     "liveliest": "Q5"
+    },
+    "trend_use": "description",
+    "trend": "steady"
+   }
+  },
+  "internal": {
+   "hesitation": {
+    "mean_index": 57.8931622831289,
+    "interview_pct": 62.20039693393418,
+    "change": 7.801462288445915,
+    "change_p": 0.7333333333333333
+   },
+   "expressiveness": {
+    "mean_index": 87.16080193226692,
+    "interview_pct": 89.18955090046643,
+    "change": -3.6889934781318985,
+    "change_p": 0.8
+   },
+   "latency_median_s": 1.3799999999999955
+  },
+  "status": "Phase 5; answer boundaries from segment_interview.py are not validated (Phase 4, test 2)"
+ },
+ "internal": {
+  "speaker_pitch_range_hz": [
+   87.0,
+   200.0
+  ],
+  "segmentation": {
+   "n_words": 551,
+   "n_chunks": 33,
+   "n_turns": 12,
+   "questions_found": "12345"
+  },
+  "runtime_s": 35.3
+ }
+}

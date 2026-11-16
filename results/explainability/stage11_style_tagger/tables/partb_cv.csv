@@ -1,0 +1,3 @@
+variant,hyperparameter,cv_spearman,cv_by_hyperparameter,val_spearman,val_spearman_raw_score,test_spearman,test_spearman_raw_score,outcome
+B1 ridge on residual (legacy WavLM-base-plus L7),10000.0,0.3273841277562455,100=0.176; 1000=0.284; 3000=0.317; 10000=0.327; 30000=0.312; 100000=0.281,0.21622277575525328,0.17300406145263683,0.28350563496761333,0.3615782356722093,failed: MIT contradicted
+B2 extremes logistic (legacy WavLM-base-plus L7),0.001,0.32110720519103547,0.0001=0.293; 0.0003=0.316; 0.001=0.321; 0.003=0.303; 0.01=0.267; 0.03=0.232,0.19470241666378735,0.12785754447023645,0.28073712555764624,0.3161739401146371,failed: MIT contradicted

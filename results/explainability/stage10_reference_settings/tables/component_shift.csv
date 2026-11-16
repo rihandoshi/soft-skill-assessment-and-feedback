@@ -1,0 +1,9 @@
+component,what,used_in_level,recorded_median,live_median,live_median_pct_in_recorded,recorded_share_low,live_share_low,recorded_share_high,live_share_high,verdict
+p_interjection,filled-pause score (vocametrix),True,0.0834052961995439,0.2644302580881214,81.58885542168674,0.2003012048192771,0.022388059701492536,0.2003012048192771,0.5283582089552239,needs its own reference
+p_repetition_block,stumble score (vocametrix),True,0.07045778385608506,0.11316831938258759,65.36144578313252,0.2003012048192771,0.025373134328358207,0.2003012048192771,0.25522388059701495,needs its own reference
+sf_p_disfluent,speech-flow disfluent probability,True,0.309433569202924,0.3746540783822317,61.52108433734939,0.2003012048192771,0.06716417910447761,0.2003012048192771,0.23880597014925373,needs its own reference
+long_mid_pause_rate_per_min,long mid-sentence pauses per minute,True,0.0,0.0,40.067214339059,0.0,0.0,0.19865571321882,0.45089285714285715,needs its own reference
+activation,vocal activation (before pitch adjustment),True,0.3893616665154695,0.3799646617128298,46.56603773584906,0.2,0.18086696562032886,0.2,0.09417040358744394,needs its own reference
+pitch_std_st,pitch variability (reason in words only),False,1.8433961718031875,2.2140236947222687,74.73684210526316,0.2,0.05646359583952452,0.2,0.4101040118870728,needs its own reference
+fillers_per_100w,CrisperWhisper fillers per 100 words (text branch),False,0.6802721088435374,4.3478260869565215,79.41611234294162,0.0,0.0,0.20029563932002956,0.4766917293233083,needs its own reference
+speech_span_s,speaking time (text branch / fusion),False,26.2,45.06,80.29850746268657,0.2,0.04903417533432392,0.2,0.5052005943536404,needs its own reference

@@ -144,3 +144,32 @@ CACHE_ASR = ROOT / "outputs" / "audio" / "cache" / "stage4_asr"
 CACHE_DESCRIPTORS = ROOT / "outputs" / "audio" / "cache" / "delivery_descriptors"
 CACHE_WHISPER = ROOT / "outputs" / "audio" / "cache" / "stage1_verification" / "whisper"
 WAVLM_OOF = ROOT / "outputs" / "explainability" / "repeated_cv_v1_oof_predictions.csv"
+
+# Stage 10 (Phase 2): one reference population per recording setting (recorded_answer / live_interview)
+S10 = EXPL / "stage10_reference_settings"
+S10_TABLES = S10 / "tables"
+S10_REPORT = S10 / "report.md"
+
+# Stage 11 (Phase 3 Part A): Vox-Profile speaking-style tagger (25 tags) -> vocal confidence and clarity experiments
+S11 = EXPL / "stage11_style_tagger"
+S11_TABLES = S11 / "tables"
+S11_REPORT = S11 / "report.md"
+HF_VOICE_QUALITY = ROOT / "outputs" / "audio" / "cache" / "hf_voice_quality"
+HF_SPEECH_FLOW = ROOT / "outputs" / "audio" / "cache" / "hf_speech_flow"
+STYLE_WINDOWS = S11_TABLES / "style_windows.csv"
+STYLE_ANSWERS = S11_TABLES / "style_answers.csv"
+
+# Stage 12 (Phase 4): the pipeline on a new recording (analyze_answer.py, segment_interview.py, analyze_interview.py)
+S12 = EXPL / "stage12_new_recordings"
+S12_TABLES = S12 / "tables"
+S12_REPORT = S12 / "report.md"
+CACHE_S12 = ROOT / "outputs" / "audio" / "cache" / "stage12_new_recordings"
+
+# Stage 13 (Phase 6): hand-over to the fusion model (late fusion)
+S13 = EXPL / "stage13_fusion_export"
+
+# Stage 14 (Phase 5): the interview-level layer (interview_summary.py)
+S14 = EXPL / "stage14_interview_level"
+S14_TABLES = S14 / "tables"
+S14_REPORT = S14 / "report.md"
+INTERVIEW_CUTS = S14 / "interview_cuts.json"

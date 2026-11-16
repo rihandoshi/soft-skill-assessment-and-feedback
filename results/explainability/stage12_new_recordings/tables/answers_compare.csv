@@ -1,0 +1,13 @@
+measure,n,spearman,median_abs_diff,max_abs_diff,both_missing,kind,dimension,run,median_abs_index_diff,max_abs_index_diff,share_within_2,levels_equal,level_differs_away_from_cut,level_differs_near_cut
+p_interjection,30,1.0,4.891728605516121e-09,5.336152658630411e-08,0.0,component,,,,,,,,
+p_repetition_block,30,1.0,7.795322495146584e-10,2.0662459604414707e-08,0.0,component,,,,,,,,
+sf_p_disfluent,30,1.0,9.843797402209198e-09,4.5427845596357486e-08,0.0,component,,,,,,,,
+long_mid_pause_rate_per_min,30,1.0,0.0,0.0,0.0,component,,,,,,,,
+activation,30,1.0,2.3345152541653924e-07,0.006233143535527286,0.0,component,,,,,,,,
+pitch_std_st,30,1.0,0.0,0.0,0.0,component,,,,,,,,
+speech_span_s,30,1.0,0.0,0.0,0.0,component,,,,,,,,
+f0_median_hz,30,1.0,0.0,2.842170943040401e-14,0.0,component,,,,,,,,
+,30,,,,,index,hesitation,A,0.06259783575005429,1.2484771084477817,1.0,29.0,0.0,1.0
+,30,,,,,index,hesitation,B,0.06259783575005429,1.2484771084477817,1.0,29.0,0.0,1.0
+,30,,,,,index,expressiveness,A,0.04405320434140236,2.541128629544943,0.9666666666666667,28.0,0.0,2.0
+,30,,,,,index,expressiveness,B,1.1277973328501254,7.867208665282234,0.6666666666666666,26.0,2.0,2.0

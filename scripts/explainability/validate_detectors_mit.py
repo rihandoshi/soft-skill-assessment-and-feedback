@@ -80,7 +80,7 @@ def interview_table() -> pd.DataFrame:
     lv = lv[lv["dataset"] == "mit"].copy()
     seg = pd.read_csv(P.S7_TABLES / "mit_segments.csv", dtype={"id": str})[
         ["id", "person", "session", "audio_duration_s", "quality_composite"]]
-    lv = lv.merge(seg, on="id", how="left")
+    lv = lv.drop(columns=[c for c in ("person", "session") if c in lv]).merge(seg, on="id", how="left")
     extra = []
     if SPEECH_FLOW.exists() and "sf_p_disfluent" not in lv:
         lv = lv.merge(pd.read_csv(SPEECH_FLOW, dtype={"id": str})[["id", "sf_p_disfluent"]], on="id", how="left")

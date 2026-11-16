@@ -3,7 +3,19 @@
  "question": "Ok well  so please tell me about yourself.",
  "setting": "live_interview",
  "modality": "audio",
- "observations": [],
+ "observations": [
+  {
+   "dimension": "expressiveness",
+   "level": "high",
+   "kind": "strength",
+   "say": "sounded lively and engaged",
+   "reasons": [],
+   "where": {
+    "start": "0:02",
+    "end": "0:10"
+   }
+  }
+ ],
  "not_assessed": [
   {
    "dimension": "confidence",
@@ -12,9 +24,9 @@
  ],
  "rules": "compared with other candidates' answers only; mention only the observations listed",
  "internal": {
-  "hesitation": 67.3,
-  "expressiveness": 76.5,
-  "confidence": 22.6,
+  "hesitation": 40.8,
+  "expressiveness": 89.4,
+  "confidence": 22.0,
   "speech_span_s": 48.9
  }
 }

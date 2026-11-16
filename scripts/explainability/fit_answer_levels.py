@@ -73,6 +73,7 @@ REASON_WORDS = {"p_interjection": "many filled pauses",
                 "long_mid_pause_rate_per_min": "long pauses in the middle of sentences"}
 PITCH_REASON = {"low": "little rise and fall in the voice", "high": "plenty of rise and fall in the voice"}
 GATED = {"hesitation", "expressiveness"}
+SETTING_OF_DATASET = {"recruitview": "recorded_answer", "mit": "live_interview"}
 
 
 def load() -> pd.DataFrame:
@@ -85,7 +86,7 @@ def load() -> pd.DataFrame:
     ser = pd.read_csv(P.S5_SEGMENTS, dtype={"id": str}, usecols=["id", "ser_arousal_mean", "ser_dominance_mean"])
     rv = rv.merge(ser, on="id", how="left")
     mit = pd.read_csv(P.S7_TABLES / "mit_segments.csv", dtype={"id": str})
-    mit = mit[[*seg_cols, "ser_arousal_mean", "ser_dominance_mean", "acoustic_ok"]].assign(
+    mit = mit[[*seg_cols, "person", "ser_arousal_mean", "ser_dominance_mean", "acoustic_ok"]].assign(
         dataset="mit", participant=mit["participant"].astype(str))
     df = pd.concat([rv.assign(participant=rv["participant"].astype(str)), mit], ignore_index=True)
 
@@ -127,14 +128,77 @@ def apply_pitch_adjustment(df: pd.DataFrame, adj: dict) -> pd.Series:
     return df["activation"] - (adj["intercept"] + adj["slope_per_hz"] * f0)
 
 
+
+
+def score(df: pd.DataFrame, target: pd.Series, ref: pd.Series) -> tuple[pd.DataFrame, dict]:
+    """Levels for the `target` rows against the `ref` rows (boolean masks over df).
+
+    Returns the per-answer columns for the target rows and the cuts (reference quantiles, pitch adjustment) that
+    reproduce them for a new answer. Everything fitted (pitch slope, percentiles, index quantiles) uses ref only."""
+    d = df.copy()
+    adj = fit_pitch_adjustment(d, ref)
+    d["activation_adj"] = apply_pitch_adjustment(d, adj)
+    cuts = {"low": LOW, "high": HIGH, "n_reference_answers": int(ref.sum()), "components": {}, "index": {},
+            "expressiveness_pitch_adjustment": {**adj, "formula": "activation_adj = activation - (intercept + "
+                                                "slope_per_hz * speaker_f0_hz); activation = mean(arousal, dominance)"}}
+    out = pd.DataFrame(index=d.index[target])
+    out["activation_adj"] = d.loc[target, "activation_adj"]
+    for dim, comps in DIMENSIONS.items():
+        cols = []
+        for comp, sign in comps:
+            col = f"pct_{comp}"
+            r = d.loc[ref, comp].to_numpy(float)
+            d[col] = pct(r, d[comp])
+            cuts["components"][comp] = np.nanpercentile(r, QS).round(5).tolist()
+            if sign < 0:
+                d[col] = 100.0 - d[col]
+            cols.append(col)
+            out[col] = d.loc[target, col]
+        w = np.array([WEIGHTS.get(c, 1.0) for c, _ in comps])
+        raw = pd.Series(d[cols].to_numpy(float) @ (w / w.sum()), index=d.index)  # NaN if any component is missing
+        idx = pct(raw[ref].to_numpy(float), raw[target])
+        cuts["index"][dim] = {"components": [c for c, _ in comps], "signs": [s for _, s in comps],
+                              "weights": (w / w.sum()).round(6).tolist(),
+                              "raw_mean_quantiles": np.nanpercentile(raw[ref], QS).round(5).tolist()}
+        out[f"{dim}_index"] = idx
+        lvl = pd.Series(np.select([idx <= LOW, idx >= HIGH], ["low", "high"], "normal"), index=idx.index)
+        lvl[idx.isna()] = "missing"
+        out[f"{dim}_level"] = lvl
+    # reasons behind a "high" hesitation level, in words
+    hcols = [f"pct_{c}" for c, _ in DIMENSIONS["hesitation"] if c in REASON_WORDS]  # speech-flow: no own wording
+    out["hesitation_reasons"] = out[hcols].apply(
+        lambda r: "; ".join(REASON_WORDS[c[4:]] for c in hcols if r[c] >= HIGH), axis=1)
+    out.loc[out["hesitation_level"] != "high", "hesitation_reasons"] = ""
+    # expressiveness: pitch variability is the reason in words, never the detector
+    r = d.loc[ref, "pitch_std_st"].to_numpy(float)
+    out["pct_pitch_std_st"] = pct(r, d.loc[target, "pitch_std_st"])
+    cuts["components"]["pitch_std_st"] = np.nanpercentile(r, QS).round(5).tolist()
+    lvl, pp = out["expressiveness_level"], out["pct_pitch_std_st"]
+    out["expressiveness_reasons"] = np.select([(lvl == "low") & (pp <= LOW), (lvl == "high") & (pp >= HIGH)],
+                                              [PITCH_REASON["low"], PITCH_REASON["high"]], "")
+    # the unadjusted activation percentile, only for the voice-pitch check
+    out["pct_activation_raw"] = pct(d.loc[ref, "activation"].to_numpy(float), d.loc[target, "activation"])
+    return out, cuts
+
+
+def score_leave_one_person_out(df: pd.DataFrame, rows: pd.Series, pool: pd.Series, person: pd.Series) -> pd.DataFrame:
+    """Each person's answers scored against the pool without that person (both of their interviews left out)."""
+    parts = []
+    for p in person[rows].unique():
+        mine = rows & (person == p)
+        parts.append(score(df, mine, pool & (person != p))[0])
+    return pd.concat(parts)
+
+
 def flat_by_voice_pitch(df: pd.DataFrame) -> pd.DataFrame:
-    """Share of "flat" (expressiveness low) by speaker-pitch tercile, within each dataset. Gated answers excluded."""
+    """Share of "flat" (expressiveness low) by speaker-pitch tercile, within each setting. Gated answers excluded."""
     rows = []
-    for ds, g in df[~df["expressiveness_withheld"] & df["expressiveness_level"].ne("missing")].groupby("dataset"):
+    ok = ~df["expressiveness_withheld"] & df["expressiveness_level"].ne("missing")
+    for st, g in df[ok].groupby("setting"):
         g = g.dropna(subset=["speaker_f0_hz"])
         third = pd.qcut(g["speaker_f0_hz"], 3, labels=["low voices", "middle voices", "high voices"])
         for name, h in g.groupby(third, observed=True):
-            rows.append({"dataset": ds, "voice_pitch": name, "n": len(h),
+            rows.append({"setting": st, "voice_pitch": name, "n": len(h),
                          "f0_hz_range": f"{h['speaker_f0_hz'].min():.0f}-{h['speaker_f0_hz'].max():.0f}",
                          "share_flat_unadjusted": float((h["pct_activation_raw"] <= LOW).mean()),
                          "share_flat": float((h["expressiveness_level"] == "low").mean()),
@@ -144,52 +208,33 @@ def flat_by_voice_pitch(df: pd.DataFrame) -> pd.DataFrame:
 
 def main() -> None:
     df = load()
-    ref_mask = (df["dataset"] == "recruitview") & (df["split"] == "train") & (~df["is_duplicate"].astype(bool))
-    adj = fit_pitch_adjustment(df, ref_mask)
-    df["activation_adj"] = apply_pitch_adjustment(df, adj)
-    cuts = {"reference": "RecruitView train participants, unique recordings", "low": LOW, "high": HIGH,
-            "components": {}, "index": {},
-            "expressiveness_pitch_adjustment": {**adj, "formula": "activation_adj = activation - (intercept + "
-                                                "slope_per_hz * speaker_f0_hz); activation = mean(arousal, dominance)"}}
-    for dim, comps in DIMENSIONS.items():
-        cols = []
-        for comp, sign in comps:
-            col = f"pct_{comp}"
-            ref = df.loc[ref_mask, comp].to_numpy(float)
-            df[col] = pct(ref, df[comp])
-            cuts["components"][comp] = np.nanpercentile(ref, QS).round(5).tolist()
-            if sign < 0:
-                df[col] = 100.0 - df[col]
-            cols.append(col)
-        w = np.array([WEIGHTS.get(c, 1.0) for c, _ in comps])
-        raw = pd.Series(df[cols].to_numpy(float) @ (w / w.sum()), index=df.index)  # NaN if any component is missing
-        df[f"{dim}_index"] = pct(raw[ref_mask].to_numpy(float), raw)
-        cuts["index"][dim] = {"components": [c for c, _ in comps], "signs": [s for _, s in comps],
-                              "weights": (w / w.sum()).round(6).tolist(),
-                              "raw_mean_quantiles": np.nanpercentile(raw[ref_mask], QS).round(5).tolist()}
+    df["setting"] = df["dataset"].map(SETTING_OF_DATASET)
+    rv_ref = (df["dataset"] == "recruitview") & (df["split"] == "train") & (~df["is_duplicate"].astype(bool))
+    is_rv, is_mit = df["dataset"] == "recruitview", df["dataset"] == "mit"
+    person = df["participant"].where(is_rv, df["person"])
+
+    # recorded_answer: RecruitView answers vs RecruitView train (as in Phase 1)
+    rv_out, rv_cuts = score(df, is_rv, rv_ref)
+    # live_interview: each MIT student vs the other 68 students (cuts for new recordings: all 69)
+    mit_out = score_leave_one_person_out(df, is_mit, is_mit, person)
+    _, live_cuts = score(df, is_mit, is_mit)
+    # MIT scored against the recorded-answer reference: kept only to show the shift between settings
+    mit_rvref, _ = score(df, is_mit, rv_ref)
+
+    levels = pd.concat([rv_out, mit_out]).sort_index()
+    df = df.join(levels)
+    for dim in DIMENSIONS:
         lo_name, mid, hi_name = LEVEL_NAMES[dim]
-        idx = df[f"{dim}_index"]
-        df[f"{dim}_level"] = np.select([idx <= LOW, idx >= HIGH], ["low", "high"], "normal")
-        df.loc[idx.isna(), f"{dim}_level"] = "missing"
         df[f"{dim}_wording"] = df[f"{dim}_level"].map({"low": lo_name, "normal": mid, "high": hi_name, "missing": ""})
-        withheld = (df["dataset"] == "recruitview") & (~df["acoustic_ok"].astype(bool)) & (dim in GATED)
-        df[f"{dim}_withheld"] = withheld
+        df[f"{dim}_withheld"] = is_rv & (~df["acoustic_ok"].astype(bool)) & (dim in GATED)
+        df[f"{dim}_level_recorded_ref"] = mit_rvref[f"{dim}_level"].reindex(df.index)  # MIT rows only
+        df[f"{dim}_index_recorded_ref"] = mit_rvref[f"{dim}_index"].reindex(df.index)
 
-    # reasons behind a "high" hesitation level, in words
-    hcols = [f"pct_{c}" for c, _ in DIMENSIONS["hesitation"] if c in REASON_WORDS]  # speech-flow: no own wording
-    df["hesitation_reasons"] = df[hcols].apply(
-        lambda r: "; ".join(REASON_WORDS[c[4:]] for c in hcols if r[c] >= HIGH), axis=1)
-    df.loc[df["hesitation_level"] != "high", "hesitation_reasons"] = ""
-
-    # expressiveness: pitch variability is the reason in words, never the detector
-    ref = df.loc[ref_mask, "pitch_std_st"].to_numpy(float)
-    df["pct_pitch_std_st"] = pct(ref, df["pitch_std_st"])
-    cuts["components"]["pitch_std_st"] = np.nanpercentile(ref, QS).round(5).tolist()
-    lvl, pp = df["expressiveness_level"], df["pct_pitch_std_st"]
-    df["expressiveness_reasons"] = np.select([(lvl == "low") & (pp <= LOW), (lvl == "high") & (pp >= HIGH)],
-                                             [PITCH_REASON["low"], PITCH_REASON["high"]], "")
-    # the unadjusted activation percentile, only for the voice-pitch check below
-    df["pct_activation_raw"] = pct(df.loc[ref_mask, "activation"].to_numpy(float), df["activation"])
+    cuts = {"settings": {
+        "recorded_answer": {"reference": "RecruitView train participants, unique recordings", **rv_cuts},
+        "live_interview": {"reference": "MIT interviews, all 69 students (for new recordings; MIT's own answers "
+                                        "are scored leaving their student out)", **live_cuts}},
+        "default_setting": "live_interview"}
 
     P.S8_TABLES.mkdir(parents=True, exist_ok=True)
     df.to_csv(P.ANSWER_LEVELS, index=False)
@@ -198,14 +243,17 @@ def main() -> None:
     fv.to_csv(P.S8_TABLES / "flat_by_voice_pitch.csv", index=False)
 
     print(f"wrote {P.ANSWER_LEVELS}: {len(df)} answers; {P.LEVEL_CUTS}")
-    print(f"voice-pitch adjustment: activation = {adj['intercept']:.4f} + {adj['slope_per_hz']:.6f} * F0_hz "
-          f"(n = {adj['n']} reference answers)")
-    for ds, g in df.groupby("dataset"):
-        g = g.dropna(subset=["activation", "speaker_f0_hz"])
-        print(f"  {ds}: rho(activation, speaker F0) = {spearmanr(g['activation'], g['speaker_f0_hz'])[0]:+.2f} "
+    for st, c in cuts["settings"].items():
+        a = c["expressiveness_pitch_adjustment"]
+        print(f"  {st}: pitch adjustment activation = {a['intercept']:.4f} + {a['slope_per_hz']:.6f} * F0_hz "
+              f"(n = {a['n']})")
+    for st, g in df.groupby("setting"):
+        g = g.dropna(subset=["activation_adj", "speaker_f0_hz"])
+        print(f"  {st}: rho(activation, speaker F0) = {spearmanr(g['activation'], g['speaker_f0_hz'])[0]:+.2f} "
               f"-> after adjustment {spearmanr(g['activation_adj'], g['speaker_f0_hz'])[0]:+.2f}")
     for dim in DIMENSIONS:
-        print(dim, df.groupby("dataset")[f"{dim}_level"].value_counts(normalize=True).unstack().round(2).to_string(), sep="\n")
+        print(dim, df.groupby("setting")[f"{dim}_level"].value_counts(normalize=True).unstack().round(2).to_string(),
+              sep="\n")
     print("withheld (RecruitView, gate):", {d: int(df[f"{d}_withheld"].sum()) for d in GATED})
     print("flat / lively by voice pitch:", fv.round(2).to_string(index=False), sep="\n")
 

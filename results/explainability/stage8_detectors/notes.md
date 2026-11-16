@@ -1,5 +1,7 @@
 # Stage 8 notes: per-answer detectors (closed in Phase 1, 13 Nov 2026)
 
+> **Updated by Phase 2 (14 Nov 2026).** MIT answers are now scored against the other MIT students (`live_interview`), not against RecruitView. RecruitView levels are unchanged. The MIT level rates and voice-pitch numbers below are the Phase 1 state; the current ones are in `../stage10_reference_settings/`. `report.md` here is regenerated with the Phase 2 levels.
+
 What Stage 8 delivers, what changed in Phase 1, and what is still open. The numbers come from `report.md` (generated) and the tables named below.
 
 ## What a level is

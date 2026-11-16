@@ -1,0 +1,7 @@
+subset,value,n_recruitview,n_mit,recruitview_median,mit_median,recruitview_median_as_mit_percentile
+all answers,style_clarity,1896,667,-0.8343653030491771,0.18236382491990566,0.0
+all answers,tag_slurred,1896,667,0.9174481316336562,0.057961240192526,99.55022488755623
+all answers,style_confidence,1896,667,0.08052510657107916,0.12035718757041897,40.929535232383806
+best-quality third of each dataset,style_clarity,632,223,-0.8615211500774356,0.200593503516367,0.0
+best-quality third of each dataset,tag_slurred,632,223,0.9429165249521082,0.0570447186026005,100.0
+best-quality third of each dataset,style_confidence,632,223,0.14543691131911618,0.15913320033619271,44.39461883408072
