@@ -91,3 +91,57 @@ The tables leave out the weaker methods: early_text, early_concat, early_mlp and
 - These are validation results only. The test set has not been evaluated yet (`fuse.py --eval-test`). Run it once, after choosing the final method on validation.
 - n = 319 responses gives wide CIs: most method-to-method differences are within ±0.02 and cannot be separated.
 - Consider reporting the "partial | len" metric alongside Spearman so that length effects are visible.
+
+---
+
+# Text + Audio + Video Fusion Results (v3_video)
+
+Validation set, n = 319 responses (308 with usable video) · 4 Nov 2026
+
+**Adding video does not reliably improve on text + audio.** No 3-way method reliably beats the v2 recommendation (`weighted_ta`) on Spearman or CCC for any target: every paired interval for a gain contains 0. Video on its own is weak, and the learned 3-way weights give it **0** on every target, so `weighted_3` is identical to `weighted_ta`.
+
+Source: [outputs/fusion_versions/v3_video/reports/fusion_val.md](../outputs/fusion_versions/v3_video/reports/fusion_val.md). Scripts: [fuse3.py](fuse3.py), [run_video_branch.py](run_video_branch.py).
+
+## Setup
+
+- **Video branch:** the video teammate's `robust` visual features (197 Py-Feat summaries: emotions, AUs, head pose, gaze; length-sensitive features removed) and their Ridge model, refit on the shared split by `run_video_branch.py`. Train predictions are out-of-fold over the same folds as fusion.
+- **Coverage:** their quality filter (≥ 8 face samples, face in ≥ 50% of frames) keeps 1912 / 2011 answers. Fusion falls back to the available branches for the rest (see `fuse3.py`).
+- Text, audio, folds, metrics and CIs are exactly as in v2; the text, audio and `weighted_ta` numbers reproduce v2.
+
+## Video alone (val Spearman / CCC)
+
+| Target | Video (their Ridge) | early_video (Ridge, alpha by CCC) |
+|---|---|---|
+| answer_score | 0.173 / 0.051 | 0.219 / 0.185 |
+| confidence_score | 0.254 / 0.078 | 0.233 / 0.198 |
+| speaking_skills | 0.219 / 0.062 | 0.254 / 0.134 |
+| overall_performance | 0.190 / 0.072 | 0.255 / 0.198 |
+
+Their model picks very strong regularisation (alpha 3162–10000, the top of its grid), so its predictions are shrunk towards the mean and CCC is near 0. Choosing alpha by CCC (`early_video`) gives similar ranking with much better scale.
+
+## Best 3-way methods vs text + audio (`weighted_ta`)
+
+| Target | `weighted_ta` ρ / CCC | Best 3-way ρ | Best 3-way CCC | d ρ vs `weighted_ta` [95% CI] |
+|---|---|---|---|---|
+| confidence_score | 0.373 / 0.308 | hybrid_3 0.402 | rank_mean_3 / hybrid_3 0.348 | hybrid_3 +0.029 [−0.06, +0.12] |
+| speaking_skills | 0.467 / 0.292 | mean_3 0.490 | rank_mean_3 0.335 | mean_3 +0.023 [−0.01, +0.05] |
+| overall_performance | 0.516 / 0.336 | stack_3 0.519 | hybrid_3 0.352 | stack_3 +0.003 [−0.04, +0.04] |
+| answer_score* | text 0.425 / 0.328 | stack_mlp_3 0.452 | hybrid_3 0.332 | vs text: +0.027 [−0.04, +0.09] |
+
+\*No audio prediction; compared with text-only.
+
+## Analysis
+
+- **Video is weak but different.** Its predictions correlate only 0.26–0.28 with text and 0.32–0.37 with audio (text and audio: 0.67–0.74), and only −0.23 to −0.26 with word count (text −0.80 to −0.83). It is the least length-driven branch: video's partial | len for confidence is 0.218, higher than text (0.052) or audio (0.155).
+- **That difference doesn't turn into a reliable gain.** Video is too weak (ρ ≈ 0.2) to move the ranking much. Point estimates go up slightly on confidence and speaking, but no gain over `weighted_ta` is reliable, including on the 308 answers that have video. A few methods are reliably *worse* (e.g. stack_gbm_3 on overall, ρ −0.065 [−0.12, −0.01]).
+- **Signal beyond length rises a little.** partial | len for confidence goes from 0.155 (`weighted_ta`) to 0.20–0.25 for stack_3, stack_all_3, stack_mlp_3 and hybrid_3, i.e. fusion with video depends slightly less on answer length. Not tested for significance.
+- **Scale-free averaging helps CCC.** `rank_mean_3` has the best or near-best CCC on confidence (0.348) and speaking (0.335), because it does not let the shrunk video predictions pull the average towards the mean. Plain `mean_3` lowers CCC for the same reason.
+- **Learned weight on video is 0.** On train OOF, CCC is maximised with no video weight for every target, and `weighted_tv` / `weighted_av` also give video 0.
+- Early fusion and the non-linear stackers (GBM, MLP) again do no better than simple late fusion.
+
+**Recommendation:** keep **`weighted_ta`** (text + audio) as the final model. If a 3-way model is wanted, use **`rank_mean_3`** or **`stack_3`**: they are no worse, slightly better on point estimates for confidence and speaking, and use the visual channel. Video is more valuable as **feedback evidence** (gaze, expression, head movement) than as a score predictor.
+
+## Caveats
+
+- Validation only; `fuse3.py --tag v3_video --eval-test` has not been run.
+- The video branch uses its own aggregate features only (no temporal modelling, per its author's note). A stronger video representation could change this result.
